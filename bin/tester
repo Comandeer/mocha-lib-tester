@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+const test = require( '../dist/mocha-lib-tester.js' );
+
+test();

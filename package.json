@@ -1,0 +1,94 @@
+{
+  "name": "@comandeer/mocha-lib-tester",
+  "version": "0.0.0",
+  "description": "All testing utilities in one, small package",
+  "main": "dist/mocha-lib-tester.js",
+  "module": "dist/mocha-lib-tester.es2015.js",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "bin": {
+    "mlt": "bin/tester"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint src/**/*.js bin/**/* tests/*.js",
+    "build": "rlb",
+    "pretest": "npm run lint",
+    "test": "nyc mocha tests/*.js --timeout 15000 --require @babel/register",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "commitmsg": "is-ci && exit 0 || commitplease .git/COMMIT_EDITMSG",
+    "version": "npm test && npm run build && git add -f dist/",
+    "postversion": "git rm -r --cached dist/ && git commit -m \"chore(dist): clean after release [ci skip]\" && git push origin && git push origin --tags"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitplease": {
+    "nohook": true,
+    "style": "angular",
+    "types": [
+      "feat",
+      "fix",
+      "docs",
+      "style",
+      "refactor",
+      "perf",
+      "test",
+      "build",
+      "ci",
+      "chore",
+      "revert"
+    ],
+    "scope": "\\S+.*"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "dist/**/*.js",
+      "tests/**/*.js"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Comandeer/mocha-lib-tester.git"
+  },
+  "keywords": [
+    "mocha",
+    "test"
+  ],
+  "author": "Comandeer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Comandeer/mocha-lib-tester/issues"
+  },
+  "homepage": "https://github.com/Comandeer/mocha-lib-tester#readme",
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@comandeer/eslint-config": "^0.1.0",
+    "chai": "^4.1.2",
+    "codecov": "^3.0.4",
+    "eslint": "^5.5.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
+    "proxyquire": "^2.1.0",
+    "sinon": "^6.2.0",
+    "sinon-chai": "^3.2.0"
+  },
+  "devDependencies": {
+    "@comandeer/is-ci": "^1.0.0",
+    "@comandeer/rollup-lib-bundler": "^0.7.0",
+    "commitplease": "^3.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^0.14.3"
+  }
+}
