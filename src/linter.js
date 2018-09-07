@@ -6,7 +6,7 @@ function prepareExistentFilePaths( cwd ) {
 	const candidates = [
 		'src/**/*.js',
 		'bin/**/*',
-		'tests/*.js'
+		'tests/**/*.js'
 	];
 
 	return candidates.filter( ( candidate ) => {
@@ -26,6 +26,7 @@ function linter( projectPath ) {
 	const cli = new CLIEngine( {
 		useEslintrc: false,
 		cwd: projectPath,
+		ignorePattern: [ 'tests/fixtures/**/*.js' ],
 		baseConfig: {
 			extends: '@comandeer/eslint-config'
 		}

@@ -61,7 +61,8 @@ describe( 'linter', () => {
 		const expected = {
 			[ joinPath( fixturePath, 'src', 'empty.js' ) ]: 0,
 			[ joinPath( fixturePath, 'src', 'index.js' ) ]: 1,
-			[ joinPath( fixturePath, 'tests', 'index.js' ) ]: 1
+			[ joinPath( fixturePath, 'tests', 'index.js' ) ]: 1,
+			[ joinPath( fixturePath, 'tests', 'something', 'subtest.js' ) ]: 0
 		};
 
 		expect( results ).to.have.lengthOf( Object.keys( expected ).length );
