@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "@comandeer/is-ci": "^1.0.0",
-    "@comandeer/rollup-lib-bundler": "^0.7.0",
+    "@comandeer/rollup-lib-bundler": "^0.8.0",
     "commitplease": "^3.2.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.0.0"
