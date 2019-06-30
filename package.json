@@ -5,7 +5,7 @@
   "main": "dist/mocha-lib-tester.js",
   "module": "dist/mocha-lib-tester.es2015.js",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "bin": {
     "mlt": "bin/tester"
