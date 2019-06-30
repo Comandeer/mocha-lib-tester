@@ -70,25 +70,25 @@
   },
   "homepage": "https://github.com/Comandeer/mocha-lib-tester#readme",
   "dependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "@comandeer/eslint-config": "^0.1.0",
-    "chai": "^4.1.2",
-    "codecov": "^3.0.4",
-    "eslint": "^5.5.0",
-    "glob": "^7.1.3",
-    "mocha": "^6.0.0",
-    "nyc": "^14.0.0",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "@comandeer/eslint-config": "^0.2.1",
+    "chai": "^4.2.0",
+    "codecov": "^3.5.0",
+    "eslint": "^6.0.1",
+    "glob": "^7.1.4",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "proxyquire": "^2.1.0",
-    "sinon": "^7.2.3",
-    "sinon-chai": "^3.2.0"
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0"
   },
   "devDependencies": {
-    "@comandeer/is-ci": "^1.0.0",
-    "@comandeer/rollup-lib-bundler": "^0.8.0",
+    "@comandeer/is-ci": "^2.0.0",
+    "@comandeer/rollup-lib-bundler": "^0.9.0",
     "commitplease": "^3.2.0",
     "cz-conventional-changelog": "^2.1.0",
-    "husky": "^2.3.0"
+    "husky": "^2.7.0"
   }
 }
