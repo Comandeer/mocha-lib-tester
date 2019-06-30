@@ -4,9 +4,9 @@ os:
   - linux
   - osx
 node_js:
+  - 12
   - 10
   - 8
-  - 6
 install: npm install
 script: npm test
 after_success: npm run coverage
