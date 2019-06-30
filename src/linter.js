@@ -1,3 +1,4 @@
+import { resolve as resolvePath } from 'path';
 import { CLIEngine } from 'eslint';
 import { sync as globSync } from 'glob';
 
@@ -25,7 +26,7 @@ function linter( projectPath ) {
 
 	const cli = new CLIEngine( {
 		useEslintrc: false,
-		cwd: projectPath,
+		cwd: resolvePath( projectPath ),
 		ignorePattern: [ 'tests/fixtures/**/*.js' ],
 		baseConfig: {
 			extends: '@comandeer/eslint-config'
