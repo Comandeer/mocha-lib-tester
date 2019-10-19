@@ -33,7 +33,7 @@ describe( 'linter', () => {
 		} ).not.to.throw( TypeError, 'Provided path must be a non-empty string' );
 	} );
 
-	it( 'doe not throw due to nonexistent files', () => {
+	it( 'does not throw due to nonexistent files', () => {
 		const fixturePath = joinPath( __dirname, 'fixtures', 'lintPackage' );
 
 		expect( () => {
@@ -44,14 +44,14 @@ describe( 'linter', () => {
 	it( 'does not output anything', () => {
 		const consoleSpy = spy( console, 'log' );
 
-		linter( '.' );
+		linter( __dirname );
 
 		consoleSpy.restore();
 		expect( consoleSpy ).not.to.be.called;
 	} );
 
 	it( 'returns object with results and reporter fields', () => {
-		expect( linter( '.' ) ).to.have.all.keys( 'results', 'reporter' );
+		expect( linter( __dirname ) ).to.have.all.keys( 'results', 'reporter' );
 	} );
 
 	it( 'detects errors in correct files', () => {
