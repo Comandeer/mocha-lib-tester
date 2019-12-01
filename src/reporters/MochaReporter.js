@@ -3,14 +3,16 @@
 import { format } from 'util';
 import { reporters } from 'mocha';
 
-class MochaReporter extends reporters.Spec {
+const { Base, Spec } = reporters;
+
+class MochaReporter extends Spec {
 	constructor( runner ) {
 		const output = [];
 		const results = {};
 		let ok = true;
-		const originalConsoleLog = console.log;
+		const originalConsoleLog = Base.consoleLog;
 
-		console.log = function( ...args ) {
+		Base.consoleLog = function( ...args ) {
 			output.push( format( ...args ) );
 		};
 
@@ -29,7 +31,7 @@ class MochaReporter extends reporters.Spec {
 		} );
 
 		runner.once( 'end', () => {
-			console.log = originalConsoleLog;
+			Base.consoleLog = originalConsoleLog;
 
 			runner.suite.results = {
 				results,

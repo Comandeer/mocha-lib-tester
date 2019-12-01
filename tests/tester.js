@@ -59,6 +59,7 @@ describe( 'tester', () => {
 
 		return tester( emptyFixture ).then( () => {
 			consoleSpy.restore();
+
 			expect( consoleSpy ).not.to.be.called;
 		} );
 	} );
