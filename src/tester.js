@@ -1,9 +1,8 @@
 import Mocha from 'mocha';
 import { sync as globSync } from 'glob';
 import MochaReporter from './reporters/MochaReporter.js';
-import babelRegister from '@babel/register';
 import addChaiHook from './hooks/chai.js';
-import preset from '@babel/preset-env';
+import addBabelHook from './hooks/babel.js';
 
 function findTestFiles( cwd ) {
 	return globSync( 'tests/**/*.js', {
@@ -19,7 +18,7 @@ function tester( projectPath ) {
 	}
 
 	addChaiHook( projectPath );
-	hook( projectPath );
+	addBabelHook( projectPath );
 
 	const mocha = new Mocha( {
 		reporter: MochaReporter
@@ -34,27 +33,6 @@ function tester( projectPath ) {
 		mocha.run( () => {
 			resolve( mocha.suite.results );
 		} );
-	} );
-}
-
-function hook( projectPath ) {
-	babelRegister( {
-		only: [
-			( path ) => {
-				return path.startsWith( projectPath );
-			}
-		],
-		babelrc: false,
-		presets: [
-			[
-				preset,
-				{
-					targets: {
-						node: '8.0.0'
-					}
-				}
-			]
-		]
 	} );
 }
 
