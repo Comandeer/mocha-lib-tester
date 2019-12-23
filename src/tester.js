@@ -3,6 +3,7 @@ import { sync as globSync } from 'glob';
 import MochaReporter from './reporters/MochaReporter.js';
 import addChaiHook from './hooks/chai.js';
 import addBabelHook from './hooks/babel.js';
+import addIstanbulHook from './hooks/istanbul.js';
 
 function tester( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
@@ -11,6 +12,7 @@ function tester( projectPath ) {
 
 	addChaiHook( projectPath );
 	addBabelHook( projectPath );
+	addIstanbulHook( projectPath );
 
 	const mocha = new Mocha( {
 		reporter: MochaReporter
