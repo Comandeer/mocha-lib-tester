@@ -80,6 +80,14 @@ describe( 'tester', () => {
 		return tester( fixturePath );
 	} );
 
+	it( 'correctly exposes chai expect syntax', async () => {
+		const fixturePath = joinPath( __dirname, 'fixtures', 'testsChai' );
+
+		const { ok } = await tester( fixturePath );
+
+		expect( ok ).to.equal( true );
+	} );
+
 	it( 'run tests in correct files', () => {
 		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageCJS' );
 		const expected = {

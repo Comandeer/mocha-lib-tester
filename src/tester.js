@@ -2,6 +2,7 @@ import Mocha from 'mocha';
 import { sync as globSync } from 'glob';
 import MochaReporter from './reporters/MochaReporter.js';
 import babelRegister from '@babel/register';
+import addChaiHook from './hooks/chai.js';
 import preset from '@babel/preset-env';
 
 function findTestFiles( cwd ) {
@@ -17,6 +18,7 @@ function tester( projectPath ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
 
+	addChaiHook( projectPath );
 	hook( projectPath );
 
 	const mocha = new Mocha( {
