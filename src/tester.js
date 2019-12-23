@@ -4,17 +4,6 @@ import MochaReporter from './reporters/MochaReporter.js';
 import addChaiHook from './hooks/chai.js';
 import addBabelHook from './hooks/babel.js';
 
-function findTestFiles( cwd ) {
-	return globSync( 'tests/**/*.js', {
-		cwd,
-		ignore: [
-			'tests/fixtures/**/*.js',
-			'tests/helpers/**/*.js'
-		],
-		realpath: true
-	} );
-}
-
 function tester( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
@@ -36,6 +25,17 @@ function tester( projectPath ) {
 		mocha.run( () => {
 			resolve( mocha.suite.results );
 		} );
+	} );
+}
+
+function findTestFiles( cwd ) {
+	return globSync( 'tests/**/*.js', {
+		cwd,
+		ignore: [
+			'tests/fixtures/**/*.js',
+			'tests/helpers/**/*.js'
+		],
+		realpath: true
 	} );
 }
 
