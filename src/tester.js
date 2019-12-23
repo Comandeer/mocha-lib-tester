@@ -7,7 +7,10 @@ import addBabelHook from './hooks/babel.js';
 function findTestFiles( cwd ) {
 	return globSync( 'tests/**/*.js', {
 		cwd,
-		ignore: 'tests/fixtures/**/*.js',
+		ignore: [
+			'tests/fixtures/**/*.js',
+			'tests/helpers/**/*.js'
+		],
 		realpath: true
 	} );
 }
