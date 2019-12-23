@@ -32,7 +32,8 @@
     "nohook": true,
     "style": "angular",
     "types": [
-      "feat",
+	  "feat",
+	  "improvement",
       "fix",
       "docs",
       "style",
