@@ -80,7 +80,7 @@ describe( 'tester', () => {
 		return tester( fixturePath );
 	} );
 
-	it( 'correctly exposes chai expect syntax', async () => {
+	it( 'correctly exposes chai and other testing libraries', async () => {
 		const fixturePath = joinPath( __dirname, 'fixtures', 'testsChai' );
 
 		const { ok } = await tester( fixturePath );

@@ -1,7 +1,17 @@
 import { resolve as resolvePath } from 'path';
 import { addHook } from 'pirates';
 
-const chaiPreamble = 'import { expect } from \'chai\';\n';
+const chaiPreamble = `import { expect } from 'chai';
+import { use as chaiUse } from 'chai';
+import sinon from 'sinon';
+import chaiAsPromised from 'chai-as-promised';
+import sinonChai from 'sinon-chai';
+import { noCallThru as pqNoCallThru } from 'proxyquire';
+
+chaiUse( chaiAsPromised );
+chaiUse( sinonChai );
+
+const proxyquire = pqNoCallThru();\n`;
 
 function addChaiHook( projectPath ) {
 	const testsPath = resolvePath( projectPath, 'tests' );

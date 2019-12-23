@@ -8,6 +8,22 @@ describe( 'chai', () => {
 		assert.equal( typeof expect, 'function' );
 	} );
 
+	it( 'exposes chai-as-promised', () => {
+		assert.equal( typeof chaiAsPromised, 'function' );
+	} );
+
+	it( 'exposes sinon-chai', () => {
+		assert.equal( typeof sinonChai, 'function' );
+	} );
+
+	it( 'exposes sinon', () => {
+		assert.equal( typeof sinon, 'object' );
+	} );
+
+	it( 'exposes proxyquire', () => {
+		assert.equal( typeof proxyquire, 'function' );
+	} );
+
 	it( 'exposes chai in helpers', () => {
 		assert.equal( helperExpect, true );
 	} );
