@@ -17,6 +17,8 @@ describe( 'tester', () => {
 				delete require.cache[ key ];
 			}
 		} );
+
+		delete global.__mltCoverage__;
 	} );
 
 	it( 'is a function', () => {
@@ -86,6 +88,14 @@ describe( 'tester', () => {
 		const { ok } = await tester( fixturePath );
 
 		expect( ok ).to.equal( true );
+	} );
+
+	it( 'gathers info about code coverage', async () => {
+		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageESM' );
+
+		await tester( fixturePath );
+
+		expect( global.__mltCoverage__ ).not.to.be.undefined;
 	} );
 
 	it( 'run tests in correct files', () => {
