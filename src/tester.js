@@ -25,7 +25,10 @@ function tester( projectPath ) {
 
 	return new Promise( ( resolve ) => {
 		mocha.run( () => {
-			resolve( mocha.suite.results );
+			resolve( {
+				name: 'tester',
+				...mocha.suite.results
+			} );
 		} );
 	} );
 }

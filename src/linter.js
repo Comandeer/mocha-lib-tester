@@ -17,10 +17,12 @@ function linter( projectPath ) {
 
 	const { results } = cli.executeOnFiles( prepareExistentFilePaths( projectPath ) );
 
-	return {
+	return Promise.resolve( {
+		name: 'linter',
+		ok: isOk( results ),
 		results,
 		reporter: cli.getFormatter()
-	};
+	} );
 }
 
 // Workaround for https://eslint.org/docs/5.0.0/user-guide/migrating-to-5.0.0#nonexistent-files
@@ -37,6 +39,12 @@ function prepareExistentFilePaths( cwd ) {
 		} );
 
 		return found.length > 0;
+	} );
+}
+
+function isOk( results ) {
+	return results.every( ( { errorCount } ) => {
+		return errorCount === 0;
 	} );
 }
 
