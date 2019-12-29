@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { use } from 'chai';
 import { spy } from 'sinon';
 import sinonChai from 'sinon-chai';
+import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
 use( sinonChai );
@@ -46,13 +47,13 @@ describe( 'tester', () => {
 		} ).not.to.throw( TypeError, 'Provided path must be a non-empty string' );
 	} );
 
-	it( 'returns Promise, which resolves to object with ok, results and reporter fields', () => {
+	it( 'returns Promise, which resolves to correct results object', () => {
 		const promise = tester( emptyFixture );
 
 		expect( promise ).to.be.instanceOf( Promise );
 
-		return promise.then( ( returnedValue ) => {
-			expect( returnedValue ).to.have.all.keys( 'ok', 'results', 'reporter' );
+		return promise.then( ( results ) => {
+			validateResults( results );
 		} );
 	} );
 
