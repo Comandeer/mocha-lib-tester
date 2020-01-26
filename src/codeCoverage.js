@@ -15,8 +15,8 @@ function codeCoverage( projectPath, data ) {
 	return Promise.resolve( {
 		name: 'code coverage',
 		ok: true,
-		results: {},
-		reporter: codeCoverageReporter( coverageMap, projectPath )
+		results: coverageMap,
+		reporter: codeCoverageReporter( projectPath )
 	} );
 }
 

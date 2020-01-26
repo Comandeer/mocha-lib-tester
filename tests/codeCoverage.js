@@ -87,20 +87,20 @@ describe( 'codeCoverage', () => {
 
 		it( 'generate .coverage directory in project path', async () => {
 			const coveragePath = resolvePath( projectPath, '.coverage' );
-			const { reporter } = await codeCoverage( projectPath, fixture );
+			const { reporter, results } = await codeCoverage( projectPath, fixture );
 			const consoleStub = stub( process.stdout, 'write' );
 
-			reporter();
+			reporter( results );
 
 			consoleStub.restore();
 			expect( exists( coveragePath ) ).to.equal( true );
 		} );
 
 		it( 'displays info inside the console', async () => {
-			const { reporter } = await codeCoverage( projectPath, fixture );
+			const { reporter, results } = await codeCoverage( projectPath, fixture );
 			const consoleStub = stub( process.stdout, 'write' );
 
-			reporter();
+			reporter( results );
 
 			consoleStub.restore();
 			expect( consoleStub ).to.have.been.called;
