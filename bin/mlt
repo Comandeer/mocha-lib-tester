@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+const mlt = require( '../dist/mocha-lib-tester.js' );
+
+mlt();
