@@ -1,4 +1,8 @@
 #!/usr/bin/env node
 const mlt = require( '../dist/mocha-lib-tester.js' );
 
-mlt();
+mlt().then( ( exitCode ) => {
+	process.exit( exitCode );
+} ).catch( () => {
+	process.exit( 1 );
+} );
