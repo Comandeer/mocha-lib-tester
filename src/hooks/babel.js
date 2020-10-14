@@ -1,13 +1,8 @@
 import babelRegister from '@babel/register';
 import preset from '@babel/preset-env';
 
-function addBabelHook( projectPath ) {
+function addBabelHook() {
 	babelRegister( {
-		only: [
-			( path ) => {
-				return path.startsWith( projectPath );
-			}
-		],
 		babelrc: false,
 		presets: [
 			[
