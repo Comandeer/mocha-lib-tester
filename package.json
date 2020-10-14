@@ -15,10 +15,10 @@
     "dist"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.js bin/**/* tests/*.js",
+    "lint": "eslint \"src/**/*.js\" \"bin/**/*\" \"tests/*.js\"",
     "build": "rlb",
     "pretest": "npm run lint && npm run build",
-    "test": "nyc mocha \"tests/{,!(helpers|fixtures)/**}/*.js\" --timeout 15000 --require @babel/register",
+    "test": "nyc mocha \"tests/**/*.js\" --exclude \"tests/{helpers,fixtures/**}/*.js\" --timeout 15000 --require @babel/register",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "version": "npm test && npm run build && git add -f dist/",
     "postversion": "git rm -r --cached dist/ && git commit -m \"chore(dist): clean after release [ci skip]\" && git push origin && git push origin --tags"
