@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+/* globals expect */
 
 function validateResults( { name, ok, results, reporter } ) {
 	expect( name, 'results.name property is defined' ).to.be.a( 'string' );

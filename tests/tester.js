@@ -1,12 +1,10 @@
+/* globals expect, sinon */
+
 import { join as joinPath } from 'path';
-import { expect } from 'chai';
-import { use } from 'chai';
-import { spy } from 'sinon';
-import sinonChai from 'sinon-chai';
 import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
-use( sinonChai );
+const { spy } = sinon;
 
 const emptyFixture = joinPath( __dirname, 'fixtures', 'emptyPackage' );
 

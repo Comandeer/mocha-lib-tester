@@ -1,5 +1,6 @@
+/* globals expect */
+
 import { resolve as resolvePath } from 'path';
-import { expect } from 'chai';
 import executeCLI from './helpers/executeCLI.js';
 
 describe( 'mlt', () => {

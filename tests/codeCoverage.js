@@ -1,16 +1,13 @@
+/* globals expect, sinon */
+
 import { resolve as resolvePath } from 'path';
 import { existsSync as exists } from 'fs';
-import { expect } from 'chai';
-import { use } from 'chai';
-import { spy } from 'sinon';
-import { stub } from 'sinon';
-import sinonChai from 'sinon-chai';
 import { sync as rimraf } from 'rimraf';
 import validateResults from './helpers/validateResults.js';
 import fixture from './fixtures/coverageData.js';
 import codeCoverage from '../src/codeCoverage.js';
 
-use( sinonChai );
+const { spy, stub } = sinon;
 
 describe( 'codeCoverage', () => {
 	it( 'is a function', () => {
