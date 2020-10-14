@@ -8,6 +8,10 @@ const { spy } = sinon;
 
 const emptyFixture = joinPath( __dirname, 'fixtures', 'emptyPackage' );
 
+// When dogfooding, the original value of global.__mltCoverage__ is connected with
+// the MLT itself. This juggling probably breaks the coverage report…
+const mainCoverage = global.__mltCoverage__;
+
 describe( 'tester', () => {
 	beforeEach( () => {
 		// Mocha uses require cache to not load tests twice. To reuse fixtures we must empty the cache.
@@ -18,6 +22,10 @@ describe( 'tester', () => {
 		} );
 
 		delete global.__mltCoverage__;
+	} );
+
+	after( () => {
+		global.__mltCoverage__ = mainCoverage;
 	} );
 
 	it( 'is a function', () => {
