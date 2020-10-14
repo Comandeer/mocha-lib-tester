@@ -4,8 +4,4 @@ describe( 'index', () => {
 	it( 'passes', () => {
 		fn();
 	} );
-
-	it( 'fails', () => {
-		throw new Error( 'Failure' );
-	} );
 } );
