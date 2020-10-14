@@ -9,7 +9,7 @@ function addBabelHook() {
 				preset,
 				{
 					targets: {
-						node: '8.0.0'
+						node: '12.0.0'
 					}
 				}
 			]
