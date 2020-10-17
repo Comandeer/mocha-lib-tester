@@ -13,13 +13,8 @@ function codecov( projectPath ) {
 	const resultsTemplate = {
 		name: 'codecov',
 		ok: true,
-		results: {
-			skipped: true
-		},
 		reporter: codecovReporter
 	};
-
-	console.log( isCI, process.env.NO_CODECOV ); // eslint-disable-line
 
 	if ( !isCI || process.env.NO_CODECOV ) {
 		return Object.assign( {}, resultsTemplate, {
