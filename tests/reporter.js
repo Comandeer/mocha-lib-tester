@@ -1,10 +1,7 @@
-import { expect } from 'chai';
-import { use as chaiUse } from 'chai';
-import { spy } from 'sinon';
-import sinonChai from 'sinon-chai';
+/* globals expect, sinon */
 import reporter from '../src/reporter.js';
 
-chaiUse( sinonChai );
+const { spy } = sinon;
 
 describe( 'reporter', () => {
 	it( 'is a function', () => {

@@ -6,7 +6,11 @@ const mlt = resolvePath( __dirname, '..', '..', 'bin', 'mlt' );
 function executeCLI( projectPath ) {
 	return new Promise( ( resolve ) => {
 		const mltProcess = exec( `node ${ mlt }`, {
-			cwd: projectPath
+			cwd: projectPath,
+			env: Object.assign( {}, process.env, {
+				// We don't want any garbage in codecov reports.
+				NO_CODECOV: true
+			} )
 		}, ( error, stdout, stderr ) => {
 			resolve( {
 				exitCode: mltProcess.exitCode,

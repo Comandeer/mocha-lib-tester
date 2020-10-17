@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+/* globals expect */
+
 import mlt from '../src/index.js';
 
 describe( 'index', () => {

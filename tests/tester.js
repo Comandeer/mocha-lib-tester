@@ -1,14 +1,16 @@
+/* globals expect, sinon */
+
 import { join as joinPath } from 'path';
-import { expect } from 'chai';
-import { use } from 'chai';
-import { spy } from 'sinon';
-import sinonChai from 'sinon-chai';
 import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
-use( sinonChai );
+const { spy } = sinon;
 
 const emptyFixture = joinPath( __dirname, 'fixtures', 'emptyPackage' );
+
+// When dogfooding, the original value of global.__mltCoverage__ is connected with
+// the MLT itself. This juggling probably breaks the coverage report…
+const mainCoverage = global.__mltCoverage__;
 
 describe( 'tester', () => {
 	beforeEach( () => {
@@ -20,6 +22,10 @@ describe( 'tester', () => {
 		} );
 
 		delete global.__mltCoverage__;
+	} );
+
+	after( () => {
+		global.__mltCoverage__ = mainCoverage;
 	} );
 
 	it( 'is a function', () => {
