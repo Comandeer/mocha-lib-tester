@@ -11,6 +11,7 @@ describe( 'mlt', () => {
 		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
 		expect( stdout ).to.match( /---Tester---/, 'tester step is visible in the output' );
 		expect( stdout ).not.to.match( /---Code Coverage---/, 'code coverage step is not visible in the output' );
+		expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
 		expect( stderr ).to.match( /tester step/, 'stderr shows that the tester step failed' );
 
@@ -24,6 +25,7 @@ describe( 'mlt', () => {
 		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
 		expect( stdout ).not.to.match( /---Tester---/, 'tester step is not visible in the output' );
 		expect( stdout ).not.to.match( /---Code Coverage---/, 'code coverage step is not visible in the output' );
+		expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
 		expect( stderr ).to.match( /linter step/, 'stderr shows that the linter step failed' );
 		expect( exitCode ).to.equal( 1 );
@@ -36,6 +38,7 @@ describe( 'mlt', () => {
 		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
 		expect( stdout ).to.match( /---Tester---/, 'tester step is visible in the output' );
 		expect( stdout ).to.match( /---Code Coverage---/, 'code coverage step is visible in the output' );
+		expect( stdout ).to.match( /---CodeCov---/, 'codecov step is visible in the output' );
 
 		expect( stderr ).to.equal( '', 'stderr is empty' );
 
