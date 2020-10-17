@@ -18,7 +18,7 @@
     "lint": "eslint \"src/**/*.js\" \"bin/**/*\" \"tests/*.js\" \"tests/helpers/**/*.js\"",
     "build": "rlb",
     "pretest": "npm run lint && npm run build",
-    "test": "./bin/mlt",
+    "test": "node ./bin/mlt",
     "pretest-legacy": "npm run pretest",
     "test-legacy": "nyc mocha \"tests/**/*.js\" --exclude \"tests/{helpers,fixtures/**}/*.js\" --timeout 15000 --require @babel/register",
     "version": "npm test && npm run build && git add -f dist/",
