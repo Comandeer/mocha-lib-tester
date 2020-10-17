@@ -15,7 +15,8 @@ function tester( projectPath ) {
 	addIstanbulHook( projectPath );
 
 	const mocha = new Mocha( {
-		reporter: MochaReporter
+		reporter: MochaReporter,
+		timeout: 15000
 	} );
 	const tests = findTestFiles( projectPath );
 
