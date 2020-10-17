@@ -11,6 +11,12 @@ describe( 'codecov', () => {
 	} );
 
 	after( () => {
+		if ( typeof originalEnvVariable === 'undefined' ) {
+			delete process.env.NO_CODECOV;
+
+			return;
+		}
+
 		process.env.NO_CODECOV = originalEnvVariable;
 	} );
 
