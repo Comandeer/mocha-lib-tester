@@ -36,7 +36,7 @@ function codecov( projectPath ) {
 }
 
 function executeCLI( projectPath ) {
-	const codecovPath = resolvePath( __dirname, '..', 'node_modules', '.bin', 'codecov' );
+	const codecovPath = resolvePath( __dirname, '..', 'node_modules', 'codecov', 'bin', 'codecov' );
 
 	return new Promise( ( resolve ) => {
 		const codecovProcess = exec( `node ${ codecovPath }`, {
