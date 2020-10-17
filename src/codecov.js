@@ -12,12 +12,12 @@ function codecov( projectPath ) {
 
 	const resultsTemplate = {
 		name: 'codecov',
-		ok: true,
 		reporter: codecovReporter
 	};
 
 	if ( !isCI || process.env.NO_CODECOV ) {
 		return Object.assign( {}, resultsTemplate, {
+			ok: true,
 			results: {
 				skipped: true
 			}
