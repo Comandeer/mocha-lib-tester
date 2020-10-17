@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import linter from './linter.js';
 import tester from './tester.js';
 import codeCoverage from './codeCoverage.js';
+import codecov from './codecov.js';
 import reporter from './reporter.js';
 
 async function mlt() {
@@ -30,6 +31,11 @@ async function mlt() {
 		const codeCoverageResults = await codeCoverage( projectPath, global.__mltCoverage__ );
 
 		processResults( codeCoverageResults );
+
+		console.log( chalk.blue.bold( '---CodeCov---' ) );
+		const codecovResults = await codecov( projectPath );
+
+		processResults( codecovResults );
 	} catch ( { message } ) {
 		exitCode = 1;
 		console.error( chalk.red( `Error occured: ${ message }. Skipping subsequent steps` ) );
