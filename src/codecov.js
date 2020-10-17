@@ -19,6 +19,8 @@ function codecov( projectPath ) {
 		reporter: codecovReporter
 	};
 
+	console.log( isCI, process.env.NO_CODECOV ); // eslint-disable-line
+
 	if ( !isCI || process.env.NO_CODECOV ) {
 		return Object.assign( {}, resultsTemplate, {
 			results: {
