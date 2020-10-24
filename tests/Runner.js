@@ -201,10 +201,11 @@ describe( 'Runner', () => {
 			} );
 		} );
 
-		it( 'runs all steps', async () => {
+		it( 'runs all steps in preserved order', async () => {
 			const runner = new Runner();
 			const spy1 = spy();
 			const spy2 = spy();
+			const spy3 = spy();
 			const steps = [
 				{
 					name: 'Step #1',
@@ -214,6 +215,11 @@ describe( 'Runner', () => {
 				{
 					name: 'Step #2',
 					run: spy2
+				},
+
+				{
+					name: 'Step #3',
+					run: spy3
 				}
 			];
 
@@ -223,6 +229,9 @@ describe( 'Runner', () => {
 
 			expect( spy1 ).to.have.been.calledOnce;
 			expect( spy2 ).to.have.been.calledOnce;
+
+			expect( spy1 ).to.have.been.calledImmediatelyBefore( spy2 );
+			expect( spy2 ).to.have.been.calledImmediatelyBefore( spy3 );
 		} );
 	} );
 } );
