@@ -1,6 +1,7 @@
 /* globals expect, sinon */
 
 import { join as joinPath } from 'path';
+import assertParameter from './helpers/assertParameter.js';
 import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
@@ -33,24 +34,26 @@ describe( 'tester', () => {
 	} );
 
 	it( 'expects path as a first parameter', () => {
-		const invalid = [
-			undefined,
-			null,
-			1,
-			{},
-			[],
-			''
-		];
-
-		invalid.forEach( ( value ) => {
-			expect( () => {
-				tester( value );
-			} ).to.throw( TypeError, 'Provided path must be a non-empty string' );
+		assertParameter( {
+			invalids: [
+				undefined,
+				null,
+				1,
+				{},
+				[],
+				''
+			],
+			valids: [
+				'.'
+			],
+			error: {
+				type: TypeError,
+				message: 'Provided path must be a non-empty string'
+			},
+			code( param ) {
+				tester( param );
+			}
 		} );
-
-		expect( () => {
-			tester( '.' );
-		} ).not.to.throw( TypeError, 'Provided path must be a non-empty string' );
 	} );
 
 	it( 'returns Promise, which resolves to correct results object', () => {

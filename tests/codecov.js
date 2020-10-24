@@ -1,5 +1,6 @@
 /* globals expect */
 
+import assertParameter from './helpers/assertParameter.js';
 import codecov from '../src/codecov.js';
 
 const originalEnvVariable = process.env.NO_CODECOV;
@@ -25,23 +26,25 @@ describe( 'codecov', () => {
 	} );
 
 	it( 'expects non-empty string as the first parameter', () => {
-		const invalid = [
-			undefined,
-			null,
-			1,
-			[],
-			''
-		];
-
-		invalid.forEach( ( value ) => {
-			expect( () => {
-				codecov( value );
-			} ).to.throw( TypeError, 'Provided path must be a non-empty string' );
+		assertParameter( {
+			invalids: [
+				undefined,
+				null,
+				1,
+				[],
+				''
+			],
+			valids: [
+				'.'
+			],
+			error: {
+				type: TypeError,
+				message: 'Provided path must be a non-empty string'
+			},
+			code( param ) {
+				codecov( param );
+			}
 		} );
-
-		expect( () => {
-			codecov( '.' );
-		} ).not.to.throw( TypeError, 'Provided path must be a non-empty string' );
 	} );
 
 	it( 'can be skipped with env variable', async () => {

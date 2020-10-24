@@ -1,6 +1,7 @@
 /* globals expect, sinon */
 
 import { join as joinPath } from 'path';
+import assertParameter from './helpers/assertParameter.js';
 import validateResults from './helpers/validateResults.js';
 import linter from '../src/linter.js';
 
@@ -15,24 +16,27 @@ describe( 'linter', () => {
 	} );
 
 	it( 'expects path as a first parameter', () => {
-		const invalid = [
-			undefined,
-			null,
-			1,
-			{},
-			[],
-			''
-		];
+		assertParameter( {
+			invalids: [
+				undefined,
+				null,
+				1,
+				{},
+				[],
+				''
+			],
+			valids: [
+				'.'
+			],
+			error: {
+				type: TypeError,
+				message: 'Provided path must be a non-empty string'
+			},
 
-		invalid.forEach( ( value ) => {
-			expect( () => {
-				linter( value );
-			} ).to.throw( TypeError, 'Provided path must be a non-empty string' );
+			code( param ) {
+				linter( param );
+			}
 		} );
-
-		expect( () => {
-			linter( '.' );
-		} ).not.to.throw( TypeError, 'Provided path must be a non-empty string' );
 	} );
 
 	it( 'does not throw due to nonexistent files', () => {
