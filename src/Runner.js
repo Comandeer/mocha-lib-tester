@@ -31,14 +31,34 @@ class Runner {
 		} );
 	}
 
-	async run() {
-		const promises = [ ...this.steps ].map( ( { run } ) => {
-			return run();
-		} );
+	run() {
+		const steps = [ ...this.steps ];
 
-		await Promise.all( promises );
+		return this._processSteps( steps );
+	}
 
-		return true;
+	async _processSteps( steps ) {
+		const step = steps.shift();
+
+		if ( !step ) {
+			return true;
+		}
+
+		const result = await step.run();
+
+		if ( !isValidResult( result ) ) {
+			throw new TypeError( `Step ${ step.name } didn't return correct results` );
+		}
+
+		if ( !result.results.ok ) {
+			return false;
+		}
+
+		if ( steps.length === 0 ) {
+			return true;
+		}
+
+		return this._processSteps( steps );
 	}
 }
 
@@ -51,6 +71,16 @@ function isValidStep( value ) {
 	const isRunValid = typeof value.run === 'function';
 
 	return isNameValid && isRunValid;
+}
+
+function isValidResult( stepResults ) {
+	if ( !stepResults || typeof stepResults !== 'object' ) {
+		return false;
+	}
+
+	const isValidResults = stepResults.results && typeof stepResults.results === 'object';
+	const isValidReporter = typeof stepResults.reporter === 'function';
+	return isValidResults && isValidReporter;
 }
 
 export default Runner;
