@@ -1,7 +1,11 @@
+import EventEmitter from 'events';
+
 const stepsSymbol = Symbol( 'steps' );
 
-class Runner {
+class Runner extends EventEmitter {
 	constructor() {
+		super();
+
 		this[ stepsSymbol ] = Object.freeze( new Set() );
 	}
 
@@ -32,30 +36,47 @@ class Runner {
 	}
 
 	run() {
+		this.emit( 'start' );
+
 		const steps = [ ...this.steps ];
 
 		return this._processSteps( steps );
 	}
 
 	async _processSteps( steps ) {
+		const finish = ( result ) => {
+			this.emit( 'end', result );
+
+			return result;
+		};
 		const step = steps.shift();
 
 		if ( !step ) {
-			return true;
+			return finish( true );
 		}
 
-		const result = await step.run();
+		this.emit( 'step:start', step );
 
-		if ( !isValidResult( result ) ) {
-			throw new TypeError( `Step ${ step.name } didn't return correct results` );
-		}
+		try {
+			const result = await step.run();
 
-		if ( !result.results.ok ) {
-			return false;
-		}
+			if ( !isValidResult( result ) ) {
+				throw new TypeError( `Step ${ step.name } didn't return correct results` );
+			}
 
-		if ( steps.length === 0 ) {
-			return true;
+			this.emit( 'step:end', step, result );
+
+			if ( !result.results.ok ) {
+				return finish( false );
+			}
+
+			if ( steps.length === 0 ) {
+				return finish( true );
+			}
+		} catch ( error ) {
+			this.emit( 'error', error );
+
+			throw error;
 		}
 
 		return this._processSteps( steps );
