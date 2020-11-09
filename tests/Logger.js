@@ -10,7 +10,7 @@ import Logger from '../src/Logger.js';
 
 const { stub } = sinon;
 
-describe.only( 'Logger', () => {
+describe( 'Logger', () => {
 	beforeEach( () => {
 		stub( console, 'log' );
 		stub( console, 'error' );
@@ -56,10 +56,9 @@ describe.only( 'Logger', () => {
 	} );
 
 	describe( '#log()', () => {
-		it( 'requires LoggerType as the first parameter', () => {
+		it( 'accepts LoggerType as the type option', () => {
 			assertParameter( {
 				invalids: [
-					undefined,
 					null,
 					1,
 					true,
@@ -73,12 +72,14 @@ describe.only( 'Logger', () => {
 				],
 				error: {
 					type: TypeError,
-					message: 'The type of log must be a LoggerType instance'
+					message: 'Type option must be a LoggerType instance'
 				},
 				code( value ) {
 					const logger = createLogger();
 
-					logger.log( value );
+					logger.log( '', {
+						type: value
+					} );
 				}
 			} );
 		} );
@@ -108,18 +109,30 @@ describe.only( 'Logger', () => {
 				code( value ) {
 					const logger = createLogger();
 
-					logger.log( LoggerType.LOG, '', {
+					logger.log( '', {
 						color: value
 					} );
 				}
 			} );
 		} );
 
+		it( 'uses console.log by default', () => {
+			const logger = createLogger();
+			const value = {};
+
+			logger.log( value );
+
+			expect( console.log ).to.have.been.calledOnceWithExactly( value );
+			expect( console.error ).not.to.have.been.called;
+		} );
+
 		it( 'uses console.log when the log type is set to LoggerType.LOG', () => {
 			const logger = createLogger();
 			const value = {};
 
-			logger.log( LoggerType.LOG, value );
+			logger.log( value, {
+				type: LoggerType.LOG
+			} );
 
 			expect( console.log ).to.have.been.calledOnceWithExactly( value );
 			expect( console.error ).not.to.have.been.called;
@@ -129,7 +142,9 @@ describe.only( 'Logger', () => {
 			const logger = createLogger();
 			const value = {};
 
-			logger.log( LoggerType.ERROR, value );
+			logger.log( value, {
+				type: LoggerType.ERROR
+			} );
 
 			expect( console.error ).to.have.been.calledOnceWithExactly( value );
 			expect( console.log ).not.to.have.been.called;
@@ -140,7 +155,7 @@ describe.only( 'Logger', () => {
 				const logger = createLogger();
 				const value = 'Hublabubla';
 
-				logger.log( LoggerType.LOG, value, {
+				logger.log( value, {
 					color: LoggerColor.AUTO
 				} );
 
@@ -152,7 +167,7 @@ describe.only( 'Logger', () => {
 				const value = 'Hublabubla';
 				const expected = chalk.blue( value );
 
-				logger.log( LoggerType.LOG, value, {
+				logger.log( value, {
 					color: LoggerColor.BLUE
 				} );
 
@@ -164,7 +179,7 @@ describe.only( 'Logger', () => {
 				const value = 'Hublabubla';
 				const expected = chalk.yellow( value );
 
-				logger.log( LoggerType.LOG, value, {
+				logger.log( value, {
 					color: LoggerColor.YELLOW
 				} );
 
@@ -176,7 +191,7 @@ describe.only( 'Logger', () => {
 				const value = 'Hublabubla';
 				const expected = chalk.green( value );
 
-				logger.log( LoggerType.LOG, value, {
+				logger.log( value, {
 					color: LoggerColor.GREEN
 				} );
 
@@ -188,7 +203,7 @@ describe.only( 'Logger', () => {
 				const value = 'Hublabubla';
 				const expected = chalk.red( value );
 
-				logger.log( LoggerType.LOG, value, {
+				logger.log( value, {
 					color: LoggerColor.RED
 				} );
 

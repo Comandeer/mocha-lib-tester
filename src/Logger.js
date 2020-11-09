@@ -36,11 +36,12 @@ class Logger {
 		this.runner = runner;
 	}
 
-	log( type, value, {
+	log( value, {
+		type = LoggerType.LOG,
 		color = LoggerColor.AUTO
 	} = {} ) {
 		if ( !( type instanceof LoggerType ) ) {
-			throw new TypeError( 'The type of log must be a LoggerType instance' );
+			throw new TypeError( 'Type option must be a LoggerType instance' );
 		}
 
 		if ( !( color instanceof LoggerColor ) ) {
