@@ -4,11 +4,12 @@
 import EventEmitter from 'events';
 import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
+import { version } from '../package.json';
 import LoggerType from '../src/LoggerType.js';
 import LoggerColor from '../src/LoggerColor.js';
 import Logger from '../src/Logger.js';
 
-const { stub } = sinon;
+const { spy, stub } = sinon;
 
 describe( 'Logger', () => {
 	beforeEach( () => {
@@ -75,7 +76,7 @@ describe( 'Logger', () => {
 					message: 'Type option must be a LoggerType instance'
 				},
 				code( value ) {
-					const logger = createLogger();
+					const [ logger ] = createLogger();
 
 					logger.log( '', {
 						type: value
@@ -107,7 +108,7 @@ describe( 'Logger', () => {
 					message: 'Color option must a LoggerColor instance'
 				},
 				code( value ) {
-					const logger = createLogger();
+					const [ logger ] = createLogger();
 
 					logger.log( '', {
 						color: value
@@ -117,7 +118,7 @@ describe( 'Logger', () => {
 		} );
 
 		it( 'uses console.log by default', () => {
-			const logger = createLogger();
+			const [ logger ] = createLogger();
 			const value = {};
 
 			logger.log( value );
@@ -127,7 +128,7 @@ describe( 'Logger', () => {
 		} );
 
 		it( 'uses console.log when the log type is set to LoggerType.LOG', () => {
-			const logger = createLogger();
+			const [ logger ] = createLogger();
 			const value = {};
 
 			logger.log( value, {
@@ -139,7 +140,7 @@ describe( 'Logger', () => {
 		} );
 
 		it( 'uses console.error when the log type is set to LoggerType.ERROR', () => {
-			const logger = createLogger();
+			const [ logger ] = createLogger();
 			const value = {};
 
 			logger.log( value, {
@@ -152,7 +153,7 @@ describe( 'Logger', () => {
 
 		describe( 'colors', () => {
 			it( 'does not change passed value when color is set to LoggerColor.AUTO', () => {
-				const logger = createLogger();
+				const [ logger ] = createLogger();
 				const value = 'Hublabubla';
 
 				logger.log( value, {
@@ -163,7 +164,7 @@ describe( 'Logger', () => {
 			} );
 
 			it( 'change color to blue when color is set to LoggerColor.BLUE', () => {
-				const logger = createLogger();
+				const [ logger ] = createLogger();
 				const value = 'Hublabubla';
 				const expected = chalk.blue( value );
 
@@ -175,7 +176,7 @@ describe( 'Logger', () => {
 			} );
 
 			it( 'change color to yellow when color is set to LoggerColor.YELLOW', () => {
-				const logger = createLogger();
+				const [ logger ] = createLogger();
 				const value = 'Hublabubla';
 				const expected = chalk.yellow( value );
 
@@ -187,7 +188,7 @@ describe( 'Logger', () => {
 			} );
 
 			it( 'change color to green when color is set to LoggerColor.GREEN', () => {
-				const logger = createLogger();
+				const [ logger ] = createLogger();
 				const value = 'Hublabubla';
 				const expected = chalk.green( value );
 
@@ -199,7 +200,7 @@ describe( 'Logger', () => {
 			} );
 
 			it( 'change color to red when color is set to LoggerColor.RED', () => {
-				const logger = createLogger();
+				const [ logger ] = createLogger();
 				const value = 'Hublabubla';
 				const expected = chalk.red( value );
 
@@ -213,6 +214,121 @@ describe( 'Logger', () => {
 	} );
 
 	describe( 'listeners', () => {
+		describe( 'start', () => {
+			it( 'displays info about MLT', () => {
+				const [ , eventEmitter ] = createLogger();
+				const expected1 = `MLT v${ version }`;
+				const expected2 = chalk.yellow( 'Executing tests…' );
+
+				eventEmitter.emit( 'start' );
+
+				expect( console.log ).to.have.been.calledWithExactly( expected1 );
+				expect( console.log ).to.have.been.calledWithExactly( expected2 );
+			} );
+		} );
+
+		describe( 'step:start', () => {
+			it( 'displays info about the step', () => {
+				const [ , eventEmitter ] = createLogger();
+				const step = {
+					name: 'hublabubla'
+				};
+				const expected = chalk.blue( `---${ step.name }---` );
+
+				eventEmitter.emit( 'step:start', step );
+
+				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+			} );
+		} );
+
+		describe( 'step:end', () => {
+			it( 'display info about correct step execution', () => {
+				const [ , eventEmitter ] = createLogger();
+				const step = {
+					name: 'hublabubla'
+				};
+				const results = {
+					results: {
+						ok: true
+					},
+					reporter() {}
+				};
+				const expected = chalk.green( `Step ${ chalk.bold( step.name ) } finished successfully.` );
+
+				eventEmitter.emit( 'step:end', step, results );
+
+				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+			} );
+
+			it( 'display info about incorrect step execution', () => {
+				const [ , eventEmitter ] = createLogger();
+				const step = {
+					name: 'hublabubla'
+				};
+				const results = {
+					results: {
+						ok: false
+					},
+					reporter() {}
+				};
+				const expected = chalk.red( `Step ${ chalk.bold( step.name ) } failed with errors. Skipping subsequent steps.` );
+
+				eventEmitter.emit( 'step:end', step, results );
+
+				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+			} );
+
+			it( 'invokes reporter', () => {
+				const [ , eventEmitter ] = createLogger();
+				const step = {
+					name: 'hublabubla'
+				};
+				const reporter = spy();
+				const results = {
+					results: {
+						ok: true
+					},
+					reporter
+				};
+
+				eventEmitter.emit( 'step:end', step, results );
+
+				expect( reporter ).to.have.been.calledOnce;
+			} );
+		} );
+
+		describe( 'end', () => {
+			it( 'displays info about success', () => {
+				const [ , eventEmitter ] = createLogger();
+				const expected = chalk.green( 'All steps finished correctly 🎉' );
+
+				eventEmitter.emit( 'end', true );
+
+				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+			} );
+
+			it( 'displays info about failure', () => {
+				const [ , eventEmitter ] = createLogger();
+				const expected = chalk.red( 'There were some errors alonside the way 😿' );
+
+				eventEmitter.emit( 'end', false );
+
+				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+			} );
+		} );
+
+		describe( 'error', () => {
+			it( 'displays info about error', () => {
+				const [ , eventEmitter ] = createLogger();
+				const error = new Error();
+				const expected = chalk.red( '🚨 Error occured:' );
+
+				eventEmitter.emit( 'error', error );
+
+				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+				expect( console.error ).to.have.been.calledOnceWithExactly( error );
+			} );
+		} );
 	} );
 } );
 
@@ -220,5 +336,5 @@ function createLogger() {
 	const eventEmitter = new EventEmitter();
 	const logger = new Logger( eventEmitter );
 
-	return logger;
+	return [ logger, eventEmitter ];
 }
