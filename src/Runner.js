@@ -75,6 +75,7 @@ class Runner extends EventEmitter {
 			}
 		} catch ( error ) {
 			this.emit( 'error', error );
+			finish( false );
 
 			throw error;
 		}
