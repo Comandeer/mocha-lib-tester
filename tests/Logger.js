@@ -222,8 +222,9 @@ describe( 'Logger', () => {
 
 				eventEmitter.emit( 'start' );
 
-				expect( console.log ).to.have.been.calledWithExactly( expected1 );
-				expect( console.log ).to.have.been.calledWithExactly( expected2 );
+				expect( console.log ).to.have.been.calledTwice;
+				expect( console.log.getCall( 0 ) ).to.have.been.calledWithExactly( expected1 );
+				expect( console.log.getCall( 1 ) ).to.have.been.calledWithExactly( expected2 );
 			} );
 		} );
 

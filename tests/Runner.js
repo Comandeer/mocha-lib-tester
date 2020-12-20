@@ -1,8 +1,12 @@
+/* eslint-disable no-console */
 /* globals expect, sinon */
 
 import EventEmitter from 'events';
+import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
 import Runner from '../src/Runner.js';
+import Logger from '../src/Logger.js';
+import { version } from '../package.json';
 
 const { spy, stub } = sinon;
 
@@ -561,6 +565,169 @@ describe( 'Runner', () => {
 				expect( error ).to.be.an.instanceOf( TypeError );
 				expect( error.message ).to.equal( 'Step Step didn\'t return correct results' );
 			} );
+		} );
+	} );
+
+	describe( 'integration with logger', () => {
+		beforeEach( () => {
+			stub( console, 'log' );
+			stub( console, 'error' );
+		} );
+
+		afterEach( () => {
+			console.log.restore();
+			console.error.restore();
+		} );
+
+		it( 'smooth run', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				results: {
+					ok: true
+				}
+			};
+			const steps = [
+				{
+					name: 'step1',
+					run() {
+						return {
+							reporter() {
+								console.log( 'step1' );
+							},
+							...resultsTemplate
+						};
+					}
+				},
+
+				{
+					name: 'step2',
+					run() {
+						return {
+							reporter() {
+								console.log( 'step2' );
+							},
+							...resultsTemplate
+						};
+					}
+				}
+			];
+			const expected = [
+				[ `MLT v${ version }` ],
+				[ chalk.yellow( 'Executing tests…' ) ],
+				[ chalk.blue( '---step1---' ) ],
+				[ 'step1' ],
+				[ chalk.green( `Step ${ chalk.bold( 'step1' ) } finished successfully.` ) ],
+				[ chalk.blue( '---step2---' ) ],
+				[ 'step2' ],
+				[ chalk.green( `Step ${ chalk.bold( 'step2' ) } finished successfully.` ) ],
+				[ chalk.green( 'All steps finished correctly 🎉' ) ]
+			];
+
+			new Logger( runner );
+			runner.addSteps( steps );
+			await runner.run();
+
+			expect( console.log ).to.have.callCount( expected.length );
+			expect( console.log.args ).to.deep.equal( expected );
+		} );
+
+		it( 'incorrect results run', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				results: {
+					ok: false
+				}
+			};
+			const steps = [
+				{
+					name: 'step1',
+					run() {
+						return {
+							reporter() {
+								console.log( 'step1' );
+							},
+							...resultsTemplate
+						};
+					}
+				},
+
+				{
+					name: 'step2',
+					run() {
+						return {
+							reporter() {
+								console.log( 'step2' );
+							},
+							...resultsTemplate
+						};
+					}
+				}
+			];
+			const expected = [
+				[ `MLT v${ version }` ],
+				[ chalk.yellow( 'Executing tests…' ) ],
+				[ chalk.blue( '---step1---' ) ],
+				[ 'step1' ],
+				[ chalk.red( `Step ${ chalk.bold( 'step1' ) } failed with errors. Skipping subsequent steps.` ) ],
+				[ chalk.red( 'There were some errors alonside the way 😿' ) ]
+			];
+
+			new Logger( runner );
+			runner.addSteps( steps );
+			await runner.run();
+
+			expect( console.log ).to.have.callCount( expected.length );
+			expect( console.log.args ).to.deep.equal( expected );
+		} );
+
+		it( 'errored run', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				results: {
+					ok: true
+				}
+			};
+			const error = new Error();
+			const steps = [
+				{
+					name: 'step1',
+					run() {
+						throw error;
+					}
+				},
+
+				{
+					name: 'step2',
+					run() {
+						return {
+							reporter() {
+								console.log( 'step2' );
+							},
+							...resultsTemplate
+						};
+					}
+				}
+			];
+			const logExpected = [
+				[ `MLT v${ version }` ],
+				[ chalk.yellow( 'Executing tests…' ) ],
+				[ chalk.blue( '---step1---' ) ],
+				[ chalk.red( '🚨 Error occured:' ) ],
+				[ chalk.red( 'There were some errors alonside the way 😿' ) ]
+			];
+
+			new Logger( runner );
+			runner.addSteps( steps );
+
+			try {
+				await runner.run();
+			} catch {
+				// Well, errored run is errored run after all, isn't it?
+			}
+
+			expect( console.log ).to.have.callCount( logExpected.length );
+			expect( console.log.args ).to.deep.equal( logExpected );
+			expect( console.error ).to.have.been.calledOnceWithExactly( error );
 		} );
 	} );
 } );
