@@ -294,7 +294,7 @@ describe( 'Logger', () => {
 
 				eventEmitter.emit( 'step:end', step, results );
 
-				expect( reporter ).to.have.been.calledOnce;
+				expect( reporter ).to.have.been.calledOnceWith( results );
 			} );
 		} );
 
