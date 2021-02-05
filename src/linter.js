@@ -24,7 +24,7 @@ async function linter( projectPath ) {
 		name: 'linter',
 		ok: isOk( results ),
 		results,
-		reporter: linterReporter( eslint )
+		reporter: linterReporter
 	};
 }
 

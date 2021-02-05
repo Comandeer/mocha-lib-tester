@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
 /* istanbul ignore file */
 
-function linterReporter( eslint ) {
-	return async function( results ) {
-		const formatter = await eslint.loadFormatter();
+import formatter from 'eslint/lib/cli-engine/formatters/stylish.js';
 
-		console.log( formatter.format( results ) );
-	};
+function linterReporter( results ) {
+	console.log( formatter( results ) );
 }
 
 export default linterReporter;
