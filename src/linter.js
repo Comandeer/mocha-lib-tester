@@ -1,5 +1,6 @@
 import { CLIEngine } from 'eslint';
 import { sync as globSync } from 'glob';
+import linterReporter from './reporters/linter';
 
 function linter( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
@@ -21,7 +22,7 @@ function linter( projectPath ) {
 		name: 'linter',
 		ok: isOk( results ),
 		results,
-		reporter: cli.getFormatter()
+		reporter: linterReporter
 	} );
 }
 
