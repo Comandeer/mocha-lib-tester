@@ -274,7 +274,7 @@ describe( 'Logger', () => {
 
 				eventEmitter.emit( 'step:end', step, results );
 
-				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
+				expect( console.error ).to.have.been.calledOnceWithExactly( expected );
 			} );
 
 			it( 'invokes reporter', () => {
@@ -291,7 +291,7 @@ describe( 'Logger', () => {
 
 				eventEmitter.emit( 'step:end', step, results );
 
-				expect( reporter ).to.have.been.calledOnceWith( results );
+				expect( reporter ).to.have.been.calledOnceWith( results.results );
 			} );
 		} );
 
@@ -323,8 +323,8 @@ describe( 'Logger', () => {
 
 				eventEmitter.emit( 'error', error );
 
-				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
-				expect( console.error ).to.have.been.calledOnceWithExactly( error );
+				expect( console.error ).to.have.been.calledWithExactly( expected );
+				expect( console.error ).to.have.been.calledWithExactly( error );
 			} );
 		} );
 	} );

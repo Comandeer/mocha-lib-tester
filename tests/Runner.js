@@ -651,21 +651,25 @@ describe( 'Runner', () => {
 					}
 				}
 			];
-			const expected = [
+			const logExpected = [
 				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ 'step1' ],
-				[ chalk.red( `Step ${ chalk.bold( 'step1' ) } failed with errors. Skipping subsequent steps.` ) ],
 				[ chalk.red( 'There were some errors alonside the way 😿' ) ]
+			];
+			const errorExpected = [
+				[ chalk.red( `Step ${ chalk.bold( 'step1' ) } failed with errors. Skipping subsequent steps.` ) ]
 			];
 
 			new Logger( runner );
 			runner.addSteps( steps );
 			await runner.run();
 
-			expect( console.log ).to.have.callCount( expected.length );
-			expect( console.log.args ).to.deep.equal( expected );
+			expect( console.log ).to.have.callCount( logExpected.length );
+			expect( console.log.args ).to.deep.equal( logExpected );
+			expect( console.error ).to.have.callCount( errorExpected.length );
+			expect( console.error.args ).to.deep.equal( errorExpected );
 		} );
 
 		it( 'errored run', async () => {
@@ -699,8 +703,11 @@ describe( 'Runner', () => {
 				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
-				[ chalk.red( '🚨 Error occured:' ) ],
 				[ chalk.red( 'There were some errors alonside the way 😿' ) ]
+			];
+			const errorExpected = [
+				[ chalk.red( '🚨 Error occured:' ) ],
+				[ error ]
 			];
 
 			new Logger( runner );
@@ -714,7 +721,8 @@ describe( 'Runner', () => {
 
 			expect( console.log ).to.have.callCount( logExpected.length );
 			expect( console.log.args ).to.deep.equal( logExpected );
-			expect( console.error ).to.have.been.calledOnceWithExactly( error );
+			expect( console.error ).to.have.been.callCount( errorExpected.length );
+			expect( console.error.args ).to.deep.equal( errorExpected );
 		} );
 	} );
 } );

@@ -71,7 +71,8 @@ class Logger {
 
 		if ( !ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {
-				color: LoggerColor.RED
+				color: LoggerColor.RED,
+				type: LoggerType.ERROR
 			} );
 		}
 
@@ -87,7 +88,10 @@ class Logger {
 	}
 
 	onError( error ) {
-		this.log( '🚨 Error occured:', { color: LoggerColor.RED } );
+		this.log( '🚨 Error occured:', {
+			color: LoggerColor.RED,
+			type: LoggerType.ERROR
+		} );
 		this.log( error, { type: LoggerType.ERROR } );
 	}
 }
