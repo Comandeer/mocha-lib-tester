@@ -66,7 +66,7 @@ class Runner extends EventEmitter {
 
 			this.emit( 'step:end', step, result );
 
-			if ( !result.results.ok ) {
+			if ( !result.ok ) {
 				return finish( false );
 			}
 

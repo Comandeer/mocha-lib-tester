@@ -215,9 +215,8 @@ describe( 'Runner', () => {
 		it( 'runs all steps in preserved order', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
-				results: {
-					ok: true
-				},
+				ok: true,
+				results: {},
 				reporter() {}
 			};
 			const stub1 = stub().returns( { ...resultsTemplate } );
@@ -306,9 +305,8 @@ describe( 'Runner', () => {
 					name: 'Step #1',
 					run() {
 						return {
-							results: {
-								ok: false
-							},
+							ok: false,
+							results: {},
 							reporter() {}
 						};
 					}
@@ -318,9 +316,8 @@ describe( 'Runner', () => {
 					name: 'Step #2',
 					run() {
 						return {
-							results: {
-								ok: true
-							},
+							ok: true,
+							results: {},
 							reporter() {}
 						};
 					}
@@ -331,9 +328,8 @@ describe( 'Runner', () => {
 					name: 'Step #1',
 					run() {
 						return {
-							results: {
-								ok: true
-							},
+							ok: true,
+							results: {},
 							reporter() {}
 						};
 					}
@@ -343,9 +339,8 @@ describe( 'Runner', () => {
 					name: 'Step #2',
 					run() {
 						return {
-							results: {
-								ok: true
-							},
+							ok: true,
+							results: {},
 							reporter() {}
 						};
 					}
@@ -365,21 +360,18 @@ describe( 'Runner', () => {
 		it( 'returns false on first step with ok === false', async () => {
 			const runner = new Runner();
 			const stub1 = stub().returns( {
-				results: {
-					ok: true
-				},
+				ok: true,
+				results: {},
 				reporter() {}
 			} );
 			const stub2 = stub().returns( {
-				results: {
-					ok: false
-				},
+				ok: false,
+				results: {},
 				reporter() {}
 			} );
 			const stub3 = stub().returns( {
-				results: {
-					ok: false
-				},
+				ok: false,
+				results: {},
 				reporter() {}
 			} );
 			const steps = [
@@ -418,9 +410,8 @@ describe( 'Runner', () => {
 				name: 'Step #1',
 				run() {
 					return {
-						results: {
-							ok: true
-						},
+						ok: true,
+						results: {},
 						reporter() {}
 					};
 				}
@@ -453,9 +444,8 @@ describe( 'Runner', () => {
 			it( 'provides info about the step', async () => {
 				const runner = new Runner();
 				const resultsTemplate = {
-					results: {
-						ok: true
-					},
+					ok: true,
+					results: {},
 					reporter() {}
 				};
 				const results1 = { ...resultsTemplate };
@@ -582,9 +572,8 @@ describe( 'Runner', () => {
 		it( 'smooth run', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
-				results: {
-					ok: true
-				}
+				ok: true,
+				results: {}
 			};
 			const steps = [
 				{
@@ -634,9 +623,8 @@ describe( 'Runner', () => {
 		it( 'incorrect results run', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
-				results: {
-					ok: false
-				}
+				ok: false,
+				results: {}
 			};
 			const steps = [
 				{
@@ -683,9 +671,8 @@ describe( 'Runner', () => {
 		it( 'errored run', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
-				results: {
-					ok: true
-				}
+				ok: true,
+				results: {}
 			};
 			const error = new Error();
 			const steps = [
