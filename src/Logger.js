@@ -66,10 +66,10 @@ class Logger {
 		this.log( `---${ name }---`, { color: LoggerColor.BLUE } );
 	}
 
-	onStepEnd( { name }, { results, reporter } ) {
+	onStepEnd( { name }, { ok, results, reporter } ) {
 		reporter( results );
 
-		if ( !results.ok ) {
+		if ( !ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {
 				color: LoggerColor.RED
 			} );

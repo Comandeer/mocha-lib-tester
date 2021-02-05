@@ -249,9 +249,8 @@ describe( 'Logger', () => {
 					name: 'hublabubla'
 				};
 				const results = {
-					results: {
-						ok: true
-					},
+					ok: true,
+					results: {},
 					reporter() {}
 				};
 				const expected = chalk.green( `Step ${ chalk.bold( step.name ) } finished successfully.` );
@@ -267,9 +266,8 @@ describe( 'Logger', () => {
 					name: 'hublabubla'
 				};
 				const results = {
-					results: {
-						ok: false
-					},
+					ok: false,
+					results: {},
 					reporter() {}
 				};
 				const expected = chalk.red( `Step ${ chalk.bold( step.name ) } failed with errors. Skipping subsequent steps.` );
@@ -286,9 +284,8 @@ describe( 'Logger', () => {
 				};
 				const reporter = spy();
 				const results = {
-					results: {
-						ok: true
-					},
+					ok: true,
+					results: {},
 					reporter
 				};
 
