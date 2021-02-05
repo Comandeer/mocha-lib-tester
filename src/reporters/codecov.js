@@ -1,15 +1,18 @@
 /* eslint-disable no-console */
 /* istanbul ignore file */
 
-import chalk from 'chalk';
+import LoggerColor from  '../LoggerColor.js';
 
-function codecovReporter( results ) {
+function codecovReporter( results, logger ) {
 	if ( results.skipped ) {
-		console.log( chalk.yellow( 'CodeCov upload skipped' ) );
+		logger.log( 'CodeCov upload skipped', {
+			color: LoggerColor.YELLOW
+		} );
+
 		return;
 	}
 
-	console.log( results.stdout );
+	logger.log( results.stdout );
 }
 
 export default codecovReporter;
