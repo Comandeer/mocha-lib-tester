@@ -80,6 +80,7 @@
     "chai-as-promised": "^7.1.1",
     "chalk": "^4.1.0",
     "codecov": "^3.8.0",
+    "enumify": "^2.0.0",
     "eslint": "^7.11.0",
     "glob": "^7.1.6",
     "is-ci": "^2.0.0",

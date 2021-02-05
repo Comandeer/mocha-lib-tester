@@ -1,4 +1,6 @@
 /* globals expect, sinon */
+
+import assertParameter from './helpers/assertParameter.js';
 import reporter from '../src/reporter.js';
 
 const { spy } = sinon;
@@ -9,32 +11,40 @@ describe( 'reporter', () => {
 	} );
 
 	it( 'requires array of reporters', () => {
-		expect( () => {
-			reporter( [
-				{
-					results: {},
-					reporter() {}
-				},
+		assertParameter( {
+			invalids: [
+				[
+					{
+						results: {},
+						reporter() {}
+					},
 
-				{
-					results: {}
-				}
-			] );
-		} ).to.throw( TypeError, 'Passed results must be of correct type' );
+					{
+						results: {}
+					}
+				]
+			],
+			valids: [
+				[
+					{
+						results: {},
+						reporter() {}
+					},
 
-		expect( () => {
-			reporter( [
-				{
-					results: {},
-					reporter() {}
-				},
-
-				{
-					results: {},
-					reporter() {}
-				}
-			] );
-		} ).not.to.throw( TypeError, 'Passed results must be of correct type' );
+					{
+						results: {},
+						reporter() {}
+					}
+				]
+			],
+			error: {
+				type: TypeError,
+				message: 'Passed results must be of correct type'
+			},
+			code( param ) {
+				reporter( param );
+			}
+		} );
 	} );
 
 	it( 'correctly renders the report', () => {
