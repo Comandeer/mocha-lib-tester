@@ -43,7 +43,7 @@ async function mlt() {
 	runner.addSteps( steps );
 
 	const result = await runner.run();
-	const exitCode = Number( result );
+	const exitCode = result ? 0 : 1;
 
 	return exitCode;
 }
