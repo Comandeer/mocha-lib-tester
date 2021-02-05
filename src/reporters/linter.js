@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
 /* istanbul ignore file */
 
-import { CLIEngine } from 'eslint';
+import formatter from 'eslint/lib/cli-engine/formatters/stylish.js';
 
 function linterReporter( results ) {
-	const formatter = CLIEngine.getFormatter();
-
 	console.log( formatter( results ) );
 }
 
