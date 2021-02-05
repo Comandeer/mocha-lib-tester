@@ -2,7 +2,7 @@ import { ESLint } from 'eslint';
 import { sync as globSync } from 'glob';
 import linterReporter from './reporters/linter';
 
-async function linter( projectPath ) {
+function linter( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
@@ -18,14 +18,14 @@ async function linter( projectPath ) {
 		}
 	} );
 
-	const results = await eslint.lintFiles( prepareExistentFilePaths( projectPath ) );
-
-	return {
-		name: 'linter',
-		ok: isOk( results ),
-		results,
-		reporter: linterReporter
-	};
+	return eslint.lintFiles( prepareExistentFilePaths( projectPath ) ).then( ( results ) => {
+		return {
+			name: 'linter',
+			ok: isOk( results ),
+			results,
+			reporter: linterReporter
+		};
+	} );
 }
 
 // Workaround for https://eslint.org/docs/5.0.0/user-guide/migrating-to-5.0.0#nonexistent-files
