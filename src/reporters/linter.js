@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 /* istanbul ignore file */
 
-import { CLIEngine } from 'eslint';
+function linterReporter( eslint ) {
+	return async function( results ) {
+		const formatter = await eslint.loadFormatter();
 
-function linterReporter( results ) {
-	const formatter = CLIEngine.getFormatter();
-
-	console.log( formatter( results ) );
+		console.log( formatter.format( results ) );
+	};
 }
 
 export default linterReporter;

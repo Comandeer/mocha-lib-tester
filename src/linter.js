@@ -1,29 +1,31 @@
-import { CLIEngine } from 'eslint';
+import { ESLint } from 'eslint';
 import { sync as globSync } from 'glob';
 import linterReporter from './reporters/linter';
 
-function linter( projectPath ) {
+async function linter( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
 
-	const cli = new CLIEngine( {
+	const eslint = new ESLint( {
 		useEslintrc: false,
 		cwd: projectPath,
-		ignorePattern: [ 'tests/fixtures/**/*.js' ],
 		baseConfig: {
 			extends: '@comandeer/eslint-config'
+		},
+		overrideConfig: {
+			ignorePatterns: [ 'tests/fixtures/**/*.js' ]
 		}
 	} );
 
-	const { results } = cli.executeOnFiles( prepareExistentFilePaths( projectPath ) );
+	const results = await eslint.lintFiles( prepareExistentFilePaths( projectPath ) );
 
-	return Promise.resolve( {
+	return {
 		name: 'linter',
 		ok: isOk( results ),
 		results,
-		reporter: linterReporter
-	} );
+		reporter: linterReporter( eslint )
+	};
 }
 
 // Workaround for https://eslint.org/docs/5.0.0/user-guide/migrating-to-5.0.0#nonexistent-files
