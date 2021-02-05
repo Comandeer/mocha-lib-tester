@@ -67,7 +67,7 @@ class Logger {
 	}
 
 	onStepEnd( { name }, { ok, results, reporter } ) {
-		reporter( results );
+		reporter( results, this );
 
 		if ( !ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {

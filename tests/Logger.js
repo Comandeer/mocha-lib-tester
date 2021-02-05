@@ -277,8 +277,8 @@ describe( 'Logger', () => {
 				expect( console.error ).to.have.been.calledOnceWithExactly( expected );
 			} );
 
-			it( 'invokes reporter', () => {
-				const [ , eventEmitter ] = createLogger();
+			it( 'invokes reporter with correct arguments', () => {
+				const [ logger, eventEmitter ] = createLogger();
 				const step = {
 					name: 'hublabubla'
 				};
@@ -291,7 +291,7 @@ describe( 'Logger', () => {
 
 				eventEmitter.emit( 'step:end', step, results );
 
-				expect( reporter ).to.have.been.calledOnceWith( results.results );
+				expect( reporter ).to.have.been.calledOnceWith( results.results, logger );
 			} );
 		} );
 
