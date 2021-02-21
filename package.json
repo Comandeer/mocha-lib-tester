@@ -15,6 +15,7 @@
     "dist"
   ],
   "scripts": {
+    "prebuild": "node dev/prepareChaiPreamble",
     "build": "rlb",
     "pretest": "npm run build",
     "test": "node ./bin/mlt",
