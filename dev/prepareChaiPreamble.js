@@ -1,5 +1,8 @@
+/* eslint-disable no-console */
+
 const { readFileSync, writeFileSync } = require( 'fs' );
 const { resolve: resolvePath } = require( 'path' );
+const { execSync } = require( 'child_process' );
 const { minify } = require( 'terser' );
 const { transform } = require( '@babel/core' );
 const {
@@ -14,16 +17,21 @@ const { ESLint } = require( 'eslint' );
 main();
 
 async function main() {
-	const hooksPath = resolvePath( __dirname, '..', 'src', 'hooks' );
-	const preamblePath = resolvePath( hooksPath, 'chaiPreamble.js' );
-	const preamble = readFileSync( preamblePath, 'utf8' );
-	const minifiedPreamble = await minifyPreamble( preamble );
-	const hookPath = resolvePath( hooksPath, 'chai.js' );
-	const hook = readFileSync( hookPath, 'utf8' );
-	const transformedHook = await generateCodeWithPreamble( hook, minifiedPreamble );
+	try {
+		const hooksPath = resolvePath( __dirname, '..', 'src', 'hooks' );
+		const preamblePath = resolvePath( hooksPath, 'chaiPreamble.js' );
+		const preamble = readFileSync( preamblePath, 'utf8' );
+		const minifiedPreamble = await minifyPreamble( preamble );
+		const hookPath = resolvePath( hooksPath, 'chai.js' );
+		const hook = readFileSync( hookPath, 'utf8' );
+		const transformedHook = await generateCodeWithPreamble( hook, minifiedPreamble );
 
-	writeFileSync( hookPath, transformedHook, 'utf8' );
-	await fixCodeStyle( hookPath );
+		writeFileSync( hookPath, transformedHook, 'utf8' );
+		await fixCodeStyle( hookPath );
+		await commitChanges( hookPath );
+	} catch ( error ) {
+		console.error( error );
+	}
 }
 
 async function minifyPreamble( preamble ) {
@@ -84,4 +92,15 @@ async function fixCodeStyle( filePath ) {
 	const results = await eslint.lintFiles( [ filePath ] );
 
 	await ESLint.outputFixes( results );
+}
+
+function commitChanges( filePath ) {
+	// Neat trick: git diff --exit-code returns 1 if there are changes in the given file.
+	try {
+		const diffCommand = `git diff --exit-code ${ filePath }`;
+		execSync( diffCommand );
+	} catch {
+		const commitCommand = `git add ${ filePath } && git commit -m "refactor(hooks): update preamble in chai hook"`;
+		execSync( commitCommand );
+	}
 }
