@@ -1,5 +1,3 @@
-/* globals expect */
-
 function validateResults( { name, ok, results, reporter } ) {
 	expect( name, 'results.name property is defined' ).to.be.a( 'string' );
 	expect( ok, 'results.ok property is defined' ).to.be.a( 'boolean' );

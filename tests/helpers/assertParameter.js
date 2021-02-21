@@ -1,5 +1,3 @@
-/* globals expect */
-
 function assertParameter( {
 	valids = [],
 	invalids = [],

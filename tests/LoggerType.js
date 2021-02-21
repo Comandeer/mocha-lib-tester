@@ -1,5 +1,3 @@
-/* globals expect */
-
 import LoggerType from '../src/LoggerType.js';
 
 describe( 'LoggerType', () => {

@@ -1,5 +1,3 @@
-/* globals expect, sinon */
-
 import { join as joinPath } from 'path';
 import assertParameter from './helpers/assertParameter.js';
 import validateResults from './helpers/validateResults.js';

@@ -1,5 +1,3 @@
-/* globals expect */
-
 import LoggerColor from '../src/LoggerColor.js';
 
 describe( 'LoggerColor', () => {
