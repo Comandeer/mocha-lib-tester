@@ -1,6 +1,6 @@
 {
   "name": "@comandeer/mocha-lib-tester",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "All testing utilities in one, small package",
   "main": "dist/mocha-lib-tester.js",
   "module": "dist/mocha-lib-tester.es2015.js",
@@ -14,7 +14,7 @@
   "files": [
     "bin",
     "dist",
-	"mlt.d.ts"
+    "mlt.d.ts"
   ],
   "scripts": {
     "prebuild": "node dev/prepareChaiPreamble",
