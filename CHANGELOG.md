@@ -6,14 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-## [0.2.0]
+## [0.2.0] – 2021-02-22
 ### Changed
 * [#47]: Much more usable and readable results thanks to massive refactor.
+* [#48]: Improved Chai preamble.
 
 ## 0.1.0 – 2020-10-17
 ### Added
 * First working version, yay!
 
 [#47]: https://github.com/Comandeer/mocha-lib-tester/issues/47
+[#48]: https://github.com/Comandeer/mocha-lib-tester/issues/48
 
 [0.2.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.1.0...v0.2.0
