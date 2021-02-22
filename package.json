@@ -89,6 +89,7 @@
     "istanbul-lib-report": "^3.0.0",
     "istanbul-reports": "^3.0.2",
     "mocha": "^8.3.0",
+    "npm-run-path": "^4.0.1",
     "nyc": "^15.1.0",
     "pirates": "^4.0.1",
     "proxyquire": "^2.1.3",
