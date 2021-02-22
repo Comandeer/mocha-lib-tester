@@ -27,6 +27,21 @@ Just make it a npm script:
 
 No configuration. Consider it a feature.
 
+## Enabling Intellisense
+
+For now to enable Intellisense for tests, you need to add `jsconfig.json` file to your project:
+
+```json
+{
+	"compilerOptions": {
+		"typeRoots": [
+			"./node_modules/@types",
+			"./node_modules/@comandeer"
+		]
+	}
+}
+```
+
 ## License
 
 See [LICENSE](./LICENSE) file for details.

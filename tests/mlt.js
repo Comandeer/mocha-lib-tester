@@ -1,5 +1,3 @@
-/* globals expect */
-
 import { resolve as resolvePath } from 'path';
 import executeCLI from './helpers/executeCLI.js';
 

@@ -1,5 +1,3 @@
-/* globals expect, sinon */
-
 import { resolve as resolvePath } from 'path';
 import { existsSync as exists } from 'fs';
 import { sync as rimraf } from 'rimraf';

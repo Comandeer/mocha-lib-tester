@@ -1,5 +1,3 @@
-/* globals expect */
-
 import assertParameter from './helpers/assertParameter.js';
 import codecov from '../src/codecov.js';
 

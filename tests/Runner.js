@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* globals expect, sinon */
 
 import EventEmitter from 'events';
 import chalk from 'chalk';
