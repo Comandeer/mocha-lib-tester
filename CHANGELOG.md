@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
+## [0.2.1] – 2021-02-22
+### Fixed
+* [#60]: CodeCov reporter does not log `stderr` output.
+
 ## [0.2.0] – 2021-02-22
 ### Changed
 * [#47]: Much more usable and readable results thanks to massive refactor.
@@ -17,5 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [#47]: https://github.com/Comandeer/mocha-lib-tester/issues/47
 [#48]: https://github.com/Comandeer/mocha-lib-tester/issues/48
+[#60]: https://github.com/Comandeer/mocha-lib-tester/issues/60
 
+[0.2.1]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.1.0...v0.2.0
