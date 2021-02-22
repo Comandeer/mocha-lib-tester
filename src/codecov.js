@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 
-import { resolve as resolvePath } from 'path';
 import { exec } from 'child_process';
 import isCI from 'is-ci';
+import npmRunPath from 'npm-run-path';
 import codecovReporter from './reporters/codecov.js';
 
 function codecov( projectPath ) {
@@ -36,11 +36,10 @@ function codecov( projectPath ) {
 }
 
 function executeCLI( projectPath ) {
-	const codecovPath = resolvePath( __dirname, '..', 'node_modules', 'codecov', 'bin', 'codecov' );
-
 	return new Promise( ( resolve ) => {
-		const codecovProcess = exec( `node ${ codecovPath }`, {
-			cwd: projectPath
+		const codecovProcess = exec( 'codecov', {
+			cwd: projectPath,
+			env: npmRunPath.env()
 		}, ( error, stdout, stderr ) => {
 			resolve( {
 				exitCode: codecovProcess.exitCode,
