@@ -42,7 +42,7 @@ async function mlt( steps = [ 'lint', 'test', 'coverage', 'codecov' ] ) {
 		}
 	];
 	const filteredSteps = steps.map( ( id ) => {
-		const step = defaultSteps.find( ( { id: stepId} ) => {
+		const step = defaultSteps.find( ( { id: stepId } ) => {
 			return stepId === id;
 		} );
 
