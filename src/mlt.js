@@ -6,10 +6,11 @@ import codecov from './codecov.js';
 import Runner from './Runner.js';
 import Logger from './Logger.js';
 
-async function mlt() {
+async function mlt( steps = [ 'lint', 'test', 'coverage', 'codecov' ] ) {
 	const projectPath = process.cwd();
-	const steps = [
+	const defaultSteps = [
 		{
+			id: 'lint',
 			name: 'Linter',
 			run() {
 				return linter( projectPath );
@@ -17,6 +18,7 @@ async function mlt() {
 		},
 
 		{
+			id: 'test',
 			name: 'Tester',
 			run() {
 				return tester( projectPath );
@@ -24,6 +26,7 @@ async function mlt() {
 		},
 
 		{
+			id: 'coverage',
 			name: 'Code Coverage',
 			run() {
 				return codeCoverage( projectPath, global.__mltCoverage__ );
@@ -31,16 +34,36 @@ async function mlt() {
 		},
 
 		{
+			id: 'codecov',
 			name: 'CodeCov',
 			run() {
 				return codecov( projectPath );
 			}
 		}
 	];
+	const filteredSteps = steps.map( ( id ) => {
+		const step = defaultSteps.find( ( { id: stepId } ) => {
+			return stepId === id;
+		} );
+
+		return step || id;
+	} );
+	const invalidSteps = filteredSteps.filter( ( step ) => {
+		return typeof step === 'string';
+	} );
+
+	if ( invalidSteps.length > 0 ) {
+		const stepNames = invalidSteps.map( ( step ) => {
+			return `"${ step }"`;
+		} ).join( ', ' );
+
+		throw new TypeError( `Provided step names (${ stepNames }) are incorrect` );
+	}
+
 	const runner = new Runner();
 
 	new Logger( runner );
-	runner.addSteps( steps );
+	runner.addSteps( filteredSteps );
 
 	const result = await runner.run();
 	const exitCode = result ? 0 : 1;

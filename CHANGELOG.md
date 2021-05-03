@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
+## [0.3.0]
+### Added
+* [#65]: support for providing the steps to run as CLI arguments.
+### Changed
+* **BREAKING CHANGE**: update step definition to include `id` property.
+* **BREAKING CHANGE**: updated Sinon to v10.0.0.
+
 ## [0.2.2] – 2021-02-22
 ### Fixed
 * [#62]: Wrong path to CodeCov binary.
@@ -27,7 +34,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#48]: https://github.com/Comandeer/mocha-lib-tester/issues/48
 [#60]: https://github.com/Comandeer/mocha-lib-tester/issues/60
 [#62]: https://github.com/Comandeer/mocha-lib-tester/issues/62
+[#65]: https://github.com/Comandeer/mocha-lib-tester/issues/65
 
+[0.3.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.1.0...v0.2.0

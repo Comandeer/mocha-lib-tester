@@ -23,6 +23,23 @@ Just make it a npm script:
 }
 ```
 
+You can also run only selected steps, e.g.
+
+```bash
+mlt test coverage
+```
+
+The above command will run only Mocha tests and display code coverage info.
+
+### Available steps
+
+|    Id    |      Name     |                   Description                  |
+|:--------:|:-------------:|:----------------------------------------------:|
+|   lint   |     Linter    |          Runs ESLint against the code.         |
+|   test   |     Tester    |          Runs tests against the code.          |
+| coverage | Code Coverage | Gathers and displays info about code coverage. |
+| codecov  | CodeCov       | Uploads info about code coverage to CodeCov.   |
+
 ## Configuration
 
 No configuration. Consider it a feature.

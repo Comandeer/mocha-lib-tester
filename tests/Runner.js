@@ -63,12 +63,51 @@ describe( 'Runner', () => {
 					{
 						name: 'Step',
 						run: 1
+					},
+
+					{
+						id: 1,
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: '',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: '        ',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'some id',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'Some=id',
+						name: 'Step',
+						run() {}
 					}
 				],
-				valids: [ {
-					name: 'Step',
-					run() {}
-				} ],
+				valids: [
+					{
+						id: 'step',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'some-id',
+						name: 'Step',
+						run() {}
+					}
+				],
 				error: {
 					type: TypeError,
 					message: 'Provided object must be a valid step definition'
@@ -82,6 +121,7 @@ describe( 'Runner', () => {
 		it( 'adds step to the runner', () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step',
 				name: 'Step',
 				run() {}
 			};
@@ -94,6 +134,7 @@ describe( 'Runner', () => {
 		it( 'does not duplicate steps', () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step',
 				name: 'Step',
 				run() {}
 			};
@@ -116,6 +157,7 @@ describe( 'Runner', () => {
 					undefined,
 					[ 1 ],
 					{
+						id: 'step',
 						name: 'Step',
 						run() {}
 					},
@@ -133,11 +175,13 @@ describe( 'Runner', () => {
 
 					[
 						{
+							id: 'step',
 							name: 'Test',
 							run() {}
 						},
 
 						{
+							id: 'step1',
 							name: '  		     	',
 							run() {}
 						}
@@ -147,11 +191,13 @@ describe( 'Runner', () => {
 					[],
 					[
 						{
+							id: 'step1',
 							name: 'Step',
 							run() {}
 						},
 
 						{
+							id: 'step2',
 							name: 'Another Step',
 							run() {}
 						}
@@ -171,11 +217,13 @@ describe( 'Runner', () => {
 			const runner = new Runner();
 			const steps = [
 				{
+					id: 'step1',
 					name: 'Step',
 					run() {}
 				},
 
 				{
+					id: 'step2',
 					name: 'Another Step',
 					run() {}
 				}
@@ -189,6 +237,7 @@ describe( 'Runner', () => {
 		it( 'does not duplicate steps', () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step',
 				name: 'Step',
 				run() {}
 			};
@@ -223,16 +272,19 @@ describe( 'Runner', () => {
 			const stub3 = stub().returns( { ...resultsTemplate } );
 			const steps = [
 				{
+					id: 'step1',
 					name: 'Step #1',
 					run: stub1
 				},
 
 				{
+					id: 'step2',
 					name: 'Step #2',
 					run: stub2
 				},
 
 				{
+					id: 'step3',
 					name: 'Step #3',
 					run: stub3
 				}
@@ -252,6 +304,7 @@ describe( 'Runner', () => {
 		it( 'throws when steps return invalid results', () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step',
 				name: 'Step',
 				run() {}
 			};
@@ -267,6 +320,7 @@ describe( 'Runner', () => {
 		it( 'throws on error during the step', () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step',
 				name: 'Step',
 				run() {
 					throw new Error( 'Thrown' );
@@ -283,6 +337,7 @@ describe( 'Runner', () => {
 		it( 'throws on rejection from the step', () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step',
 				name: 'Step',
 				run() {
 					return Promise.reject( new Error( 'Reject' ) );
@@ -301,6 +356,7 @@ describe( 'Runner', () => {
 			const trueRunner = new Runner();
 			const falseSteps = [
 				{
+					id: 'step1',
 					name: 'Step #1',
 					run() {
 						return {
@@ -312,6 +368,7 @@ describe( 'Runner', () => {
 				},
 
 				{
+					id: 'step2',
 					name: 'Step #2',
 					run() {
 						return {
@@ -324,6 +381,7 @@ describe( 'Runner', () => {
 			];
 			const trueSteps = [
 				{
+					id: 'step1',
 					name: 'Step #1',
 					run() {
 						return {
@@ -335,6 +393,7 @@ describe( 'Runner', () => {
 				},
 
 				{
+					id: 'step2',
 					name: 'Step #2',
 					run() {
 						return {
@@ -375,16 +434,19 @@ describe( 'Runner', () => {
 			} );
 			const steps = [
 				{
+					id: 'step1',
 					name: 'Step #1',
 					run: stub1
 				},
 
 				{
+					id: 'step2',
 					name: 'Step #2',
 					run: stub2
 				},
 
 				{
+					id: 'step3',
 					name: 'Step #3',
 					run: stub3
 				}
@@ -406,6 +468,7 @@ describe( 'Runner', () => {
 		it( 'emits events in correct order', async () => {
 			const runner = new Runner();
 			const step = {
+				id: 'step1',
 				name: 'Step #1',
 				run() {
 					return {
@@ -451,6 +514,7 @@ describe( 'Runner', () => {
 				const results2 = { ...resultsTemplate };
 				const steps = [
 					{
+						id: 'step1',
 						name: 'Step #1',
 						run() {
 							return results1;
@@ -458,6 +522,7 @@ describe( 'Runner', () => {
 					},
 
 					{
+						id: 'step2',
 						name: 'Step #2',
 						run() {
 							return results2;
@@ -485,6 +550,7 @@ describe( 'Runner', () => {
 		describe( 'end', () => {
 			it( 'is not emitted when error occurs during step', async () => {
 				const step = {
+					id: 'step',
 					name: 'Step',
 					run() {
 						throw new Error( 'Some error' );
@@ -509,6 +575,7 @@ describe( 'Runner', () => {
 			it( 'is emitted when error occurs during step', async () => {
 				const error = new Error( 'Some error' );
 				const step = {
+					id: 'step',
 					name: 'Step',
 					run() {
 						throw error;
@@ -531,6 +598,7 @@ describe( 'Runner', () => {
 
 			it( 'is emitted when step returns incorrect results', async () => {
 				const step = {
+					id: 'step',
 					name: 'Step',
 					run() {
 						return;
@@ -576,6 +644,7 @@ describe( 'Runner', () => {
 			};
 			const steps = [
 				{
+					id: 'step1',
 					name: 'step1',
 					run() {
 						return {
@@ -588,6 +657,7 @@ describe( 'Runner', () => {
 				},
 
 				{
+					id: 'step2',
 					name: 'step2',
 					run() {
 						return {
@@ -627,6 +697,7 @@ describe( 'Runner', () => {
 			};
 			const steps = [
 				{
+					id: 'step1',
 					name: 'step1',
 					run() {
 						return {
@@ -639,6 +710,7 @@ describe( 'Runner', () => {
 				},
 
 				{
+					id: 'step2',
 					name: 'step2',
 					run() {
 						return {
@@ -680,6 +752,7 @@ describe( 'Runner', () => {
 			const error = new Error();
 			const steps = [
 				{
+					id: 'step1',
 					name: 'step1',
 					run() {
 						throw error;
@@ -687,6 +760,7 @@ describe( 'Runner', () => {
 				},
 
 				{
+					id: 'step2',
 					name: 'step2',
 					run() {
 						return {
