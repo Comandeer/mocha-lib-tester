@@ -6,9 +6,9 @@ import codecov from './codecov.js';
 import Runner from './Runner.js';
 import Logger from './Logger.js';
 
-async function mlt() {
+async function mlt( steps = [ 'lint', 'test', 'coverage', 'codecov' ] ) {
 	const projectPath = process.cwd();
-	const steps = [
+	const defaultSteps = [
 		{
 			id: 'lint',
 			name: 'Linter',
@@ -41,10 +41,13 @@ async function mlt() {
 			}
 		}
 	];
+	const filteredSteps = defaultSteps.filter( ( { id } ) => {
+		return steps.includes( id );
+	} );
 	const runner = new Runner();
 
 	new Logger( runner );
-	runner.addSteps( steps );
+	runner.addSteps( filteredSteps );
 
 	const result = await runner.run();
 	const exitCode = result ? 0 : 1;
