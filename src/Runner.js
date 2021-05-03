@@ -83,15 +83,28 @@ class Runner extends EventEmitter {
 	}
 }
 
-function isValidStep( value ) {
-	if ( !value || typeof value !== 'object' ) {
+function isValidStep( step ) {
+	if ( !step || typeof step !== 'object' ) {
 		return false;
 	}
 
-	const isNameValid = typeof value.name === 'string' && value.name.trim().length > 0;
-	const isRunValid = typeof value.run === 'function';
+	const isIdValid = isValidStepId( step.id );
+	const isNameValid = typeof step.name === 'string' && step.name.trim().length > 0;
+	const isRunValid = typeof step.run === 'function';
 
-	return isNameValid && isRunValid;
+	return isIdValid && isNameValid && isRunValid;
+
+	function isValidStepId( id ) {
+		if ( typeof id !== 'string' || id.trim().length === 0 ) {
+			return false;
+		}
+
+		const whiteSpaceRegex = /\s/;
+		const isLoweredCase = id === id.toLowerCase();
+		const isSpaceless = !whiteSpaceRegex.test( id );
+
+		return isLoweredCase && isSpaceless;
+	}
 }
 
 function isValidResult( stepResults ) {
