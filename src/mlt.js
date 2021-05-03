@@ -41,9 +41,25 @@ async function mlt( steps = [ 'lint', 'test', 'coverage', 'codecov' ] ) {
 			}
 		}
 	];
-	const filteredSteps = defaultSteps.filter( ( { id } ) => {
-		return steps.includes( id );
+	const filteredSteps = steps.map( ( id ) => {
+		const step = defaultSteps.find( ( { id: stepId} ) => {
+			return stepId === id;
+		} );
+
+		return step || id;
 	} );
+	const invalidSteps = filteredSteps.filter( ( step ) => {
+		return typeof step === 'string';
+	} );
+
+	if ( invalidSteps.length > 0 ) {
+		const stepNames = invalidSteps.map( ( step ) => {
+			return `"${ step }"`;
+		} ).join( ', ' );
+
+		throw new TypeError( `Provided step names (${ stepNames }) are incorrect` );
+	}
+
 	const runner = new Runner();
 
 	new Logger( runner );
