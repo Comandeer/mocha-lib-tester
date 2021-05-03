@@ -11,6 +11,7 @@ const steps = argv._.length > 0 ? argv._ : undefined;
 
 mlt( steps ).then( ( exitCode ) => {
 	process.exit( exitCode );
-} ).catch( () => {
+} ).catch( ( error ) => {
+	console.error( error ); // eslint-disable-line
 	process.exit( 1 );
 } );
