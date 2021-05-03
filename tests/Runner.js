@@ -63,12 +63,50 @@ describe( 'Runner', () => {
 					{
 						name: 'Step',
 						run: 1
+					},
+
+					{
+						id: 1,
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: '',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: '        ',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'some id',
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'Some=id',
+						name: 'Step',
+						run() {}
 					}
 				],
-				valids: [ {
-					name: 'Step',
-					run() {}
-				} ],
+				valids: [
+					{
+						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'some-id',
+						name: 'Step',
+						run() {}
+					}
+				],
 				error: {
 					type: TypeError,
 					message: 'Provided object must be a valid step definition'
@@ -89,6 +127,23 @@ describe( 'Runner', () => {
 			runner.addStep( step );
 
 			expect( [ ...runner.steps ] ).to.deep.equal( [ step ] );
+		} );
+
+		// #65
+		it( 'use step name to generate id if it is not provided by the user', () => {
+			const runner = new Runner();
+			const step = {
+				name: 'Step name',
+				run() {}
+			};
+			const expected = {
+				id: 'step-name',
+				...step
+			};
+
+			runner.addStep( step );
+
+			expect( [ ...runner.steps ] ).to.deep.equal( [ expected ] );
 		} );
 
 		it( 'does not duplicate steps', () => {
