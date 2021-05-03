@@ -42,4 +42,21 @@ describe( 'mlt', () => {
 
 		expect( exitCode ).to.equal( 0 );
 	} );
+
+	// #65
+	it( 'executes only provided steps', async () => {
+		const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+		const { exitCode, stdout, stderr } = await executeCLI( validProject, {
+			additionalArguments: 'lint test'
+		} );
+
+		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
+		expect( stdout ).to.match( /---Tester---/, 'tester step is visible in the output' );
+		expect( stdout ).not.to.match( /---Code Coverage---/, 'code coverage step is not visible in the output' );
+		expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
+
+		expect( stderr ).to.equal( '', 'stderr is empty' );
+
+		expect( exitCode ).to.equal( 0 );
+	} );
 } );
