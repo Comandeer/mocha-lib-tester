@@ -10,6 +10,7 @@ async function mlt() {
 	const projectPath = process.cwd();
 	const steps = [
 		{
+			id: 'lint',
 			name: 'Linter',
 			run() {
 				return linter( projectPath );
@@ -17,6 +18,7 @@ async function mlt() {
 		},
 
 		{
+			id: 'test',
 			name: 'Tester',
 			run() {
 				return tester( projectPath );
@@ -24,6 +26,7 @@ async function mlt() {
 		},
 
 		{
+			id: 'coverage',
 			name: 'Code Coverage',
 			run() {
 				return codeCoverage( projectPath, global.__mltCoverage__ );
@@ -31,6 +34,7 @@ async function mlt() {
 		},
 
 		{
+			id: 'codecov',
 			name: 'CodeCov',
 			run() {
 				return codecov( projectPath );
