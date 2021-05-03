@@ -20,7 +20,7 @@ function addChaiHook( projectPath ) {
 		}
 
 	} );
-	added = truel;
+	added = true;
 }
 
 export default addChaiHook;
