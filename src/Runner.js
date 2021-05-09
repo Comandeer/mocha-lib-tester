@@ -64,7 +64,7 @@ class Runner extends EventEmitter {
 		this.emit( 'step:start', step );
 
 		try {
-			const result = await step.run();
+			const result = await step.run( this.path );
 
 			if ( !isValidResult( result ) ) {
 				throw new TypeError( `Step ${ step.name } didn't return correct results` );

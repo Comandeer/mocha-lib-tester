@@ -310,6 +310,30 @@ describe( 'Runner', () => {
 			} );
 		} );
 
+		// #57
+		it( 'passes this.path to steps run method', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				ok: true,
+				results: {},
+				reporter() {}
+			};
+			const stub1 = stub().returns( { ...resultsTemplate } );
+			const steps = [
+				{
+					id: 'step1',
+					name: 'Step #1',
+					run: stub1
+				}
+			];
+
+			runner.addSteps( steps );
+
+			await runner.run();
+
+			expect( stub1 ).to.have.been.calledOnceWithExactly( runner.path );
+		} );
+
 		it( 'runs all steps in preserved order', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
