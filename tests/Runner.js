@@ -5,7 +5,6 @@ import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
 import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
-import { version } from '../package.json';
 
 const { spy, stub } = sinon;
 
@@ -744,7 +743,6 @@ describe( 'Runner', () => {
 				}
 			];
 			const expected = [
-				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ 'step1' ],
@@ -797,7 +795,6 @@ describe( 'Runner', () => {
 				}
 			];
 			const logExpected = [
-				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ 'step1' ],
@@ -847,7 +844,6 @@ describe( 'Runner', () => {
 				}
 			];
 			const logExpected = [
-				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ chalk.red( 'There were some errors alonside the way 😿' ) ]
