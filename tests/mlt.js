@@ -195,5 +195,32 @@ describe( 'mlt', () => {
 			// If process is killed, then it does not return exit code.
 			expect( exitCode ).to.equal( null );
 		} );
+
+		it( 'reruns only requested steps if .js file is modified in the project', async () => {
+			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
+			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
+				args: [ 'lint', '--watch' ],
+				killAfter: 10000,
+				delayedCallback: {
+					callback() {
+						touch( touchablePath, {
+							force: true
+						} );
+					},
+					timeout: 5000
+				}
+			} );
+
+			expect( stdout ).to.match( /---Linter---.+?---Linter---/s, 'linter step is visible twice in the output' );
+			expect( stdout ).not.to.match( /---Tester---/s, 'tester step is not visible in the output' );
+			expect( stdout ).not.to.match( /---Code Coverage---/s, 'code coverage step is not visible in the output' );
+			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
+
+			expect( stderr ).to.equal( '', 'stderr is empty' );
+
+			// If process is killed, then it does not return exit code.
+			expect( exitCode ).to.equal( null );
+		} );
 	} );
 } );
