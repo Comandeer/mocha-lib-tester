@@ -8,11 +8,11 @@ async function mlt( projectPath, {
 	requestedSteps = [ 'lint', 'test', 'coverage', 'codecov' ],
 	isWatch = false
 } = {} ) {
-	const steps = prepareSteps( projectPath, {
+	const steps = prepareSteps( {
 		requestedSteps,
 		isWatch
 	} );
-	const runner = new Runner();
+	const runner = new Runner( projectPath );
 
 	new Logger( runner );
 	runner.addSteps( steps );

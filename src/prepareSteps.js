@@ -1,51 +1,11 @@
-import linter from './linter.js';
-import tester from './tester.js';
-import codeCoverage from './codeCoverage.js';
-import codecov from './codecov.js';
+import steps from './steps.js';
 
-function prepareSteps( projectPath, {
+function prepareSteps( {
 	requestedSteps,
 	isWatch = false
 } = {} ) {
-	const defaultSteps = [
-		{
-			id: 'lint',
-			name: 'Linter',
-			watchable: true,
-			run() {
-				return linter( projectPath );
-			}
-		},
-
-		{
-			id: 'test',
-			name: 'Tester',
-			watchable: true,
-			run() {
-				return tester( projectPath );
-			}
-		},
-
-		{
-			id: 'coverage',
-			name: 'Code Coverage',
-			watchable: true,
-			run() {
-				return codeCoverage( projectPath, global.__mltCoverage__ );
-			}
-		},
-
-		{
-			id: 'codecov',
-			name: 'CodeCov',
-			watchable: false,
-			run() {
-				return codecov( projectPath );
-			}
-		}
-	];
 	const filteredSteps = requestedSteps.map( ( id ) => {
-		const step = defaultSteps.find( ( step ) => {
+		const step = steps.find( ( step ) => {
 			return step.id === id;
 		} );
 
