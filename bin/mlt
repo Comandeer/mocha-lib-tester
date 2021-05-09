@@ -8,7 +8,7 @@ const argv = yargs( hideBin( process.argv ) ).argv;
 
 // undefined guarantees that the bin will fallback
 // to the default set of steps.
-const steps = argv._.length > 0 ? argv._ : undefined;
+const requestedSteps = argv._.length > 0 ? argv._ : undefined;
 const isWatch = argv.watch;
 
 ( async function() {
@@ -33,7 +33,7 @@ const isWatch = argv.watch;
 
 async function run( isWatch ) {
 	try {
-		const exitCode = await mlt( steps );
+		const exitCode = await mlt( process.cwd(), { requestedSteps, isWatch } );
 
 		if ( !isWatch ) {
 			process.exit( exitCode );
