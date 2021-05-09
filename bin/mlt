@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const chokidar = require( 'chokidar' );
 const yargs = require( 'yargs/yargs' );
 const { hideBin } = require( 'yargs/helpers' );
 const mlt = require( '../dist/mocha-lib-tester.js' );
@@ -8,10 +9,37 @@ const argv = yargs( hideBin( process.argv ) ).argv;
 // undefined guarantees that the bin will fallback
 // to the default set of steps.
 const steps = argv._.length > 0 ? argv._ : undefined;
+const isWatch = argv.watch;
 
-mlt( steps ).then( ( exitCode ) => {
-	process.exit( exitCode );
-} ).catch( ( error ) => {
-	console.error( error ); // eslint-disable-line
-	process.exit( 1 );
-} );
+( async function() {
+	await run( isWatch );
+
+	if ( isWatch ) {
+		const watcher = chokidar.watch( '{bin,src,tests}/**/*.js', {
+			persistent: true,
+			ignoreInitial: true,
+			cwd: process.cwd()
+		} );
+
+		watcher.on( 'all', () => {
+			Object.keys( require.cache ).forEach( ( key ) => {
+				delete require.cache[ key ];
+			} );
+
+			run( isWatch );
+		} );
+	}
+}() );
+
+async function run( isWatch ) {
+	try {
+		const exitCode = await mlt( steps );
+
+		if ( !isWatch ) {
+			process.exit( exitCode );
+		}
+	} catch ( error ) {
+		console.error( error ); // eslint-disable-line
+		process.exit( 1 );
+	}
+}
