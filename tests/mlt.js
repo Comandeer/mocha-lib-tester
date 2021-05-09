@@ -99,7 +99,7 @@ describe( 'mlt', () => {
 			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
 			const { exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
-				killAfter: 1500
+				killAfter: 5000
 			} );
 
 			// If process is killed, then it does not return exit code.
