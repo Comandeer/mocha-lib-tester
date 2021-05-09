@@ -46,9 +46,7 @@ function prepareSteps( projectPath, {
 	];
 	const filteredSteps = requestedSteps.map( ( id ) => {
 		const step = defaultSteps.find( ( step ) => {
-			const isWatchable = !isWatch || ( isWatch && step.watchable );
-
-			return step.id === id && isWatchable;
+			return step.id === id;
 		} );
 
 		return step || id;
@@ -63,6 +61,14 @@ function prepareSteps( projectPath, {
 		} ).join( ', ' );
 
 		throw new TypeError( `Provided step names (${ stepNames }) are incorrect` );
+	}
+
+	if ( isWatch ) {
+		const watchableSteps = filteredSteps.filter( ( step ) => {
+			return step.watchable;
+		} );
+
+		return watchableSteps;
 	}
 
 	return filteredSteps;
