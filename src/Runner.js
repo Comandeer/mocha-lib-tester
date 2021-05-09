@@ -3,8 +3,14 @@ import EventEmitter from 'events';
 const stepsSymbol = Symbol( 'steps' );
 
 class Runner extends EventEmitter {
-	constructor() {
+	constructor( path = process.cwd() ) {
 		super();
+
+		if ( !isNonEmptyString( path ) ) {
+			throw new TypeError( 'Provided path must be a non-empty string' );
+		}
+
+		this.path = path;
 
 		this[ stepsSymbol ] = Object.freeze( new Set() );
 	}
@@ -81,6 +87,10 @@ class Runner extends EventEmitter {
 
 		return this._processSteps( steps );
 	}
+}
+
+function isNonEmptyString( value ) {
+	return typeof value === 'string' && value.trim().length > 0;
 }
 
 function isValidStep( step ) {

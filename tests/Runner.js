@@ -20,6 +20,42 @@ describe( 'Runner', () => {
 		expect( runner ).to.be.an.instanceOf( EventEmitter );
 	} );
 
+	describe( '#constructor()', () => {
+		it( 'requires non-empty string as the first parameter if it is present', () => {
+			assertParameter( {
+				invalids: [
+					'',
+					null,
+					[],
+					{},
+					() => {},
+					1,
+					'                 '
+				],
+				valids: [
+					undefined,
+					'.',
+					'somePath'
+				],
+				error: {
+					type: TypeError,
+					message: 'Provided path must be a non-empty string'
+				},
+				code( param ) {
+					new Runner( param );
+				}
+			} );
+		} );
+	} );
+
+	describe( '#path', () => {
+		it( 'defaults to process.cwd()', () => {
+			const runner = new Runner();
+
+			expect( runner.path ).to.equal( process.cwd() );
+		} );
+	} );
+
 	describe( '#steps', () => {
 		it( 'is a set', () => {
 			const runner = new Runner();
