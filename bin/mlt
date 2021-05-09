@@ -4,6 +4,7 @@ const chokidar = require( 'chokidar' );
 const yargs = require( 'yargs/yargs' );
 const { hideBin } = require( 'yargs/helpers' );
 const mlt = require( '../dist/mocha-lib-tester.js' );
+const { version } = require( '../package.json' );
 const argv = yargs( hideBin( process.argv ) ).argv;
 
 // undefined guarantees that the bin will fallback
@@ -12,6 +13,8 @@ const requestedSteps = argv._.length > 0 ? argv._ : undefined;
 const isWatch = argv.watch;
 
 ( async function() {
+	console.log( `MLT v${ version }` );  // eslint-disable-line no-console
+
 	await run( isWatch );
 
 	if ( isWatch ) {

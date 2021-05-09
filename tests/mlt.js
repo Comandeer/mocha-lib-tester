@@ -162,6 +162,9 @@ describe( 'mlt', () => {
 				}
 			} );
 
+			// This monster uses negative lookbehinds and negative lookaheads to ensure that
+			// MLT preamble is displayed only once, not on every rerun.
+			expect( stdout ).to.match( /(?<!MLT v\d+\.\d+\.\d+.*?)MLT v\d+\.\d+\.\d+(?!.*?MLT v\d+\.\d+\.\d+)/s, 'MLT preamble is displayed only once' );
 			expect( stdout ).to.match( /---Linter---.+?---Linter---/s, 'linter step is visible twice in the output' );
 			expect( stdout ).to.match( /---Tester---.+?---Tester---/s, 'tester step is visible twice in the output' );
 			expect( stdout ).to.match( /---Code Coverage---.+?---Code Coverage---/s, 'code coverage step is visible twice in the output' );
@@ -189,6 +192,9 @@ describe( 'mlt', () => {
 				}
 			} );
 
+			// This monster uses negative lookbehinds and negative lookaheads to ensure that
+			// MLT preamble is displayed only once, not on every rerun.
+			expect( stdout ).to.match( /(?<!MLT v\d+\.\d+\.\d+.*?)MLT v\d+\.\d+\.\d+(?!.*?MLT v\d+\.\d+\.\d+)/s, 'MLT preamble is displayed only once' );
 			expect( stdout ).to.match( /---Linter---.+?---Linter---/s, 'linter step is visible twice in the output' );
 			expect( stdout ).to.match( /---Tester---.+?---Tester---/s, 'tester step is visible twice in the output' );
 			expect( stdout ).to.match( /---Code Coverage---.+?---Code Coverage---/s, 'code coverage step is visible twice in the output' );
@@ -216,6 +222,9 @@ describe( 'mlt', () => {
 				}
 			} );
 
+			// This monster uses negative lookbehinds and negative lookaheads to ensure that
+			// MLT preamble is displayed only once, not on every rerun.
+			expect( stdout ).to.match( /(?<!MLT v\d+\.\d+\.\d+.*?)MLT v\d+\.\d+\.\d+(?!.*?MLT v\d+\.\d+\.\d+)/s, 'MLT preamble is displayed only once' );
 			expect( stdout ).to.match( /---Linter---.+?---Linter---/s, 'linter step is visible twice in the output' );
 			expect( stdout ).not.to.match( /---Tester---/s, 'tester step is not visible in the output' );
 			expect( stdout ).not.to.match( /---Code Coverage---/s, 'code coverage step is not visible in the output' );
