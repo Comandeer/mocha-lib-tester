@@ -95,11 +95,15 @@ describe( 'mlt', () => {
 
 	// #57
 	describe( '--watch', () => {
+		const DELAYED_CALLBACK_TIMEOUT = 5000;
+		const SHORT_KILL_TIMEOUT = 5000;
+		const LONG_KILL_TIMEOUT = 10000;
+
 		it( 'does not terminate after full run', async () => {
 			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
 			const { exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
-				killAfter: 5000
+				killAfter: SHORT_KILL_TIMEOUT
 			} );
 
 			// If process is killed, then it does not return exit code.
@@ -110,7 +114,7 @@ describe( 'mlt', () => {
 			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
-				killAfter: 5000
+				killAfter: SHORT_KILL_TIMEOUT
 			} );
 
 			expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
@@ -128,7 +132,7 @@ describe( 'mlt', () => {
 			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
-				killAfter: 5000
+				killAfter: SHORT_KILL_TIMEOUT
 			} );
 
 			expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
@@ -147,14 +151,14 @@ describe( 'mlt', () => {
 			const touchablePath = resolvePath( validProject, 'src', 'index.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
-				killAfter: 10000,
+				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
 						touch( touchablePath, {
 							force: true
 						} );
 					},
-					timeout: 5000
+					timeout: DELAYED_CALLBACK_TIMEOUT
 				}
 			} );
 
@@ -174,14 +178,14 @@ describe( 'mlt', () => {
 			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
-				killAfter: 10000,
+				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
 						touch( touchablePath, {
 							force: true
 						} );
 					},
-					timeout: 5000
+					timeout: DELAYED_CALLBACK_TIMEOUT
 				}
 			} );
 
@@ -201,14 +205,14 @@ describe( 'mlt', () => {
 			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ 'lint', '--watch' ],
-				killAfter: 10000,
+				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
 						touch( touchablePath, {
 							force: true
 						} );
 					},
-					timeout: 5000
+					timeout: DELAYED_CALLBACK_TIMEOUT
 				}
 			} );
 
