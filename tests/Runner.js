@@ -129,6 +129,13 @@ describe( 'Runner', () => {
 						id: 'Some=id',
 						name: 'Step',
 						run() {}
+					},
+
+					{
+						id: 'Some=id',
+						name: 'Step',
+						watchable: false,
+						run() {}
 					}
 				],
 				valids: [
@@ -141,6 +148,13 @@ describe( 'Runner', () => {
 					{
 						id: 'some-id',
 						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'another-step',
+						name: 'Step',
+						watchable: false,
 						run() {}
 					}
 				],
