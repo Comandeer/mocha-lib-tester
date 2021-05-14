@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const chokidar = require( 'chokidar' );
 const yargs = require( 'yargs/yargs' );
 const { hideBin } = require( 'yargs/helpers' );
 const mlt = require( '../dist/mocha-lib-tester.js' );
-const { version } = require( '../package.json' );
+
+const path = process.cwd();
 const argv = yargs( hideBin( process.argv ) ).argv;
 
 // undefined guarantees that the bin will fallback
@@ -13,36 +13,15 @@ const requestedSteps = argv._.length > 0 ? argv._ : undefined;
 const isWatch = argv.watch;
 
 ( async function() {
-	console.log( `MLT v${ version }` );  // eslint-disable-line no-console
-
-	await run( isWatch );
-
-	if ( isWatch ) {
-		const watcher = chokidar.watch( '{bin,src,tests}/**/*.js', {
-			persistent: true,
-			ignoreInitial: true,
-			cwd: process.cwd()
-		} );
-
-		watcher.on( 'all', () => {
-			Object.keys( require.cache ).forEach( ( key ) => {
-				delete require.cache[ key ];
-			} );
-
-			run( isWatch );
-		} );
-	}
-}() );
-
-async function run( isWatch ) {
 	try {
-		const exitCode = await mlt( process.cwd(), { requestedSteps, isWatch } );
+		const controller = mlt( { path, requestedSteps, isWatch } );
+		const exitCode = await controller.start();
 
-		if ( !isWatch ) {
+		if ( !controller.continuous ) {
 			process.exit( exitCode );
 		}
 	} catch ( error ) {
 		console.error( error ); // eslint-disable-line
 		process.exit( 1 );
 	}
-}
+}() );

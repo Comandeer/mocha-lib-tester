@@ -2,25 +2,15 @@
 
 import Runner from './Runner.js';
 import Logger from './Logger.js';
-import prepareSteps from './prepareSteps.js';
+import RunController from './RunController.js';
 
-async function mlt( projectPath, {
-	requestedSteps = [ 'lint', 'test', 'coverage', 'codecov' ],
-	isWatch = false
-} = {} ) {
-	const steps = prepareSteps( {
-		requestedSteps,
-		isWatch
-	} );
-	const runner = new Runner( projectPath );
+function mlt( config ) {
+	const { path = process.cwd() } = config;
+	const runner = new Runner( path );
+	const logger = new Logger( runner );
+	const controller = new RunController( runner, logger, config );
 
-	new Logger( runner );
-	runner.addSteps( steps );
-
-	const result = await runner.run();
-	const exitCode = result ? 0 : 1;
-
-	return exitCode;
+	return controller;
 }
 
 export default mlt;
