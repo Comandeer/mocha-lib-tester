@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import linter from './linter.js';
 import tester from './tester.js';
 import codeCoverage from './codeCoverage.js';
