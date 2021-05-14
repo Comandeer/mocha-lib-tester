@@ -1,11 +1,14 @@
 import { resolve as resolvePath } from 'path';
 import touch from 'touch';
 import executeCLI from './helpers/executeCLI.js';
+import { cleanupFixtures, prepareCLIFixture } from './helpers/fixtures.js';
 import spawnCLI from './helpers/spawnCLI.js';
 
 describe( 'mlt', () => {
+	afterEach( cleanupFixtures );
+
 	it( 'executes tests in provided CWD and dumps results into stdout (ESM)', async () => {
-		const esmProject = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
+		const esmProject = await prepareCLIFixture( 'testsPackageESM' );
 		const { exitCode, stdout, stderr } = await executeCLI( esmProject );
 
 		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
@@ -19,7 +22,7 @@ describe( 'mlt', () => {
 	} );
 
 	it( 'executes tests in provided CWD and dumps results into stdout (CJS)', async () => {
-		const cjsProject = resolvePath( __dirname, 'fixtures', 'testsPackageCJS' );
+		const cjsProject = await prepareCLIFixture( 'testsPackageCJS' );
 		const { exitCode, stdout, stderr } = await executeCLI( cjsProject );
 
 		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
@@ -32,7 +35,7 @@ describe( 'mlt', () => {
 	} );
 
 	it( 'executes tests in provided CWD and dumps results into stdout (valid ESM)', async () => {
-		const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+		const validProject = await prepareCLIFixture( 'testsPackageValid' );
 		const { exitCode, stdout, stderr } = await executeCLI( validProject );
 
 		expect( stdout ).to.match( /---Linter---/, 'linter step is visible in the output' );
@@ -47,7 +50,7 @@ describe( 'mlt', () => {
 
 	// #65
 	it( 'executes only provided steps', async () => {
-		const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+		const validProject = await prepareCLIFixture( 'testsPackageValid' );
 		const { exitCode, stdout, stderr } = await executeCLI( validProject, {
 			additionalArguments: 'lint test'
 		} );
@@ -64,7 +67,7 @@ describe( 'mlt', () => {
 
 	// #65
 	it( 'preserves the order of requested steps', async () => {
-		const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+		const validProject = await prepareCLIFixture( 'testsPackageValid' );
 		const { exitCode, stdout, stderr } = await executeCLI( validProject, {
 			additionalArguments: 'test lint '
 		} );
@@ -78,7 +81,7 @@ describe( 'mlt', () => {
 
 	// #65
 	it( 'throws an error if non-existent step id is provided', async () => {
-		const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+		const validProject = await prepareCLIFixture( 'testsPackageValid' );
 		const { exitCode, stdout, stderr } = await executeCLI( validProject, {
 			additionalArguments: 'hublabubla lint whatever'
 		} );
@@ -100,7 +103,7 @@ describe( 'mlt', () => {
 		const LONG_KILL_TIMEOUT = 10000;
 
 		it( 'does not terminate after full run', async () => {
-			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+			const validProject = await prepareCLIFixture( 'testsPackageValid' );
 			const { exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
 				killAfter: SHORT_KILL_TIMEOUT
@@ -111,7 +114,7 @@ describe( 'mlt', () => {
 		} );
 
 		it( 'runs all steps except CodeCov', async () => {
-			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+			const validProject = await prepareCLIFixture( 'testsPackageValid' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
 				killAfter: SHORT_KILL_TIMEOUT
@@ -129,7 +132,7 @@ describe( 'mlt', () => {
 		} );
 
 		it( 'skips subsequent steps when something fails but without process termination', async () => {
-			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
+			const validProject = await prepareCLIFixture( 'testsPackageESM' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
 				killAfter: SHORT_KILL_TIMEOUT
@@ -147,7 +150,7 @@ describe( 'mlt', () => {
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project src', async () => {
-			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+			const validProject = await prepareCLIFixture( 'testsPackageValid' );
 			const touchablePath = resolvePath( validProject, 'src', 'index.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
@@ -177,7 +180,7 @@ describe( 'mlt', () => {
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project tests', async () => {
-			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+			const validProject = await prepareCLIFixture( 'testsPackageValid' );
 			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
@@ -207,7 +210,7 @@ describe( 'mlt', () => {
 		} );
 
 		it( 'reruns only requested steps if .js file is modified in the project', async () => {
-			const validProject = resolvePath( __dirname, 'fixtures', 'testsPackageValid' );
+			const validProject = await prepareCLIFixture( 'testsPackageValid' );
 			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ 'lint', '--watch' ],
