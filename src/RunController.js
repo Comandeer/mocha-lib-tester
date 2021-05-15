@@ -63,10 +63,6 @@ class RunController {
 		} );
 
 		watcher.on( 'all', () => {
-			Object.keys( require.cache ).forEach( ( key ) => {
-				delete require.cache[ key ];
-			} );
-
 			this.scheduleRun();
 		} );
 

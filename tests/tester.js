@@ -13,13 +13,6 @@ const mainCoverage = global.__mltCoverage__;
 
 describe( 'tester', () => {
 	beforeEach( () => {
-		// Mocha uses require cache to not load tests twice. To reuse fixtures we must empty the cache.
-		Object.keys( require.cache ).forEach( ( key ) => {
-			if ( key.startsWith( joinPath( __dirname, 'fixtures' ) ) ) {
-				delete require.cache[ key ];
-			}
-		} );
-
 		delete global.__mltCoverage__;
 	} );
 

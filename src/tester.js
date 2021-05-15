@@ -13,6 +13,7 @@ function tester( projectPath ) {
 	addChaiHook( projectPath );
 	addBabelHook( projectPath );
 	addIstanbulHook( projectPath );
+	clearCache( projectPath );
 
 	const mocha = new Mocha( {
 		reporter: MochaReporter,
@@ -42,6 +43,14 @@ function findTestFiles( cwd ) {
 			'tests/helpers/**/*.js'
 		],
 		realpath: true
+	} );
+}
+
+function clearCache( path ) {
+	Object.keys( require.cache ).forEach( ( key ) => {
+		if ( key.startsWith( path ) ) {
+			delete require.cache[ key ];
+		}
 	} );
 }
 
