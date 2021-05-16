@@ -3,14 +3,8 @@ import EventEmitter from 'events';
 const stepsSymbol = Symbol( 'steps' );
 
 class Runner extends EventEmitter {
-	constructor( path = process.cwd() ) {
+	constructor() {
 		super();
-
-		if ( !isNonEmptyString( path ) ) {
-			throw new TypeError( 'Provided path must be a non-empty string' );
-		}
-
-		this.path = path;
 
 		this[ stepsSymbol ] = Object.freeze( new Set() );
 	}
@@ -41,15 +35,19 @@ class Runner extends EventEmitter {
 		} );
 	}
 
-	run() {
+	run( path = process.cwd() ) {
+		if ( !isNonEmptyString( path ) ) {
+			throw new TypeError( 'Provided path must be a non-empty string' );
+		}
+
 		this.emit( 'start' );
 
 		const steps = [ ...this.steps ];
 
-		return this._processSteps( steps );
+		return this._processSteps( steps, path );
 	}
 
-	async _processSteps( steps ) {
+	async _processSteps( steps, path ) {
 		const finish = ( result ) => {
 			this.emit( 'end', result );
 
@@ -64,7 +62,7 @@ class Runner extends EventEmitter {
 		this.emit( 'step:start', step );
 
 		try {
-			const result = await step.run( this.path );
+			const result = await step.run( path );
 
 			if ( !isValidResult( result ) ) {
 				throw new TypeError( `Step ${ step.name } didn't return correct results` );
@@ -85,7 +83,7 @@ class Runner extends EventEmitter {
 			return finish( false );
 		}
 
-		return this._processSteps( steps );
+		return this._processSteps( steps, path );
 	}
 }
 

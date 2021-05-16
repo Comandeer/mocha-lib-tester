@@ -19,42 +19,6 @@ describe( 'Runner', () => {
 		expect( runner ).to.be.an.instanceOf( EventEmitter );
 	} );
 
-	describe( '#constructor()', () => {
-		it( 'requires non-empty string as the first parameter if it is present', () => {
-			assertParameter( {
-				invalids: [
-					'',
-					null,
-					[],
-					{},
-					() => {},
-					1,
-					'                 '
-				],
-				valids: [
-					undefined,
-					'.',
-					'somePath'
-				],
-				error: {
-					type: TypeError,
-					message: 'Provided path must be a non-empty string'
-				},
-				code( param ) {
-					new Runner( param );
-				}
-			} );
-		} );
-	} );
-
-	describe( '#path', () => {
-		it( 'defaults to process.cwd()', () => {
-			const runner = new Runner();
-
-			expect( runner.path ).to.equal( process.cwd() );
-		} );
-	} );
-
 	describe( '#steps', () => {
 		it( 'is a set', () => {
 			const runner = new Runner();
@@ -298,6 +262,35 @@ describe( 'Runner', () => {
 	} );
 
 	describe( '#run()', () => {
+		// #57
+		it( 'requires non-empty string as the first parameter if it is present', () => {
+			assertParameter( {
+				invalids: [
+					'',
+					null,
+					[],
+					{},
+					() => {},
+					1,
+					'                 '
+				],
+				valids: [
+					undefined,
+					'.',
+					'somePath'
+				],
+				error: {
+					type: TypeError,
+					message: 'Provided path must be a non-empty string'
+				},
+				code( param ) {
+					const runner = new Runner();
+
+					runner.run( param );
+				}
+			} );
+		} );
+
 		it( 'returns Promise resolving to boolean', () => {
 			const runner = new Runner();
 			const result = runner.run();
@@ -310,7 +303,40 @@ describe( 'Runner', () => {
 		} );
 
 		// #57
-		it( 'passes this.path to steps run method', async () => {
+		it( 'passes path to steps run method', async () => {
+			const expectedPath = 'hublabubla';
+			const runner = new Runner();
+			const resultsTemplate = {
+				ok: true,
+				results: {},
+				reporter() {}
+			};
+			const stub1 = stub().returns( { ...resultsTemplate } );
+			const stub2 = stub().returns( { ...resultsTemplate } );
+			const steps = [
+				{
+					id: 'step1',
+					name: 'Step #1',
+					run: stub1
+				},
+
+				{
+					id: 'step2',
+					name: 'Step #2',
+					run: stub2
+				}
+			];
+
+			runner.addSteps( steps );
+
+			await runner.run( expectedPath );
+
+			expect( stub1 ).to.have.been.calledOnceWithExactly( expectedPath );
+			expect( stub2 ).to.have.been.calledOnceWithExactly( expectedPath );
+		} );
+
+		// #57
+		it( 'uses process.cwd as path if it is not supplied', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
 				ok: true,
@@ -330,7 +356,7 @@ describe( 'Runner', () => {
 
 			await runner.run();
 
-			expect( stub1 ).to.have.been.calledOnceWithExactly( runner.path );
+			expect( stub1 ).to.have.been.calledOnceWithExactly( process.cwd() );
 		} );
 
 		it( 'runs all steps in preserved order', async () => {

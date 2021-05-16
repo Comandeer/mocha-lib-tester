@@ -47,7 +47,7 @@ class RunController {
 
 		this[ isInTheMiddleOfRunSymbol ] = true;
 
-		const result = await this.runner.run();
+		const result = await this.runner.run( this.path );
 		const exitCode = result ? 0 : 1;
 
 		this[ isInTheMiddleOfRunSymbol ] = false;
