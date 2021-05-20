@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-## [0.3.0]
+## [0.3.0] – 2021-05-20
 ### Added
 * [#65]: support for providing the steps to run as CLI arguments.
 ### Changed
