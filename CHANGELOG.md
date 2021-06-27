@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.4.0]
 ### Added
 * [#57]: support for watch mode.
+* [#70]: support for Node 16.
 
 ## [0.3.0] – 2021-05-20
 ### Added
@@ -42,6 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#60]: https://github.com/Comandeer/mocha-lib-tester/issues/60
 [#62]: https://github.com/Comandeer/mocha-lib-tester/issues/62
 [#65]: https://github.com/Comandeer/mocha-lib-tester/issues/65
+[#70]: https://github.com/Comandeer/mocha-lib-tester/issues/70
 
 [0.4.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.2...v0.3.0
