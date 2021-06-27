@@ -1,5 +1,5 @@
 import { resolve as resolvePath } from 'path';
-import touch from 'touch';
+import touch from './helpers/touch.js';
 import executeCLI from './helpers/executeCLI.js';
 import { cleanupFixtures, prepareCLIFixture } from './helpers/fixtures.js';
 import spawnCLI from './helpers/spawnCLI.js';
@@ -151,15 +151,13 @@ describe( 'mlt', () => {
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project src', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
-			const touchablePath = resolvePath( validProject, 'src', 'index.js' );
+			const touchablePath = resolvePath( validProject, 'src', 'dummy.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
 				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
-						return touch( touchablePath, {
-							force: true
-						} );
+						return touch( touchablePath );
 					},
 					timeout: DELAYED_CALLBACK_TIMEOUT
 				}
@@ -181,15 +179,13 @@ describe( 'mlt', () => {
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project tests', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
-			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
+			const touchablePath = resolvePath( validProject, 'tests', 'dummy.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ '--watch' ],
 				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
-						return touch( touchablePath, {
-							force: true
-						} );
+						return touch( touchablePath );
 					},
 					timeout: DELAYED_CALLBACK_TIMEOUT
 				}
@@ -211,15 +207,13 @@ describe( 'mlt', () => {
 
 		it( 'reruns only requested steps if .js file is modified in the project', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
-			const touchablePath = resolvePath( validProject, 'tests', 'index.js' );
+			const touchablePath = resolvePath( validProject, 'tests', 'dummy.js' );
 			const { stdout, stderr, exitCode } = await spawnCLI( validProject, {
 				args: [ 'lint', '--watch' ],
 				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
-						return touch( touchablePath, {
-							force: true
-						} );
+						return touch( touchablePath );
 					},
 					timeout: DELAYED_CALLBACK_TIMEOUT
 				}
