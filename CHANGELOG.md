@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-# [0.4.1] – 2021-06-27
+## [0.4.1] – 2021-06-27
 ### Added
 * [#74]: missing docs for the watch mode.
 
