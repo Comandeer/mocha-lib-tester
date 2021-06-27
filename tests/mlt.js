@@ -157,7 +157,7 @@ describe( 'mlt', () => {
 				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
-						touch( touchablePath, {
+						return touch( touchablePath, {
 							force: true
 						} );
 					},
@@ -187,7 +187,7 @@ describe( 'mlt', () => {
 				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
-						touch( touchablePath, {
+						return touch( touchablePath, {
 							force: true
 						} );
 					},
@@ -217,7 +217,7 @@ describe( 'mlt', () => {
 				killAfter: LONG_KILL_TIMEOUT,
 				delayedCallback: {
 					callback() {
-						touch( touchablePath, {
+						return touch( touchablePath, {
 							force: true
 						} );
 					},

@@ -11,6 +11,7 @@ function spawnCLI( projectPath, {
 	return new Promise( ( resolve, reject ) => {
 		let stdout = '';
 		let stderr = '';
+		let delayedCallbackPromise;
 		const mltProcess = spawn( mlt, args, {
 			cwd: projectPath,
 			env: Object.assign( {}, process.env, {
@@ -39,12 +40,18 @@ function spawnCLI( projectPath, {
 
 		if ( delayedCallback.callback ) {
 			setTimeout( () => {
-				delayedCallback.callback( mltProcess );
+				delayedCallbackPromise = delayedCallback.callback( mltProcess );
 			}, delayedCallback.timeout || 0 );
 		}
 
 		if ( typeof killAfter === 'number' ) {
 			setTimeout( () => {
+				if ( delayedCallbackPromise ) {
+					return delayedCallbackPromise.then( () => {
+						mltProcess.kill( 'SIGINT' );
+					} );
+				}
+
 				mltProcess.kill( 'SIGINT' );
 			}, killAfter );
 		}
