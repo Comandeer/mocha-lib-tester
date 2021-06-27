@@ -23,6 +23,8 @@ Just make it a npm script:
 }
 ```
 
+### Run only selected steps
+
 You can also run only selected steps, e.g.
 
 ```bash
@@ -39,6 +41,20 @@ The above command will run only Mocha tests and display code coverage info.
 |   test   |     Tester    |          Runs tests against the code.          |
 | coverage | Code Coverage | Gathers and displays info about code coverage. |
 | codecov  | CodeCov       | Uploads info about code coverage to CodeCov.   |
+
+### Watch mode
+
+The command also allows to run tests in a watch mode, which reruns tests every time any file changes in your project's `src/` and `tests/` directories. To use the watch mode just add `--watch` argument:
+
+```bash
+mlt --watch
+```
+
+You can also watch only selected steps, e.g.
+
+```bash
+mlt test --watch
+```
 
 ## Configuration
 
