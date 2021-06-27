@@ -6,10 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-## [0.4.0]
+## [0.4.0] – 2021-06-27
 ### Added
 * [#57]: support for watch mode.
 * [#70]: support for Node 16.
+
+### Changed
+* **BREAKING CHANGE**: updated dependencies:
+	* `mocha` to `9.x`,
+	* `sinon` to `11.x`,
+	* `@comandeer/eslint-config` to `0.4.x`,
+	* `yargs` to `17.x`.
 
 ## [0.3.0] – 2021-05-20
 ### Added
