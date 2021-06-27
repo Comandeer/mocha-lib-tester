@@ -3,6 +3,7 @@ import preset from '@babel/preset-env';
 
 function addBabelHook() {
 	babelRegister( {
+		cache: false,
 		babelrc: false,
 		presets: [
 			[

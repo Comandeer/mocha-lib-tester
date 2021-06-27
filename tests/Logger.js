@@ -3,7 +3,6 @@
 import EventEmitter from 'events';
 import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
-import { version } from '../package.json';
 import LoggerType from '../src/LoggerType.js';
 import LoggerColor from '../src/LoggerColor.js';
 import Logger from '../src/Logger.js';
@@ -214,16 +213,14 @@ describe( 'Logger', () => {
 
 	describe( 'listeners', () => {
 		describe( 'start', () => {
-			it( 'displays info about MLT', () => {
+			it( 'displays info about executing tests', () => {
 				const [ , eventEmitter ] = createLogger();
-				const expected1 = `MLT v${ version }`;
-				const expected2 = chalk.yellow( 'Executing tests…' );
+				const expected = chalk.yellow( 'Executing tests…' );
 
 				eventEmitter.emit( 'start' );
 
-				expect( console.log ).to.have.been.calledTwice;
-				expect( console.log.getCall( 0 ) ).to.have.been.calledWithExactly( expected1 );
-				expect( console.log.getCall( 1 ) ).to.have.been.calledWithExactly( expected2 );
+				expect( console.log ).to.have.been.calledOnce;
+				expect( console.log.getCall( 0 ) ).to.have.been.calledWithExactly( expected );
 			} );
 		} );
 

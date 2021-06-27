@@ -5,7 +5,6 @@ import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
 import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
-import { version } from '../package.json';
 
 const { spy, stub } = sinon;
 
@@ -93,6 +92,13 @@ describe( 'Runner', () => {
 						id: 'Some=id',
 						name: 'Step',
 						run() {}
+					},
+
+					{
+						id: 'Some=id',
+						name: 'Step',
+						watchable: false,
+						run() {}
 					}
 				],
 				valids: [
@@ -105,6 +111,13 @@ describe( 'Runner', () => {
 					{
 						id: 'some-id',
 						name: 'Step',
+						run() {}
+					},
+
+					{
+						id: 'another-step',
+						name: 'Step',
+						watchable: false,
 						run() {}
 					}
 				],
@@ -249,6 +262,35 @@ describe( 'Runner', () => {
 	} );
 
 	describe( '#run()', () => {
+		// #57
+		it( 'requires non-empty string as the first parameter if it is present', () => {
+			assertParameter( {
+				invalids: [
+					'',
+					null,
+					[],
+					{},
+					() => {},
+					1,
+					'                 '
+				],
+				valids: [
+					undefined,
+					'.',
+					'somePath'
+				],
+				error: {
+					type: TypeError,
+					message: 'Provided path must be a non-empty string'
+				},
+				code( param ) {
+					const runner = new Runner();
+
+					runner.run( param );
+				}
+			} );
+		} );
+
 		it( 'returns Promise resolving to boolean', () => {
 			const runner = new Runner();
 			const result = runner.run();
@@ -258,6 +300,63 @@ describe( 'Runner', () => {
 			return result.then( ( resolved ) => {
 				expect( resolved ).to.a( 'boolean' );
 			} );
+		} );
+
+		// #57
+		it( 'passes path to steps run method', async () => {
+			const expectedPath = 'hublabubla';
+			const runner = new Runner();
+			const resultsTemplate = {
+				ok: true,
+				results: {},
+				reporter() {}
+			};
+			const stub1 = stub().returns( { ...resultsTemplate } );
+			const stub2 = stub().returns( { ...resultsTemplate } );
+			const steps = [
+				{
+					id: 'step1',
+					name: 'Step #1',
+					run: stub1
+				},
+
+				{
+					id: 'step2',
+					name: 'Step #2',
+					run: stub2
+				}
+			];
+
+			runner.addSteps( steps );
+
+			await runner.run( expectedPath );
+
+			expect( stub1 ).to.have.been.calledOnceWithExactly( expectedPath );
+			expect( stub2 ).to.have.been.calledOnceWithExactly( expectedPath );
+		} );
+
+		// #57
+		it( 'uses process.cwd as path if it is not supplied', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				ok: true,
+				results: {},
+				reporter() {}
+			};
+			const stub1 = stub().returns( { ...resultsTemplate } );
+			const steps = [
+				{
+					id: 'step1',
+					name: 'Step #1',
+					run: stub1
+				}
+			];
+
+			runner.addSteps( steps );
+
+			await runner.run();
+
+			expect( stub1 ).to.have.been.calledOnceWithExactly( process.cwd() );
 		} );
 
 		it( 'runs all steps in preserved order', async () => {
@@ -670,7 +769,6 @@ describe( 'Runner', () => {
 				}
 			];
 			const expected = [
-				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ 'step1' ],
@@ -723,7 +821,6 @@ describe( 'Runner', () => {
 				}
 			];
 			const logExpected = [
-				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ 'step1' ],
@@ -773,7 +870,6 @@ describe( 'Runner', () => {
 				}
 			];
 			const logExpected = [
-				[ `MLT v${ version }` ],
 				[ chalk.yellow( 'Executing tests…' ) ],
 				[ chalk.blue( '---step1---' ) ],
 				[ chalk.red( 'There were some errors alonside the way 😿' ) ]

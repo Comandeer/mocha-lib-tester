@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import EventEmitter from 'events';
 import LoggerColor from './LoggerColor.js';
 import LoggerType from './LoggerType.js';
-import { version } from '../package.json';
 
 const colorMethods = new Map( [
 	[ LoggerColor.AUTO, ( value ) => {
@@ -58,7 +57,6 @@ class Logger {
 	}
 
 	onStart() {
-		this.log( `MLT v${ version }` );
 		this.log( 'Executing tests…', { color: LoggerColor.YELLOW } );
 	}
 

@@ -35,15 +35,19 @@ class Runner extends EventEmitter {
 		} );
 	}
 
-	run() {
+	run( path = process.cwd() ) {
+		if ( !isNonEmptyString( path ) ) {
+			throw new TypeError( 'Provided path must be a non-empty string' );
+		}
+
 		this.emit( 'start' );
 
 		const steps = [ ...this.steps ];
 
-		return this._processSteps( steps );
+		return this._processSteps( steps, path );
 	}
 
-	async _processSteps( steps ) {
+	async _processSteps( steps, path ) {
 		const finish = ( result ) => {
 			this.emit( 'end', result );
 
@@ -58,7 +62,7 @@ class Runner extends EventEmitter {
 		this.emit( 'step:start', step );
 
 		try {
-			const result = await step.run();
+			const result = await step.run( path );
 
 			if ( !isValidResult( result ) ) {
 				throw new TypeError( `Step ${ step.name } didn't return correct results` );
@@ -79,8 +83,12 @@ class Runner extends EventEmitter {
 			return finish( false );
 		}
 
-		return this._processSteps( steps );
+		return this._processSteps( steps, path );
 	}
+}
+
+function isNonEmptyString( value ) {
+	return typeof value === 'string' && value.trim().length > 0;
 }
 
 function isValidStep( step ) {

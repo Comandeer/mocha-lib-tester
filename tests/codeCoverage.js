@@ -1,6 +1,5 @@
 import { resolve as resolvePath } from 'path';
-import { existsSync as exists } from 'fs';
-import { sync as rimraf } from 'rimraf';
+import { removeSync as remove, existsSync as exists } from 'fs-extra';
 import assertParameter from './helpers/assertParameter.js';
 import validateResults from './helpers/validateResults.js';
 import fixture from './fixtures/coverageData.js';
@@ -79,7 +78,7 @@ describe( 'codeCoverage', () => {
 		afterEach( () => {
 			const coveragePath = resolvePath( projectPath, '.coverage' );
 
-			rimraf( coveragePath );
+			remove( coveragePath );
 		} );
 
 		it( 'generate .coverage directory in project path', async () => {
