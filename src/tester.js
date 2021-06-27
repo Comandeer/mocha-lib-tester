@@ -17,7 +17,7 @@ function tester( projectPath ) {
 
 	const mocha = new Mocha( {
 		reporter: MochaReporter,
-		timeout: 60000
+		timeout: 15000
 	} );
 	const tests = findTestFiles( projectPath );
 

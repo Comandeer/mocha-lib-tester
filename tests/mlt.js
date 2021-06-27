@@ -100,7 +100,7 @@ describe( 'mlt', () => {
 	describe( '--watch', () => {
 		const DELAYED_CALLBACK_TIMEOUT = 5000;
 		const SHORT_KILL_TIMEOUT = 5000;
-		const LONG_KILL_TIMEOUT = 20000;
+		const LONG_KILL_TIMEOUT = 10000;
 
 		it( 'does not terminate after full run', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
