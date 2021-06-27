@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
+## [0.4.0]
+### Added
+* [#57]: support for watch mode.
+
 ## [0.3.0] – 2021-05-20
 ### Added
 * [#65]: support for providing the steps to run as CLI arguments.
-* [#57]: support for watch mode.
+
 ### Changed
 * **BREAKING CHANGE**: update public API.
 * **BREAKING CHANGE**: update step definition to include `id` property.
@@ -39,6 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#62]: https://github.com/Comandeer/mocha-lib-tester/issues/62
 [#65]: https://github.com/Comandeer/mocha-lib-tester/issues/65
 
+[0.4.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.2.0...v0.2.1
