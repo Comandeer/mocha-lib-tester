@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 
-import chalk from 'chalk';
 import EventEmitter from 'events';
+import chalk from 'chalk';
+import Gauge from 'gauge';
 import LoggerColor from './LoggerColor.js';
 import LoggerType from './LoggerType.js';
 
@@ -26,6 +27,22 @@ const colorMethods = new Map( [
 		return chalk.red( value );
 	} ]
 ] );
+const gauge = new Gauge( process.stdout, {
+	template: [
+		{
+			type: 'activityIndicator',
+			kerning: 1,
+			length: 1
+		},
+
+		{
+			type: 'section',
+			kerning: 1,
+			default: 'Working…'
+		}
+	]
+} );
+let gaugeTimeout;
 
 class Logger {
 	constructor( runner ) {
@@ -62,9 +79,12 @@ class Logger {
 
 	onStepStart( { name } ) {
 		this.log( `---${ name }---`, { color: LoggerColor.BLUE } );
+		showGauge();
 	}
 
 	onStepEnd( { name }, { ok, results, reporter } ) {
+		hideGauge();
+
 		reporter( results, this );
 
 		if ( !ok ) {
@@ -102,6 +122,23 @@ function addListeners( logger ) {
 	runner.on( 'step:end', logger.onStepEnd.bind( logger ) );
 	runner.on( 'end', logger.onEnd.bind( logger ) );
 	runner.on( 'error', logger.onError.bind( logger ) );
+}
+
+function showGauge() {
+	const pulse = () => {
+		gauge.pulse();
+		gaugeTimeout = setTimeout( pulse, 500 );
+	};
+
+	gauge.show( 'Working…' );
+	pulse();
+}
+
+function hideGauge() {
+	clearTimeout( gaugeTimeout );
+	gauge.hide();
+
+	gaugeTimeout = null;
 }
 
 export default Logger;
