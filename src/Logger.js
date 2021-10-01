@@ -69,10 +69,10 @@ class Logger {
 		spinner.show();
 	}
 
-	onStepEnd( { name }, { ok, results, reporter } ) {
+	onStepEnd( { name, report }, { ok, results } ) {
 		spinner.hide();
 
-		reporter( results, this );
+		report( results, this );
 
 		if ( !ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {

@@ -99,8 +99,9 @@ function isValidStep( step ) {
 	const isIdValid = isValidStepId( step.id );
 	const isNameValid = typeof step.name === 'string' && step.name.trim().length > 0;
 	const isRunValid = typeof step.run === 'function';
+	const isReporterValid = typeof step.report === 'function';
 
-	return isIdValid && isNameValid && isRunValid;
+	return isIdValid && isNameValid && isRunValid && isReporterValid;
 
 	function isValidStepId( id ) {
 		if ( typeof id !== 'string' || id.trim().length === 0 ) {
@@ -121,8 +122,8 @@ function isValidResult( stepResults ) {
 	}
 
 	const isValidResults = stepResults.results && typeof stepResults.results === 'object';
-	const isValidReporter = typeof stepResults.reporter === 'function';
-	return isValidResults && isValidReporter;
+
+	return isValidResults;
 }
 
 export default Runner;

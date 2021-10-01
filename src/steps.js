@@ -3,6 +3,7 @@
 import { spawn } from 'threads';
 import { Thread } from 'threads';
 import { Worker } from 'threads';
+import linterReporter from './reporters/linter';
 import tester from './tester.js';
 import codeCoverage from './codeCoverage.js';
 import codecov from './codecov.js';
@@ -14,7 +15,8 @@ const steps = [
 		watchable: true,
 		run( projectPath ) {
 			return spawnWorker( './workers/linter.js', projectPath );
-		}
+		},
+		report: linterReporter
 	},
 
 	{
@@ -23,7 +25,8 @@ const steps = [
 		watchable: true,
 		run( projectPath ) {
 			return tester( projectPath );
-		}
+		},
+		report() {}
 	},
 
 	{
@@ -32,7 +35,8 @@ const steps = [
 		watchable: true,
 		run( projectPath ) {
 			return codeCoverage( projectPath, global.__mltCoverage__ );
-		}
+		},
+		report() {}
 	},
 
 	{
@@ -41,7 +45,8 @@ const steps = [
 		watchable: false,
 		run( projectPath ) {
 			return codecov( projectPath );
-		}
+		},
+		report() {}
 	}
 ];
 
