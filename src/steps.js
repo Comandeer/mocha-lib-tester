@@ -1,6 +1,8 @@
 /* istanbul ignore file */
 
-import linter from './linter.js';
+import { spawn } from 'threads';
+import { Thread } from 'threads';
+import { Worker } from 'threads';
 import tester from './tester.js';
 import codeCoverage from './codeCoverage.js';
 import codecov from './codecov.js';
@@ -11,7 +13,7 @@ const steps = [
 		name: 'Linter',
 		watchable: true,
 		run( projectPath ) {
-			return linter( projectPath );
+			return spawnWorker( './workers/linter.js', projectPath );
 		}
 	},
 
@@ -42,5 +44,15 @@ const steps = [
 		}
 	}
 ];
+
+async function spawnWorker( workerPath, ...workerArgs ) {
+	const worker = new Worker( workerPath );
+	const workerAPI = await spawn( worker );
+	const result = await workerAPI( ...workerArgs );
+
+	await Thread.terminate( workerAPI );
+
+	return result;
+}
 
 export default steps;
