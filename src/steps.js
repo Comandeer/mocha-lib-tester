@@ -4,7 +4,6 @@ import { spawn } from 'threads';
 import { Thread } from 'threads';
 import { Worker } from 'threads';
 import linterReporter from './reporters/linter';
-import tester from './tester.js';
 import codeCoverage from './codeCoverage.js';
 import codecov from './codecov.js';
 
@@ -24,9 +23,11 @@ const steps = [
 		name: 'Tester',
 		watchable: true,
 		run( projectPath ) {
-			return tester( projectPath );
+			return spawnWorker( './workers/tester.js', projectPath );
 		},
-		report() {}
+		report( { _output }, logger ) {
+			logger.log( _output );
+		}
 	},
 
 	{
