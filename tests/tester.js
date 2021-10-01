@@ -114,7 +114,11 @@ describe( 'tester', () => {
 
 		return tester( fixturePath ).then( ( { results, ok } ) => {
 			expect( ok ).to.equal( false );
-			expect( results ).to.deep.equal( expected );
+
+			const resultsWithoutOutput = { ...results };
+			delete resultsWithoutOutput._output;
+
+			expect( resultsWithoutOutput ).to.deep.equal( expected );
 		} );
 	} );
 

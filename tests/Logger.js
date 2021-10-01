@@ -242,12 +242,12 @@ describe( 'Logger', () => {
 			it( 'display info about correct step execution', () => {
 				const [ , eventEmitter ] = createLogger();
 				const step = {
-					name: 'hublabubla'
+					name: 'hublabubla',
+					report() {}
 				};
 				const results = {
 					ok: true,
-					results: {},
-					reporter() {}
+					results: {}
 				};
 				const expected = chalk.green( `Step ${ chalk.bold( step.name ) } finished successfully.` );
 
@@ -259,12 +259,12 @@ describe( 'Logger', () => {
 			it( 'display info about incorrect step execution', () => {
 				const [ , eventEmitter ] = createLogger();
 				const step = {
-					name: 'hublabubla'
+					name: 'hublabubla',
+					report() {}
 				};
 				const results = {
 					ok: false,
-					results: {},
-					reporter() {}
+					results: {}
 				};
 				const expected = chalk.red( `Step ${ chalk.bold( step.name ) } failed with errors. Skipping subsequent steps.` );
 
@@ -275,10 +275,11 @@ describe( 'Logger', () => {
 
 			it( 'invokes reporter with correct arguments', () => {
 				const [ logger, eventEmitter ] = createLogger();
-				const step = {
-					name: 'hublabubla'
-				};
 				const reporter = spy();
+				const step = {
+					name: 'hublabubla',
+					report: reporter
+				};
 				const results = {
 					ok: true,
 					results: {},
