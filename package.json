@@ -19,6 +19,7 @@
   "scripts": {
     "prebuild": "node dev/prepareChaiPreamble",
     "build": "rlb",
+	"postbuild": "cpy './src/workers/**/*.js' dist/workers",
     "pretest": "npm run build",
     "test": "node ./bin/mlt",
     "version": "npm test && npm run build && git add -f dist/",
