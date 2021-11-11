@@ -140,6 +140,100 @@ describe( 'Runner', () => {
 			} );
 		} );
 
+		it( 'requires valid `requires` property on the step', () => {
+			const runner = new Runner();
+
+			runner.addStep( {
+				id: 'step1',
+				name: 'Step',
+				run() {},
+				report() {}
+			} );
+
+			assertParameter( {
+				invalids: [
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: '',
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: 1,
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: true,
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: {},
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: [
+							'inexistentstep'
+						],
+						run() {},
+						report() {}
+					}
+				],
+				valids: [
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: [
+							'step1'
+						],
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step3',
+						name: 'Step',
+						requires: [
+							'step1',
+							'step2'
+						],
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step4',
+						name: 'Step',
+						requires: [],
+						run() {},
+						report() {}
+					}
+				],
+				error: {
+					type: TypeError,
+					message: 'Provided object must be a valid step definition'
+				},
+				code( param ) {
+					runner.addStep( param );
+				}
+			} );
+		} );
+
 		it( 'adds step to the runner', () => {
 			const runner = new Runner();
 			const step = {
@@ -362,8 +456,8 @@ describe( 'Runner', () => {
 
 			await runner.run( expectedPath );
 
-			expect( stub1 ).to.have.been.calledOnceWithExactly( expectedPath );
-			expect( stub2 ).to.have.been.calledOnceWithExactly( expectedPath );
+			expect( stub1 ).to.have.been.calledOnceWith( expectedPath );
+			expect( stub2 ).to.have.been.calledOnceWith( expectedPath );
 		} );
 
 		// #57
@@ -387,7 +481,7 @@ describe( 'Runner', () => {
 
 			await runner.run();
 
-			expect( stub1 ).to.have.been.calledOnceWithExactly( process.cwd() );
+			expect( stub1 ).to.have.been.calledOnceWith( process.cwd() );
 		} );
 
 		it( 'runs all steps in preserved order', async () => {
@@ -431,6 +525,57 @@ describe( 'Runner', () => {
 
 			expect( stub1 ).to.have.been.calledImmediatelyBefore( stub2 );
 			expect( stub2 ).to.have.been.calledImmediatelyBefore( stub3 );
+		} );
+
+		it( 'passes results of required steps to ran step', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				ok: true,
+				results: {}
+			};
+			const stub1Results = { ...resultsTemplate };
+			const stub2Results = { ...resultsTemplate };
+			const stub1 = stub().returns( stub1Results );
+			const stub2 = stub().returns( stub2Results );
+			const stub3 = stub().returns( { ...resultsTemplate } );
+			const steps = [
+				{
+					id: 'step1',
+					name: 'Step #1',
+					run: stub1,
+					report() {}
+				},
+
+				{
+					id: 'step2',
+					name: 'Step #2',
+					run: stub2,
+					report() {}
+				},
+
+				{
+					id: 'step3',
+					name: 'Step #3',
+					requires: [
+						'step1',
+						'step2'
+					],
+					run: stub3,
+					report() {}
+				}
+			];
+
+			runner.addSteps( steps );
+
+			await runner.run();
+
+			const requiredStepsResults = {
+				step1: stub1Results,
+				step2: stub2Results
+			};
+			const passedResults = stub3.getCall( 0 ).args[ 1 ];
+
+			expect( passedResults ).to.deep.equal( requiredStepsResults );
 		} );
 
 		it( 'throws when steps return invalid results', () => {

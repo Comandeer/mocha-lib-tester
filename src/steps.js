@@ -34,6 +34,9 @@ const steps = [
 		id: 'coverage',
 		name: 'Code Coverage',
 		watchable: true,
+		requires: [
+			'test'
+		],
 		run( projectPath ) {
 			return codeCoverage( projectPath, global.__mltCoverage__ );
 		},
