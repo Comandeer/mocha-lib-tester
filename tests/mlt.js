@@ -101,6 +101,7 @@ describe( 'mlt', () => {
 		const DELAYED_CALLBACK_TIMEOUT = 5000;
 		const SHORT_KILL_TIMEOUT = 5000;
 		const LONG_KILL_TIMEOUT = 10000;
+		const SIGINT_EXIT_CODE = 0;
 
 		it( 'does not terminate after full run', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
@@ -109,8 +110,7 @@ describe( 'mlt', () => {
 				killAfter: SHORT_KILL_TIMEOUT
 			} );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
 
 		it( 'runs all steps except CodeCov', async () => {
@@ -127,8 +127,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.equal( '', 'stderr is empty' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
 
 		it( 'skips subsequent steps when something fails but without process termination', async () => {
@@ -145,8 +144,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.match( /Step Tester/, 'stderr shows that the tester step failed' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project src', async () => {
@@ -173,8 +171,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.equal( '', 'stderr is empty' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project tests', async () => {
@@ -201,8 +198,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.equal( '', 'stderr is empty' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
 
 		it( 'reruns only requested steps if .js file is modified in the project', async () => {
@@ -229,8 +225,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.equal( '', 'stderr is empty' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
 	} );
 } );
