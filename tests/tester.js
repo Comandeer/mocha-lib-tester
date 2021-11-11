@@ -1,5 +1,5 @@
 import { join as joinPath } from 'path';
-import assertParameter from './helpers/assertParameter.js';
+import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
@@ -25,7 +25,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'expects path as a first parameter', () => {
-		assertParameter( {
+		assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
@@ -42,7 +42,7 @@ describe( 'tester', () => {
 				message: 'Provided path must be a non-empty string'
 			},
 			code( param ) {
-				tester( param );
+				return tester( param );
 			}
 		} );
 	} );
