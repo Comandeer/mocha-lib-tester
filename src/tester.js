@@ -1,11 +1,14 @@
+import { promisify } from 'util';
 import Mocha from 'mocha';
-import { sync as globSync } from 'glob';
+import glob from 'glob';
 import MochaReporter from './reporters/MochaReporter.js';
 import addChaiHook from './hooks/chai.js';
 import addBabelHook from './hooks/babel.js';
 import addIstanbulHook from './hooks/istanbul.js';
 
-function tester( projectPath ) {
+const globPromise = promisify( glob );
+
+async function tester( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
@@ -19,7 +22,7 @@ function tester( projectPath ) {
 		reporter: MochaReporter,
 		timeout: 15000
 	} );
-	const tests = findTestFiles( projectPath );
+	const tests = await findTestFiles( projectPath );
 
 	tests.forEach( ( test ) => {
 		mocha.addFile( test );
@@ -36,7 +39,7 @@ function tester( projectPath ) {
 }
 
 function findTestFiles( cwd ) {
-	return globSync( 'tests/**/*.js', {
+	return globPromise( 'tests/**/*.js', {
 		cwd,
 		ignore: [
 			'tests/fixtures/**/*.js',
