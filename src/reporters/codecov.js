@@ -4,7 +4,7 @@
 import LoggerColor from  '../LoggerColor.js';
 import LoggerType from '../LoggerType.js';
 
-function codecovReporter( results, logger ) {
+function codecovReporter( { results }, logger ) {
 	if ( results.skipped ) {
 		logger.log( 'CodeCov upload skipped', {
 			color: LoggerColor.YELLOW

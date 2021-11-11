@@ -26,8 +26,8 @@ const steps = [
 		run( projectPath ) {
 			return spawnWorker( './workers/tester.js', projectPath );
 		},
-		report( { _output }, logger ) {
-			logger.log( _output );
+		report( { output }, logger ) {
+			logger.log( output );
 		}
 	},
 

@@ -94,7 +94,7 @@ describe( 'codeCoverage', () => {
 
 		it( 'generate .coverage directory in project path', async () => {
 			const coveragePath = resolvePath( projectPath, '.coverage' );
-			const { results } = await codeCoverage( projectPath, fixture );
+			const results = await codeCoverage( projectPath, fixture );
 
 			// Prevent any logging.
 			sandbox.stub( process.stdout, 'write' );
@@ -105,7 +105,7 @@ describe( 'codeCoverage', () => {
 		} );
 
 		it( 'displays info inside the console', async () => {
-			const { results } = await codeCoverage( projectPath, fixture );
+			const results = await codeCoverage( projectPath, fixture );
 			const consoleStub = sandbox.stub( process.stdout, 'write' );
 
 			reporter( results, {}, context );

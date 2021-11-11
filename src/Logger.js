@@ -69,12 +69,12 @@ class Logger {
 		spinner.show();
 	}
 
-	onStepEnd( { name, report }, { ok, results }, context ) {
+	onStepEnd( { name, report }, results, context ) {
 		spinner.hide();
 
 		report( results, this, context );
 
-		if ( !ok ) {
+		if ( !results.ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {
 				color: LoggerColor.RED,
 				type: LoggerType.ERROR

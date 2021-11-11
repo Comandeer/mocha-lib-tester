@@ -34,8 +34,9 @@ class MochaReporter extends Spec {
 			Base.consoleLog = originalConsoleLog;
 
 			runner.suite.results = {
-				results: { _output: output.join( '\n' ), ...results },
-				ok
+				results,
+				ok,
+				output: output.join( '\n' )
 			};
 		} );
 	}

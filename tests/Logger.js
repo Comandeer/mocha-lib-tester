@@ -282,13 +282,15 @@ describe( 'Logger', () => {
 				};
 				const results = {
 					ok: true,
-					results: {},
-					reporter
+					results: {}
+				};
+				const context = {
+					projectPath: '.'
 				};
 
-				eventEmitter.emit( 'step:end', step, results );
+				eventEmitter.emit( 'step:end', step, results, context );
 
-				expect( reporter ).to.have.been.calledOnceWith( results.results, logger );
+				expect( reporter ).to.have.been.calledOnceWith( results, logger, context );
 			} );
 		} );
 
