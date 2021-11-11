@@ -3,6 +3,7 @@
 import { spawn } from 'threads';
 import { Thread } from 'threads';
 import { Worker } from 'threads';
+import codeCoverage from './codeCoverage.js';
 import linterReporter from './reporters/linter';
 import codeCoverageReporter from './reporters/codeCoverage';
 import codecovReporter from './reporters/codecov';
@@ -38,7 +39,7 @@ const steps = [
 			'test'
 		],
 		run( projectPath, { test: { coverage } } ) {
-			return spawnWorker( './workers/codeCoverage.js', projectPath, coverage );
+			return codeCoverage( projectPath, coverage );
 		},
 		report: codeCoverageReporter
 	},
