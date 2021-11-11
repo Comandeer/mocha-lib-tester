@@ -1,5 +1,4 @@
 import { createCoverageMap } from 'istanbul-lib-coverage';
-import codeCoverageReporter from './reporters/codeCoverage.js';
 
 function codeCoverage( projectPath, data ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
@@ -15,8 +14,7 @@ function codeCoverage( projectPath, data ) {
 	return Promise.resolve( {
 		name: 'code coverage',
 		ok: true,
-		results: coverageMap,
-		reporter: codeCoverageReporter( projectPath )
+		results: coverageMap
 	} );
 }
 

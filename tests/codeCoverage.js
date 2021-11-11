@@ -4,8 +4,9 @@ import assertParameter from './helpers/assertParameter.js';
 import validateResults from './helpers/validateResults.js';
 import fixture from './fixtures/coverageData.js';
 import codeCoverage from '../src/codeCoverage.js';
+import reporter from '../src/reporters/codeCoverage.js';
 
-const { spy, stub } = sinon;
+const { spy } = sinon;
 
 describe( 'codeCoverage', () => {
 	it( 'is a function', () => {
@@ -74,31 +75,41 @@ describe( 'codeCoverage', () => {
 
 	describe( 'reporter', () => {
 		const projectPath = resolvePath( __dirname, 'fixtures', 'emptyPackage' );
+		const context = {
+			projectPath
+		};
+		let sandbox;
+
+		beforeEach( () => {
+			sandbox = sinon.createSandbox();
+		} );
 
 		afterEach( () => {
 			const coveragePath = resolvePath( projectPath, '.coverage' );
 
 			remove( coveragePath );
+
+			sandbox.restore();
 		} );
 
 		it( 'generate .coverage directory in project path', async () => {
 			const coveragePath = resolvePath( projectPath, '.coverage' );
-			const { reporter, results } = await codeCoverage( projectPath, fixture );
-			const consoleStub = stub( process.stdout, 'write' );
+			const { results } = await codeCoverage( projectPath, fixture );
 
-			reporter( results );
+			// Prevent any logging.
+			sandbox.stub( process.stdout, 'write' );
 
-			consoleStub.restore();
+			reporter( results, {}, context );
+
 			expect( exists( coveragePath ) ).to.equal( true );
 		} );
 
 		it( 'displays info inside the console', async () => {
-			const { reporter, results } = await codeCoverage( projectPath, fixture );
-			const consoleStub = stub( process.stdout, 'write' );
+			const { results } = await codeCoverage( projectPath, fixture );
+			const consoleStub = sandbox.stub( process.stdout, 'write' );
 
-			reporter( results );
+			reporter( results, {}, context );
 
-			consoleStub.restore();
 			expect( consoleStub ).to.have.been.called;
 		} );
 	} );
