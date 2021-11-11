@@ -3,8 +3,6 @@
 import { spawn } from 'threads';
 import { Thread } from 'threads';
 import { Worker } from 'threads';
-import codeCoverage from './codeCoverage.js';
-import codecov from './codecov.js';
 import linterReporter from './reporters/linter';
 import codeCoverageReporter from './reporters/codeCoverage';
 import codecovReporter from './reporters/codecov';
@@ -40,7 +38,7 @@ const steps = [
 			'test'
 		],
 		run( projectPath, { test: { coverage } } ) {
-			return codeCoverage( projectPath, coverage );
+			return spawnWorker( './workers/codeCoverage.js', projectPath, coverage );
 		},
 		report: codeCoverageReporter
 	},
@@ -50,7 +48,7 @@ const steps = [
 		name: 'CodeCov',
 		watchable: false,
 		run( projectPath ) {
-			return codecov( projectPath );
+			return spawnWorker( './workers/codecov.js', projectPath );
 		},
 		report: codecovReporter
 	}

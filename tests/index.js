@@ -5,7 +5,9 @@ describe( 'index', () => {
 		const expectedExports = [
 			'mlt',
 			'linter',
-			'tester'
+			'tester',
+			'codeCoverage',
+			'codecov'
 		];
 		const actualExports = Object.keys( pkg );
 
