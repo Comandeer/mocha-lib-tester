@@ -60,12 +60,13 @@ class Runner extends EventEmitter {
 			return result;
 		};
 		const step = steps.shift();
+		const context = this._constructContext( path );
 
 		if ( !step ) {
 			return finish( true );
 		}
 
-		this.emit( 'step:start', step );
+		this.emit( 'step:start', step, context );
 
 		try {
 			const requiresParameter = this._constructRequiresParameter( step );
@@ -78,7 +79,7 @@ class Runner extends EventEmitter {
 
 			this[ stepResultsSymbol ][ step.id ] = result;
 
-			this.emit( 'step:end', step, result );
+			this.emit( 'step:end', step, result, context );
 
 			if ( !result.ok ) {
 				return finish( false );
@@ -108,6 +109,12 @@ class Runner extends EventEmitter {
 
 			return { ...parameter, ...results };
 		}, {} );
+	}
+
+	_constructContext( projectPath ) {
+		return {
+			projectPath
+		};
 	}
 }
 

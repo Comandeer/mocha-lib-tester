@@ -822,10 +822,23 @@ describe( 'Runner', () => {
 
 				await runner.run();
 
-				expect( startListener ).to.have.been.calledWithExactly( steps[ 0 ] );
-				expect( startListener ).to.have.been.calledWithExactly( steps[ 1 ] );
-				expect( endListener ).to.have.been.calledWithExactly( steps[ 0 ], results1 );
-				expect( endListener ).to.have.been.calledWithExactly( steps[ 1 ], results2 );
+				expect( startListener ).to.have.been.calledWith( steps[ 0 ] );
+				expect( startListener ).to.have.been.calledWith( steps[ 1 ] );
+				expect( endListener ).to.have.been.calledWith( steps[ 0 ], results1 );
+				expect( endListener ).to.have.been.calledWith( steps[ 1 ], results2 );
+
+				const startFirstRunContext = startListener.getCall( 0 ).args[ 1 ];
+				const startSecondRunContext = startListener.getCall( 1 ).args[ 1 ];
+				const endFirstRunContext = endListener.getCall( 0 ).args[ 2 ];
+				const endSecondRunContext = endListener.getCall( 1 ).args[ 2 ];
+				const expectedContext = {
+					projectPath: process.cwd()
+				};
+
+				expect( startFirstRunContext ).to.deep.equal( expectedContext );
+				expect( startSecondRunContext ).to.deep.equal( expectedContext );
+				expect( endFirstRunContext ).to.deep.equal( expectedContext );
+				expect( endSecondRunContext ).to.deep.equal( expectedContext );
 			} );
 		} );
 
