@@ -3,10 +3,11 @@
 import { spawn } from 'threads';
 import { Thread } from 'threads';
 import { Worker } from 'threads';
-import linterReporter from './reporters/linter';
-import codeCoverageReporter from './reporters/codeCoverage';
 import codeCoverage from './codeCoverage.js';
 import codecov from './codecov.js';
+import linterReporter from './reporters/linter';
+import codeCoverageReporter from './reporters/codeCoverage';
+import codecovReporter from './reporters/codecov';
 
 const steps = [
 	{
@@ -51,7 +52,7 @@ const steps = [
 		run( projectPath ) {
 			return codecov( projectPath );
 		},
-		report() {}
+		report: codecovReporter
 	}
 ];
 
