@@ -85,6 +85,8 @@ class Logger {
 	}
 
 	onEnd( result ) {
+		spinner.hide();
+
 		if ( !result ) {
 			return this.log( 'There were some errors alonside the way 😿', { color: LoggerColor.RED } );
 		}
@@ -93,6 +95,8 @@ class Logger {
 	}
 
 	onError( error ) {
+		spinner.hide();
+
 		this.log( '🚨 Error occured:', {
 			color: LoggerColor.RED,
 			type: LoggerType.ERROR
