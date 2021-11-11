@@ -98,9 +98,9 @@ describe( 'mlt', () => {
 
 	// #57
 	describe( '--watch', () => {
-		const DELAYED_CALLBACK_TIMEOUT = 5000;
-		const SHORT_KILL_TIMEOUT = 5000;
-		const LONG_KILL_TIMEOUT = 10000;
+		const DELAYED_CALLBACK_TIMEOUT = 15000;
+		const SHORT_KILL_TIMEOUT = 15000;
+		const LONG_KILL_TIMEOUT = 25000;
 		const SIGINT_EXIT_CODE = 0;
 
 		it( 'does not terminate after full run', async () => {

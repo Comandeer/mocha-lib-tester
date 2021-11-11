@@ -20,7 +20,7 @@ async function tester( projectPath ) {
 
 	const mocha = new Mocha( {
 		reporter: MochaReporter,
-		timeout: 15000
+		timeout: 30000
 	} );
 	const tests = await findTestFiles( projectPath );
 
