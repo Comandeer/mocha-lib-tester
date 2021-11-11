@@ -37,8 +37,8 @@ const steps = [
 		requires: [
 			'test'
 		],
-		run( projectPath ) {
-			return codeCoverage( projectPath, global.__mltCoverage__ );
+		run( projectPath, { test: { coverage } } ) {
+			return codeCoverage( projectPath, coverage );
 		},
 		report() {}
 	},

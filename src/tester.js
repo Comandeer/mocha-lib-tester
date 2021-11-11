@@ -32,7 +32,8 @@ async function tester( projectPath ) {
 		mocha.run( () => {
 			resolve( {
 				name: 'tester',
-				...mocha.suite.results
+				...mocha.suite.results,
+				coverage: global.__mltCoverage__
 			} );
 		} );
 	} );
