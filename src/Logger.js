@@ -28,7 +28,8 @@ const colorMethods = new Map( [
 	} ]
 ] );
 const spinner = new Spinner( {
-	label: 'Working…'
+	label: 'Working…',
+	stdout: process.stderr
 } );
 
 class Logger {

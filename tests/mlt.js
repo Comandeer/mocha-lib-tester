@@ -4,6 +4,8 @@ import executeCLI from './helpers/executeCLI.js';
 import { cleanupFixtures, prepareCLIFixture } from './helpers/fixtures.js';
 import spawnCLI from './helpers/spawnCLI.js';
 
+const stderrErrorRegex = /failed with errors|Error occured:/;
+
 describe( 'mlt', () => {
 	afterEach( cleanupFixtures );
 
@@ -43,7 +45,7 @@ describe( 'mlt', () => {
 		expect( stdout ).to.match( /---Code Coverage---/, 'code coverage step is visible in the output' );
 		expect( stdout ).to.match( /---CodeCov---/, 'codecov step is visible in the output' );
 
-		expect( stderr ).to.equal( '', 'stderr is empty' );
+		expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 		expect( exitCode ).to.equal( 0 );
 	} );
@@ -60,7 +62,7 @@ describe( 'mlt', () => {
 		expect( stdout ).not.to.match( /---Code Coverage---/, 'code coverage step is not visible in the output' );
 		expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-		expect( stderr ).to.equal( '', 'stderr is empty' );
+		expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 		expect( exitCode ).to.equal( 0 );
 	} );
@@ -74,7 +76,7 @@ describe( 'mlt', () => {
 
 		expect( stdout ).to.match( /---Tester---.+?---Linter---/s, 'order is preserved in output' );
 
-		expect( stderr ).to.equal( '', 'stderr is empty' );
+		expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 		expect( exitCode ).to.equal( 0 );
 	} );
@@ -125,7 +127,7 @@ describe( 'mlt', () => {
 			expect( stdout ).to.match( /---Code Coverage---/, 'code coverage step is visible in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
@@ -169,7 +171,7 @@ describe( 'mlt', () => {
 			expect( stdout ).to.match( /---Code Coverage---.+?---Code Coverage---/s, 'code coverage step is visible twice in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
@@ -196,7 +198,7 @@ describe( 'mlt', () => {
 			expect( stdout ).to.match( /---Code Coverage---.+?---Code Coverage---/s, 'code coverage step is visible twice in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
@@ -223,7 +225,7 @@ describe( 'mlt', () => {
 			expect( stdout ).not.to.match( /---Code Coverage---/s, 'code coverage step is not visible in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
 		} );
