@@ -103,7 +103,10 @@ describe( 'mlt', () => {
 		const DELAYED_CALLBACK_TIMEOUT = 15000;
 		const SHORT_KILL_TIMEOUT = 15000;
 		const LONG_KILL_TIMEOUT = 25000;
-		const SIGINT_EXIT_CODE = 0;
+		const SIGINT_EXIT_CODES = [
+			0,
+			null
+		];
 
 		it( 'does not terminate after full run', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
@@ -112,7 +115,7 @@ describe( 'mlt', () => {
 				killAfter: SHORT_KILL_TIMEOUT
 			} );
 
-			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'runs all steps except CodeCov', async () => {
@@ -129,7 +132,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'skips subsequent steps when something fails but without process termination', async () => {
@@ -146,7 +149,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.match( /Step Tester/, 'stderr shows that the tester step failed' );
 
-			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project src', async () => {
@@ -173,7 +176,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project tests', async () => {
@@ -200,7 +203,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'reruns only requested steps if .js file is modified in the project', async () => {
@@ -227,7 +230,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			expect( exitCode ).to.equal( SIGINT_EXIT_CODE );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 	} );
 } );
