@@ -19,7 +19,7 @@
   "scripts": {
     "prebuild": "node dev/prepareChaiPreamble",
     "build": "rlb",
-	"postbuild": "cpy './src/workers/**/*.js' dist/workers",
+    "postbuild": "node dev/copyWorkers",
     "pretest": "npm run build",
     "test": "node ./bin/mlt",
     "version": "npm test && npm run build && git add -f dist/",
@@ -106,7 +106,6 @@
     "@babel/types": "^7.14.8",
     "@comandeer/rollup-lib-bundler": "^0.14.0",
     "commitplease": "^3.2.0",
-    "cpy-cli": "^3.1.1",
     "cross-spawn": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "fs-extra": "^10.0.0",
