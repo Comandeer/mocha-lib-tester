@@ -19,6 +19,7 @@
   "scripts": {
     "prebuild": "node dev/prepareChaiPreamble",
     "build": "rlb",
+    "postbuild": "node dev/copyWorkers",
     "pretest": "npm run build",
     "test": "node ./bin/mlt",
     "version": "npm test && npm run build && git add -f dist/",
@@ -98,6 +99,7 @@
     "proxyquire": "^2.1.3",
     "sinon": "^11.1.1",
     "sinon-chai": "^3.7.0",
+    "threads": "^1.7.0",
     "yargs": "^17.0.1"
   },
   "devDependencies": {

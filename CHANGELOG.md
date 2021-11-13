@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
+## [0.6.0]
+### Added
+* [#81]: **BREAKING CHANGE**: run steps in worker threads.
+
+### Changed
+* **BREAKING CHANGE**: update public exports.
+* **BREAKING CHANGE**: update flow of steps.
+
 ## [0.5.0] – 2021-06-29
 ### Added
 * [#72]: spinners for every step to indicate progress.
@@ -61,7 +69,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#70]: https://github.com/Comandeer/mocha-lib-tester/issues/70
 [#72]: https://github.com/Comandeer/mocha-lib-tester/issues/72
 [#74]: https://github.com/Comandeer/mocha-lib-tester/issues/74
+[#81]: https://github.com/Comandeer/mocha-lib-tester/issues/81
 
+[0.6.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.3.0...v0.4.0

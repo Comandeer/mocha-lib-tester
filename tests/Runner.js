@@ -99,26 +99,129 @@ describe( 'Runner', () => {
 						name: 'Step',
 						watchable: false,
 						run() {}
+					},
+
+					{
+						id: 'step',
+						name: 'Step',
+						run() {}
 					}
 				],
 				valids: [
 					{
 						id: 'step',
 						name: 'Step',
-						run() {}
+						run() {},
+						report() {}
 					},
 
 					{
 						id: 'some-id',
 						name: 'Step',
-						run() {}
+						run() {},
+						report() {}
 					},
 
 					{
 						id: 'another-step',
 						name: 'Step',
 						watchable: false,
-						run() {}
+						run() {},
+						report() {}
+					}
+				],
+				error: {
+					type: TypeError,
+					message: 'Provided object must be a valid step definition'
+				},
+				code( param ) {
+					runner.addStep( param );
+				}
+			} );
+		} );
+
+		it( 'requires valid `requires` property on the step', () => {
+			const runner = new Runner();
+
+			runner.addStep( {
+				id: 'step1',
+				name: 'Step',
+				run() {},
+				report() {}
+			} );
+
+			assertParameter( {
+				invalids: [
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: '',
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: 1,
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: true,
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: {},
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: [
+							'inexistentstep'
+						],
+						run() {},
+						report() {}
+					}
+				],
+				valids: [
+					{
+						id: 'step2',
+						name: 'Step',
+						requires: [
+							'step1'
+						],
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step3',
+						name: 'Step',
+						requires: [
+							'step1',
+							'step2'
+						],
+						run() {},
+						report() {}
+					},
+
+					{
+						id: 'step4',
+						name: 'Step',
+						requires: [],
+						run() {},
+						report() {}
 					}
 				],
 				error: {
@@ -136,7 +239,8 @@ describe( 'Runner', () => {
 			const step = {
 				id: 'step',
 				name: 'Step',
-				run() {}
+				run() {},
+				report() {}
 			};
 
 			runner.addStep( step );
@@ -149,7 +253,8 @@ describe( 'Runner', () => {
 			const step = {
 				id: 'step',
 				name: 'Step',
-				run() {}
+				run() {},
+				report() {}
 			};
 
 			runner.addStep( step );
@@ -198,10 +303,8 @@ describe( 'Runner', () => {
 							name: '  		     	',
 							run() {}
 						}
-					]
-				],
-				valids: [
-					[],
+					],
+
 					[
 						{
 							id: 'step1',
@@ -213,6 +316,24 @@ describe( 'Runner', () => {
 							id: 'step2',
 							name: 'Another Step',
 							run() {}
+						}
+					]
+				],
+				valids: [
+					[],
+					[
+						{
+							id: 'step1',
+							name: 'Step',
+							run() {},
+							report() {}
+						},
+
+						{
+							id: 'step2',
+							name: 'Another Step',
+							run() {},
+							report() {}
 						}
 					]
 				],
@@ -232,13 +353,15 @@ describe( 'Runner', () => {
 				{
 					id: 'step1',
 					name: 'Step',
-					run() {}
+					run() {},
+					report() {}
 				},
 
 				{
 					id: 'step2',
 					name: 'Another Step',
-					run() {}
+					run() {},
+					report() {}
 				}
 			];
 
@@ -252,7 +375,8 @@ describe( 'Runner', () => {
 			const step = {
 				id: 'step',
 				name: 'Step',
-				run() {}
+				run() {},
+				report() {}
 			};
 
 			runner.addSteps( [ step, step ] );
@@ -308,8 +432,7 @@ describe( 'Runner', () => {
 			const runner = new Runner();
 			const resultsTemplate = {
 				ok: true,
-				results: {},
-				reporter() {}
+				results: {}
 			};
 			const stub1 = stub().returns( { ...resultsTemplate } );
 			const stub2 = stub().returns( { ...resultsTemplate } );
@@ -317,13 +440,15 @@ describe( 'Runner', () => {
 				{
 					id: 'step1',
 					name: 'Step #1',
-					run: stub1
+					run: stub1,
+					report() {}
 				},
 
 				{
 					id: 'step2',
 					name: 'Step #2',
-					run: stub2
+					run: stub2,
+					report() {}
 				}
 			];
 
@@ -331,8 +456,8 @@ describe( 'Runner', () => {
 
 			await runner.run( expectedPath );
 
-			expect( stub1 ).to.have.been.calledOnceWithExactly( expectedPath );
-			expect( stub2 ).to.have.been.calledOnceWithExactly( expectedPath );
+			expect( stub1 ).to.have.been.calledOnceWith( expectedPath );
+			expect( stub2 ).to.have.been.calledOnceWith( expectedPath );
 		} );
 
 		// #57
@@ -340,15 +465,15 @@ describe( 'Runner', () => {
 			const runner = new Runner();
 			const resultsTemplate = {
 				ok: true,
-				results: {},
-				reporter() {}
+				results: {}
 			};
 			const stub1 = stub().returns( { ...resultsTemplate } );
 			const steps = [
 				{
 					id: 'step1',
 					name: 'Step #1',
-					run: stub1
+					run: stub1,
+					report() {}
 				}
 			];
 
@@ -356,15 +481,14 @@ describe( 'Runner', () => {
 
 			await runner.run();
 
-			expect( stub1 ).to.have.been.calledOnceWithExactly( process.cwd() );
+			expect( stub1 ).to.have.been.calledOnceWith( process.cwd() );
 		} );
 
 		it( 'runs all steps in preserved order', async () => {
 			const runner = new Runner();
 			const resultsTemplate = {
 				ok: true,
-				results: {},
-				reporter() {}
+				results: {}
 			};
 			const stub1 = stub().returns( { ...resultsTemplate } );
 			const stub2 = stub().returns( { ...resultsTemplate } );
@@ -373,19 +497,22 @@ describe( 'Runner', () => {
 				{
 					id: 'step1',
 					name: 'Step #1',
-					run: stub1
+					run: stub1,
+					report() {}
 				},
 
 				{
 					id: 'step2',
 					name: 'Step #2',
-					run: stub2
+					run: stub2,
+					report() {}
 				},
 
 				{
 					id: 'step3',
 					name: 'Step #3',
-					run: stub3
+					run: stub3,
+					report() {}
 				}
 			];
 
@@ -400,12 +527,64 @@ describe( 'Runner', () => {
 			expect( stub2 ).to.have.been.calledImmediatelyBefore( stub3 );
 		} );
 
+		it( 'passes results of required steps to ran step', async () => {
+			const runner = new Runner();
+			const resultsTemplate = {
+				ok: true,
+				results: {}
+			};
+			const stub1Results = { ...resultsTemplate };
+			const stub2Results = { ...resultsTemplate };
+			const stub1 = stub().returns( stub1Results );
+			const stub2 = stub().returns( stub2Results );
+			const stub3 = stub().returns( { ...resultsTemplate } );
+			const steps = [
+				{
+					id: 'step1',
+					name: 'Step #1',
+					run: stub1,
+					report() {}
+				},
+
+				{
+					id: 'step2',
+					name: 'Step #2',
+					run: stub2,
+					report() {}
+				},
+
+				{
+					id: 'step3',
+					name: 'Step #3',
+					requires: [
+						'step1',
+						'step2'
+					],
+					run: stub3,
+					report() {}
+				}
+			];
+
+			runner.addSteps( steps );
+
+			await runner.run();
+
+			const requiredStepsResults = {
+				step1: stub1Results,
+				step2: stub2Results
+			};
+			const passedResults = stub3.getCall( 0 ).args[ 1 ];
+
+			expect( passedResults ).to.deep.equal( requiredStepsResults );
+		} );
+
 		it( 'throws when steps return invalid results', () => {
 			const runner = new Runner();
 			const step = {
 				id: 'step',
 				name: 'Step',
-				run() {}
+				run() {},
+				report() {}
 			};
 
 			runner.addStep( step );
@@ -423,7 +602,8 @@ describe( 'Runner', () => {
 				name: 'Step',
 				run() {
 					throw new Error( 'Thrown' );
-				}
+				},
+				report() {}
 			};
 
 			runner.addStep( step );
@@ -440,7 +620,8 @@ describe( 'Runner', () => {
 				name: 'Step',
 				run() {
 					return Promise.reject( new Error( 'Reject' ) );
-				}
+				},
+				report() {}
 			};
 
 			runner.addStep( step );
@@ -460,10 +641,10 @@ describe( 'Runner', () => {
 					run() {
 						return {
 							ok: false,
-							results: {},
-							reporter() {}
+							results: {}
 						};
-					}
+					},
+					report() {}
 				},
 
 				{
@@ -472,10 +653,10 @@ describe( 'Runner', () => {
 					run() {
 						return {
 							ok: true,
-							results: {},
-							reporter() {}
+							results: {}
 						};
-					}
+					},
+					report() {}
 				}
 			];
 			const trueSteps = [
@@ -485,10 +666,10 @@ describe( 'Runner', () => {
 					run() {
 						return {
 							ok: true,
-							results: {},
-							reporter() {}
+							results: {}
 						};
-					}
+					},
+					report() {}
 				},
 
 				{
@@ -497,10 +678,10 @@ describe( 'Runner', () => {
 					run() {
 						return {
 							ok: true,
-							results: {},
-							reporter() {}
+							results: {}
 						};
-					}
+					},
+					report() {}
 				}
 			];
 
@@ -518,36 +699,36 @@ describe( 'Runner', () => {
 			const runner = new Runner();
 			const stub1 = stub().returns( {
 				ok: true,
-				results: {},
-				reporter() {}
+				results: {}
 			} );
 			const stub2 = stub().returns( {
 				ok: false,
-				results: {},
-				reporter() {}
+				results: {}
 			} );
 			const stub3 = stub().returns( {
 				ok: false,
-				results: {},
-				reporter() {}
+				results: {}
 			} );
 			const steps = [
 				{
 					id: 'step1',
 					name: 'Step #1',
-					run: stub1
+					run: stub1,
+					report() {}
 				},
 
 				{
 					id: 'step2',
 					name: 'Step #2',
-					run: stub2
+					run: stub2,
+					report() {}
 				},
 
 				{
 					id: 'step3',
 					name: 'Step #3',
-					run: stub3
+					run: stub3,
+					report() {}
 				}
 			];
 
@@ -572,10 +753,10 @@ describe( 'Runner', () => {
 				run() {
 					return {
 						ok: true,
-						results: {},
-						reporter() {}
+						results: {}
 					};
-				}
+				},
+				report() {}
 			};
 
 			runner.addStep( step );
@@ -607,7 +788,7 @@ describe( 'Runner', () => {
 				const resultsTemplate = {
 					ok: true,
 					results: {},
-					reporter() {}
+					report() {}
 				};
 				const results1 = { ...resultsTemplate };
 				const results2 = { ...resultsTemplate };
@@ -617,7 +798,8 @@ describe( 'Runner', () => {
 						name: 'Step #1',
 						run() {
 							return results1;
-						}
+						},
+						report() {}
 					},
 
 					{
@@ -625,7 +807,8 @@ describe( 'Runner', () => {
 						name: 'Step #2',
 						run() {
 							return results2;
-						}
+						},
+						report() {}
 					}
 				];
 
@@ -639,10 +822,23 @@ describe( 'Runner', () => {
 
 				await runner.run();
 
-				expect( startListener ).to.have.been.calledWithExactly( steps[ 0 ] );
-				expect( startListener ).to.have.been.calledWithExactly( steps[ 1 ] );
-				expect( endListener ).to.have.been.calledWithExactly( steps[ 0 ], results1 );
-				expect( endListener ).to.have.been.calledWithExactly( steps[ 1 ], results2 );
+				expect( startListener ).to.have.been.calledWith( steps[ 0 ] );
+				expect( startListener ).to.have.been.calledWith( steps[ 1 ] );
+				expect( endListener ).to.have.been.calledWith( steps[ 0 ], results1 );
+				expect( endListener ).to.have.been.calledWith( steps[ 1 ], results2 );
+
+				const startFirstRunContext = startListener.getCall( 0 ).args[ 1 ];
+				const startSecondRunContext = startListener.getCall( 1 ).args[ 1 ];
+				const endFirstRunContext = endListener.getCall( 0 ).args[ 2 ];
+				const endSecondRunContext = endListener.getCall( 1 ).args[ 2 ];
+				const expectedContext = {
+					projectPath: process.cwd()
+				};
+
+				expect( startFirstRunContext ).to.deep.equal( expectedContext );
+				expect( startSecondRunContext ).to.deep.equal( expectedContext );
+				expect( endFirstRunContext ).to.deep.equal( expectedContext );
+				expect( endSecondRunContext ).to.deep.equal( expectedContext );
 			} );
 		} );
 
@@ -653,7 +849,8 @@ describe( 'Runner', () => {
 					name: 'Step',
 					run() {
 						throw new Error( 'Some error' );
-					}
+					},
+					report() {}
 				};
 				const runner = new Runner();
 				const endListener = spy();
@@ -678,7 +875,8 @@ describe( 'Runner', () => {
 					name: 'Step',
 					run() {
 						throw error;
-					}
+					},
+					report() {}
 				};
 				const runner = new Runner();
 				const errorListener = spy();
@@ -701,7 +899,8 @@ describe( 'Runner', () => {
 					name: 'Step',
 					run() {
 						return;
-					}
+					},
+					report() {}
 				};
 				const runner = new Runner();
 				const errorListener = spy();
@@ -746,12 +945,10 @@ describe( 'Runner', () => {
 					id: 'step1',
 					name: 'step1',
 					run() {
-						return {
-							reporter() {
-								console.log( 'step1' );
-							},
-							...resultsTemplate
-						};
+						return { ...resultsTemplate };
+					},
+					report() {
+						console.log( 'step1' );
 					}
 				},
 
@@ -759,12 +956,10 @@ describe( 'Runner', () => {
 					id: 'step2',
 					name: 'step2',
 					run() {
-						return {
-							reporter() {
-								console.log( 'step2' );
-							},
-							...resultsTemplate
-						};
+						return { ...resultsTemplate };
+					},
+					report() {
+						console.log( 'step2' );
 					}
 				}
 			];
@@ -798,12 +993,10 @@ describe( 'Runner', () => {
 					id: 'step1',
 					name: 'step1',
 					run() {
-						return {
-							reporter() {
-								console.log( 'step1' );
-							},
-							...resultsTemplate
-						};
+						return { ...resultsTemplate };
+					},
+					report() {
+						console.log( 'step1' );
 					}
 				},
 
@@ -811,12 +1004,10 @@ describe( 'Runner', () => {
 					id: 'step2',
 					name: 'step2',
 					run() {
-						return {
-							reporter() {
-								console.log( 'step2' );
-							},
-							...resultsTemplate
-						};
+						return { ...resultsTemplate };
+					},
+					report() {
+						console.log( 'step2' );
 					}
 				}
 			];
@@ -853,19 +1044,18 @@ describe( 'Runner', () => {
 					name: 'step1',
 					run() {
 						throw error;
-					}
+					},
+					report() {}
 				},
 
 				{
 					id: 'step2',
 					name: 'step2',
 					run() {
-						return {
-							reporter() {
-								console.log( 'step2' );
-							},
-							...resultsTemplate
-						};
+						return { ...resultsTemplate };
+					},
+					report() {
+						console.log( 'step2' );
 					}
 				}
 			];

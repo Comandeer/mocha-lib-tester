@@ -4,6 +4,8 @@ import executeCLI from './helpers/executeCLI.js';
 import { cleanupFixtures, prepareCLIFixture } from './helpers/fixtures.js';
 import spawnCLI from './helpers/spawnCLI.js';
 
+const stderrErrorRegex = /failed with errors|Error occured:/;
+
 describe( 'mlt', () => {
 	afterEach( cleanupFixtures );
 
@@ -43,7 +45,7 @@ describe( 'mlt', () => {
 		expect( stdout ).to.match( /---Code Coverage---/, 'code coverage step is visible in the output' );
 		expect( stdout ).to.match( /---CodeCov---/, 'codecov step is visible in the output' );
 
-		expect( stderr ).to.equal( '', 'stderr is empty' );
+		expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 		expect( exitCode ).to.equal( 0 );
 	} );
@@ -60,7 +62,7 @@ describe( 'mlt', () => {
 		expect( stdout ).not.to.match( /---Code Coverage---/, 'code coverage step is not visible in the output' );
 		expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-		expect( stderr ).to.equal( '', 'stderr is empty' );
+		expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 		expect( exitCode ).to.equal( 0 );
 	} );
@@ -74,7 +76,7 @@ describe( 'mlt', () => {
 
 		expect( stdout ).to.match( /---Tester---.+?---Linter---/s, 'order is preserved in output' );
 
-		expect( stderr ).to.equal( '', 'stderr is empty' );
+		expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
 		expect( exitCode ).to.equal( 0 );
 	} );
@@ -98,9 +100,13 @@ describe( 'mlt', () => {
 
 	// #57
 	describe( '--watch', () => {
-		const DELAYED_CALLBACK_TIMEOUT = 5000;
-		const SHORT_KILL_TIMEOUT = 5000;
-		const LONG_KILL_TIMEOUT = 10000;
+		const DELAYED_CALLBACK_TIMEOUT = 15000;
+		const SHORT_KILL_TIMEOUT = 15000;
+		const LONG_KILL_TIMEOUT = 25000;
+		const SIGINT_EXIT_CODES = [
+			0,
+			null
+		];
 
 		it( 'does not terminate after full run', async () => {
 			const validProject = await prepareCLIFixture( 'testsPackageValid' );
@@ -109,8 +115,7 @@ describe( 'mlt', () => {
 				killAfter: SHORT_KILL_TIMEOUT
 			} );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'runs all steps except CodeCov', async () => {
@@ -125,10 +130,9 @@ describe( 'mlt', () => {
 			expect( stdout ).to.match( /---Code Coverage---/, 'code coverage step is visible in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'skips subsequent steps when something fails but without process termination', async () => {
@@ -145,8 +149,7 @@ describe( 'mlt', () => {
 
 			expect( stderr ).to.match( /Step Tester/, 'stderr shows that the tester step failed' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project src', async () => {
@@ -171,10 +174,9 @@ describe( 'mlt', () => {
 			expect( stdout ).to.match( /---Code Coverage---.+?---Code Coverage---/s, 'code coverage step is visible twice in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'reruns all steps except CodeCov if .js file is modified in the project tests', async () => {
@@ -199,10 +201,9 @@ describe( 'mlt', () => {
 			expect( stdout ).to.match( /---Code Coverage---.+?---Code Coverage---/s, 'code coverage step is visible twice in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 
 		it( 'reruns only requested steps if .js file is modified in the project', async () => {
@@ -227,10 +228,9 @@ describe( 'mlt', () => {
 			expect( stdout ).not.to.match( /---Code Coverage---/s, 'code coverage step is not visible in the output' );
 			expect( stdout ).not.to.match( /---CodeCov---/, 'codecov step is not visible in the output' );
 
-			expect( stderr ).to.equal( '', 'stderr is empty' );
+			expect( stderr ).not.to.match( stderrErrorRegex, 'stderr does not contain errors' );
 
-			// If process is killed, then it does not return exit code.
-			expect( exitCode ).to.equal( null );
+			expect( exitCode ).to.be.oneOf( SIGINT_EXIT_CODES );
 		} );
 	} );
 } );

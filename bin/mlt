@@ -2,7 +2,7 @@
 
 const yargs = require( 'yargs/yargs' );
 const { hideBin } = require( 'yargs/helpers' );
-const mlt = require( '../dist/mocha-lib-tester.js' );
+const { mlt } = require( '../dist/mocha-lib-tester.js' );
 
 const path = process.cwd();
 const argv = yargs( hideBin( process.argv ) ).argv;

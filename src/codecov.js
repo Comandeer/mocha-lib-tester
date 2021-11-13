@@ -3,7 +3,6 @@
 import { exec } from 'child_process';
 import isCI from 'is-ci';
 import npmRunPath from 'npm-run-path';
-import codecovReporter from './reporters/codecov.js';
 
 function codecov( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
@@ -11,8 +10,7 @@ function codecov( projectPath ) {
 	}
 
 	const resultsTemplate = {
-		name: 'codecov',
-		reporter: codecovReporter
+		name: 'codecov'
 	};
 
 	if ( !isCI || process.env.NO_CODECOV ) {
