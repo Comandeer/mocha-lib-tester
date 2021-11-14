@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 
-import EventEmitter from 'events';
 import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
 import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
+import EventEmitter from '../src/EventEmitter.js';
 
 const { spy, stub } = sinon;
 
@@ -579,7 +579,7 @@ describe( 'Runner', () => {
 			expect( passedResults ).to.deep.equal( requiredStepsResults );
 		} );
 
-		it( 'throws when steps return invalid results', () => {
+		it( 'throws when steps return invalid results', async () => {
 			const runner = new Runner();
 			const step = {
 				id: 'step',
@@ -596,7 +596,7 @@ describe( 'Runner', () => {
 				`Step ${ step.name } didn't return correct results` );
 		} );
 
-		it( 'throws on error during the step', () => {
+		it( 'throws on error during the step', async () => {
 			const runner = new Runner();
 			const step = {
 				id: 'step',

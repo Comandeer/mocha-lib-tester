@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
-import EventEmitter from 'events';
 import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
 import LoggerType from '../src/LoggerType.js';
 import LoggerColor from '../src/LoggerColor.js';
+import EventEmitter from '../src/EventEmitter.js';
 import Logger from '../src/Logger.js';
 
 const { spy, stub } = sinon;

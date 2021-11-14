@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
-import EventEmitter from 'events';
 import chalk from 'chalk';
 import Spinner from '@comandeer/cli-spinner';
 import LoggerColor from './LoggerColor.js';
 import LoggerType from './LoggerType.js';
+import EventEmitter from './EventEmitter.js';
 
 const colorMethods = new Map( [
 	[ LoggerColor.AUTO, ( value ) => {
