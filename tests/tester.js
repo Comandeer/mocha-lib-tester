@@ -25,7 +25,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'expects path as a first parameter', () => {
-		assertAsyncParameter( {
+		return assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
