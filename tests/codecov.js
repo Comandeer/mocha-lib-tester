@@ -1,4 +1,4 @@
-import assertParameter from './helpers/assertParameter.js';
+import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import codecov from '../src/codecov.js';
 
 const originalEnvVariable = process.env.NO_CODECOV;
@@ -24,7 +24,7 @@ describe( 'codecov', () => {
 	} );
 
 	it( 'expects non-empty string as the first parameter', () => {
-		assertParameter( {
+		return assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
@@ -40,7 +40,7 @@ describe( 'codecov', () => {
 				message: 'Provided path must be a non-empty string'
 			},
 			code( param ) {
-				codecov( param );
+				return codecov( param );
 			}
 		} );
 	} );
