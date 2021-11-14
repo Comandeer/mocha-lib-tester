@@ -213,11 +213,11 @@ describe( 'Logger', () => {
 
 	describe( 'listeners', () => {
 		describe( 'start', () => {
-			it( 'displays info about executing tests', () => {
+			it( 'displays info about executing tests', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const expected = chalk.yellow( 'Executing tests…' );
 
-				eventEmitter.emit( 'start' );
+				await eventEmitter.emit( 'start' );
 
 				expect( console.log ).to.have.been.calledOnce;
 				expect( console.log.getCall( 0 ) ).to.have.been.calledWithExactly( expected );
@@ -225,21 +225,21 @@ describe( 'Logger', () => {
 		} );
 
 		describe( 'step:start', () => {
-			it( 'displays info about the step', () => {
+			it( 'displays info about the step', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const step = {
 					name: 'hublabubla'
 				};
 				const expected = chalk.blue( `---${ step.name }---` );
 
-				eventEmitter.emit( 'step:start', step );
+				await eventEmitter.emit( 'step:start', step );
 
 				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
 			} );
 		} );
 
 		describe( 'step:end', () => {
-			it( 'display info about correct step execution', () => {
+			it( 'display info about correct step execution', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const step = {
 					name: 'hublabubla',
@@ -251,12 +251,12 @@ describe( 'Logger', () => {
 				};
 				const expected = chalk.green( `Step ${ chalk.bold( step.name ) } finished successfully.` );
 
-				eventEmitter.emit( 'step:end', step, results );
+				await eventEmitter.emit( 'step:end', step, results );
 
 				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
 			} );
 
-			it( 'display info about incorrect step execution', () => {
+			it( 'display info about incorrect step execution', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const step = {
 					name: 'hublabubla',
@@ -268,12 +268,12 @@ describe( 'Logger', () => {
 				};
 				const expected = chalk.red( `Step ${ chalk.bold( step.name ) } failed with errors. Skipping subsequent steps.` );
 
-				eventEmitter.emit( 'step:end', step, results );
+				await eventEmitter.emit( 'step:end', step, results );
 
 				expect( console.error ).to.have.been.calledOnceWithExactly( expected );
 			} );
 
-			it( 'invokes reporter with correct arguments', () => {
+			it( 'invokes reporter with correct arguments', async () => {
 				const [ logger, eventEmitter ] = createLogger();
 				const reporter = spy();
 				const step = {
@@ -288,39 +288,39 @@ describe( 'Logger', () => {
 					projectPath: '.'
 				};
 
-				eventEmitter.emit( 'step:end', step, results, context );
+				await eventEmitter.emit( 'step:end', step, results, context );
 
 				expect( reporter ).to.have.been.calledOnceWith( results, logger, context );
 			} );
 		} );
 
 		describe( 'end', () => {
-			it( 'displays info about success', () => {
+			it( 'displays info about success', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const expected = chalk.green( 'All steps finished correctly 🎉' );
 
-				eventEmitter.emit( 'end', true );
+				await eventEmitter.emit( 'end', true );
 
 				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
 			} );
 
-			it( 'displays info about failure', () => {
+			it( 'displays info about failure', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const expected = chalk.red( 'There were some errors alonside the way 😿' );
 
-				eventEmitter.emit( 'end', false );
+				await eventEmitter.emit( 'end', false );
 
 				expect( console.log ).to.have.been.calledOnceWithExactly( expected );
 			} );
 		} );
 
 		describe( 'error', () => {
-			it( 'displays info about error', () => {
+			it( 'displays info about error', async () => {
 				const [ , eventEmitter ] = createLogger();
 				const error = new Error();
 				const expected = chalk.red( '🚨 Error occured:' );
 
-				eventEmitter.emit( 'error', error );
+				await eventEmitter.emit( 'error', error );
 
 				expect( console.error ).to.have.been.calledWithExactly( expected );
 				expect( console.error ).to.have.been.calledWithExactly( error );
