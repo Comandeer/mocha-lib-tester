@@ -41,7 +41,7 @@ class Runner extends EventEmitter {
 		} );
 	}
 
-	run( path = process.cwd() ) {
+	async run( path = process.cwd() ) {
 		if ( !isNonEmptyString( path ) ) {
 			throw new TypeError( 'Provided path must be a non-empty string' );
 		}
