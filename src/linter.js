@@ -1,8 +1,5 @@
-import { promisify } from 'util';
 import { ESLint } from 'eslint';
-import glob from 'glob';
-
-const globPromise = promisify( glob );
+import globPromise from './globPromise.js';
 
 async function linter( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
