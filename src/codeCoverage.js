@@ -1,6 +1,6 @@
 import { createCoverageMap } from 'istanbul-lib-coverage';
 
-function codeCoverage( projectPath, data ) {
+async function codeCoverage( projectPath, data ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
@@ -11,11 +11,11 @@ function codeCoverage( projectPath, data ) {
 
 	const coverageMap = createCoverageMap( data );
 
-	return Promise.resolve( {
+	return {
 		name: 'code coverage',
 		ok: true,
 		results: coverageMap
-	} );
+	};
 }
 
 export default codeCoverage;
