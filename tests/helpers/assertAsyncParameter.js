@@ -1,4 +1,4 @@
-function assertAsyncParameter( {
+async function assertAsyncParameter( {
 	valids = [],
 	invalids = [],
 	error = {
@@ -7,13 +7,17 @@ function assertAsyncParameter( {
 	},
 	code = () => {}
 } = {} ) {
-	invalids.forEach( ( invalid ) => {
-		expect( code( invalid ), invalid ).to.be.rejectedWith( error.type, error.message );
+	const invalidPromises = invalids.map( ( invalid ) => {
+		return expect( code( invalid ), invalid ).to.be.rejectedWith( error.type, error.message );
+	} );
+	const validPromises = valids.map( ( valid ) => {
+		return expect( code( valid ), valid ).not.to.be.rejectedWith( error.type, error.message );
 	} );
 
-	valids.forEach( ( valid ) => {
-		expect( code( valid ), valid ).not.to.be.rejectedWith( error.type, error.message );
-	} );
+	return Promise.all( [
+		...invalidPromises,
+		...validPromises
+	] );
 }
 
 export default assertAsyncParameter;
