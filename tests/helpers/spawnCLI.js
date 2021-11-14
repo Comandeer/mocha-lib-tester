@@ -45,11 +45,11 @@ function spawnCLI( projectPath, {
 		}
 
 		if ( typeof killAfter === 'number' ) {
-			setTimeout( () => {
+			setTimeout( async () => {
 				if ( delayedCallbackPromise ) {
-					return delayedCallbackPromise.then( () => {
-						mltProcess.kill( 'SIGINT' );
-					} );
+					await delayedCallbackPromise;
+
+					mltProcess.kill( 'SIGINT' );
 				}
 
 				mltProcess.kill( 'SIGINT' );

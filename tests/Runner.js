@@ -3,6 +3,7 @@
 import EventEmitter from 'events';
 import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
+import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
 
@@ -388,7 +389,7 @@ describe( 'Runner', () => {
 	describe( '#run()', () => {
 		// #57
 		it( 'requires non-empty string as the first parameter if it is present', () => {
-			assertParameter( {
+			return assertAsyncParameter( {
 				invalids: [
 					'',
 					null,
@@ -410,20 +411,20 @@ describe( 'Runner', () => {
 				code( param ) {
 					const runner = new Runner();
 
-					runner.run( param );
+					return runner.run( param );
 				}
 			} );
 		} );
 
-		it( 'returns Promise resolving to boolean', () => {
+		it( 'returns Promise resolving to boolean', async () => {
 			const runner = new Runner();
-			const result = runner.run();
+			const runnerPromise = runner.run();
 
-			expect( result ).to.be.an.instanceOf( Promise );
+			expect( runnerPromise ).to.be.an.instanceOf( Promise );
 
-			return result.then( ( resolved ) => {
-				expect( resolved ).to.a( 'boolean' );
-			} );
+			const promiseResult = await runnerPromise;
+
+			expect( promiseResult ).to.a( 'boolean' );
 		} );
 
 		// #57
