@@ -372,9 +372,9 @@ describe( 'RunController', () => {
 
 			runner.resolve( true );
 
-			return promise.then( () => {
-				expect( spy ).to.have.been.calledOnce;
-			} );
+			await promise;
+
+			expect( spy ).to.have.been.calledOnce;
 		} );
 
 		it( 'invokes only one #run() after the current run ends despite multiple scheduling', async () => {
@@ -398,9 +398,9 @@ describe( 'RunController', () => {
 
 			runner.resolve( true );
 
-			return promise.then( () => {
-				expect( spy ).to.have.been.calledOnce;
-			} );
+			await promise;
+
+			expect( spy ).to.have.been.calledOnce;
 		} );
 	} );
 

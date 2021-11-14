@@ -25,7 +25,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'expects path as a first parameter', () => {
-		assertAsyncParameter( {
+		return assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
@@ -47,24 +47,24 @@ describe( 'tester', () => {
 		} );
 	} );
 
-	it( 'returns Promise, which resolves to correct results object', () => {
+	it( 'returns Promise, which resolves to correct results object', async () => {
 		const promise = tester( emptyFixture );
 
 		expect( promise ).to.be.instanceOf( Promise );
 
-		return promise.then( ( results ) => {
-			validateResults( results );
-		} );
+		const results = await promise;
+
+		validateResults( results );
 	} );
 
-	it( 'does not output anything', () => {
+	it( 'does not output anything', async () => {
 		const consoleSpy = spy( process.stdout, 'write' );
 
-		return tester( emptyFixture ).then( () => {
-			consoleSpy.restore();
+		await tester( emptyFixture );
 
-			expect( consoleSpy ).not.to.be.called;
-		} );
+		consoleSpy.restore();
+
+		expect( consoleSpy ).not.to.be.called;
 	} );
 
 	it( 'supports CJS syntax', () => {
@@ -99,7 +99,7 @@ describe( 'tester', () => {
 		expect( global.__mltCoverage__ ).not.to.be.undefined;
 	} );
 
-	it( 'run tests in correct files', () => {
+	it( 'run tests in correct files', async () => {
 		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageCJS' );
 		const expected = {
 			[ joinPath( fixturePath, 'tests', 'index.js' ) ]: {
@@ -112,19 +112,19 @@ describe( 'tester', () => {
 			}
 		};
 
-		return tester( fixturePath ).then( ( { results, ok } ) => {
-			expect( ok ).to.equal( false );
+		const { results, ok } = await tester( fixturePath );
 
-			const resultsWithoutOutput = { ...results };
-			delete resultsWithoutOutput._output;
+		expect( ok ).to.equal( false );
 
-			expect( resultsWithoutOutput ).to.deep.equal( expected );
-		} );
+		const resultsWithoutOutput = { ...results };
+		delete resultsWithoutOutput._output;
+
+		expect( resultsWithoutOutput ).to.deep.equal( expected );
 	} );
 
-	it( 'passes for empty package', () => {
-		return tester( emptyFixture ).then( ( { ok } ) => {
-			expect( ok ).to.equal( true );
-		} );
+	it( 'passes for empty package', async () => {
+		const { ok } = await tester( emptyFixture );
+
+		expect( ok ).to.equal( true );
 	} );
 } );

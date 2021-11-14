@@ -1,14 +1,25 @@
 /* eslint-disable no-console */
 
-import EventEmitter from 'events';
 import chalk from 'chalk';
 import assertParameter from './helpers/assertParameter.js';
+import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
+import EventEmitter from '../src/EventEmitter.js';
 
 const { spy, stub } = sinon;
 
 describe( 'Runner', () => {
+	let sinonSandbox;
+
+	beforeEach( () => {
+		sinonSandbox = sinon.createSandbox();
+	} );
+
+	afterEach( () => {
+		sinonSandbox.restore();
+	} );
+
 	it( 'is a class', () => {
 		expect( Runner ).to.be.a( 'function' );
 	} );
@@ -388,7 +399,7 @@ describe( 'Runner', () => {
 	describe( '#run()', () => {
 		// #57
 		it( 'requires non-empty string as the first parameter if it is present', () => {
-			assertParameter( {
+			return assertAsyncParameter( {
 				invalids: [
 					'',
 					null,
@@ -410,20 +421,20 @@ describe( 'Runner', () => {
 				code( param ) {
 					const runner = new Runner();
 
-					runner.run( param );
+					return runner.run( param );
 				}
 			} );
 		} );
 
-		it( 'returns Promise resolving to boolean', () => {
+		it( 'returns Promise resolving to boolean', async () => {
 			const runner = new Runner();
-			const result = runner.run();
+			const runnerPromise = runner.run();
 
-			expect( result ).to.be.an.instanceOf( Promise );
+			expect( runnerPromise ).to.be.an.instanceOf( Promise );
 
-			return result.then( ( resolved ) => {
-				expect( resolved ).to.a( 'boolean' );
-			} );
+			const promiseResult = await runnerPromise;
+
+			expect( promiseResult ).to.a( 'boolean' );
 		} );
 
 		// #57
@@ -578,7 +589,7 @@ describe( 'Runner', () => {
 			expect( passedResults ).to.deep.equal( requiredStepsResults );
 		} );
 
-		it( 'throws when steps return invalid results', () => {
+		it( 'returns false and emits error event when steps return invalid results', async () => {
 			const runner = new Runner();
 			const step = {
 				id: 'step',
@@ -586,16 +597,23 @@ describe( 'Runner', () => {
 				run() {},
 				report() {}
 			};
+			const listener = sinonSandbox.spy();
 
 			runner.addStep( step );
 
-			const result = runner.run();
+			runner.once( 'error', listener );
+			const result = await runner.run();
 
-			return expect( result ).to.eventually.be.rejectedWith( TypeError,
-				`Step ${ step.name } didn't return correct results` );
+			expect( result ).to.equal( false );
+			expect( listener ).to.have.been.calledOnce;
+
+			const error = listener.getCall( 0 ).args[ 0 ];
+
+			expect( error ).to.be.an.instanceOf( TypeError );
+			expect( error.message ).to.equal( `Step ${ step.name } didn't return correct results` );
 		} );
 
-		it( 'throws on error during the step', () => {
+		it( 'returns false and emits error event on error during the step', async () => {
 			const runner = new Runner();
 			const step = {
 				id: 'step',
@@ -605,15 +623,23 @@ describe( 'Runner', () => {
 				},
 				report() {}
 			};
+			const listener = sinonSandbox.spy();
 
 			runner.addStep( step );
 
-			const result = runner.run();
+			runner.once( 'error', listener );
+			const result = await runner.run();
 
-			return expect( result ).to.eventually.be.rejectedWith( Error, 'Thrown' );
+			expect( result ).to.equal( false );
+			expect( listener ).to.have.been.calledOnce;
+
+			const error = listener.getCall( 0 ).args[ 0 ];
+
+			expect( error ).to.be.an.instanceOf( Error );
+			expect( error.message ).to.equal( 'Thrown' );
 		} );
 
-		it( 'throws on rejection from the step', () => {
+		it( 'returns false and emits error event on rejection from the step', async () => {
 			const runner = new Runner();
 			const step = {
 				id: 'step',
@@ -623,12 +649,20 @@ describe( 'Runner', () => {
 				},
 				report() {}
 			};
+			const listener = sinonSandbox.spy();
 
 			runner.addStep( step );
 
-			const result = runner.run();
+			runner.once( 'error', listener );
+			const result = await runner.run();
 
-			return expect( result ).to.eventually.be.rejectedWith( Error, 'Reject' );
+			expect( result ).to.equal( false );
+			expect( listener ).to.have.been.calledOnce;
+
+			const error = listener.getCall( 0 ).args[ 0 ];
+
+			expect( error ).to.be.an.instanceOf( Error );
+			expect( error.message ).to.equal( 'Reject' );
 		} );
 
 		it( 'returns true only if all steps return ok results', async () => {
@@ -843,7 +877,7 @@ describe( 'Runner', () => {
 		} );
 
 		describe( 'end', () => {
-			it( 'is not emitted when error occurs during step', async () => {
+			it( 'is emitted when error occurs during step', async () => {
 				const step = {
 					id: 'step',
 					name: 'Step',
@@ -863,7 +897,7 @@ describe( 'Runner', () => {
 					await runner.run();
 				} catch {} // eslint-disable-line no-empty
 
-				expect( endListener ).not.to.have.been.called;
+				expect( endListener ).to.have.been.called;
 			} );
 		} );
 

@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
-import { sync as globSync } from 'glob';
+import globPromise from './globPromise.js';
 
-function linter( projectPath ) {
+async function linter( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
@@ -17,30 +17,37 @@ function linter( projectPath ) {
 		}
 	} );
 
-	return eslint.lintFiles( prepareExistentFilePaths( projectPath ) ).then( ( results ) => {
-		return {
-			name: 'linter',
-			ok: isOk( results ),
-			results
-		};
-	} );
+	const filesToLint = await prepareExistentFilePaths( projectPath );
+	const results = await eslint.lintFiles( filesToLint );
+
+	return {
+		name: 'linter',
+		ok: isOk( results ),
+		results
+	};
 }
 
 // Workaround for https://eslint.org/docs/5.0.0/user-guide/migrating-to-5.0.0#nonexistent-files
-function prepareExistentFilePaths( cwd ) {
+async function prepareExistentFilePaths( cwd ) {
 	const candidates = [
 		'src/**/*.js',
 		'bin/**/*',
 		'tests/**/*.js'
 	];
-
-	return candidates.filter( ( candidate ) => {
-		const found = globSync( candidate, {
+	const candidatesPromises = candidates.map( ( candidate ) => {
+		return globPromise( candidate, {
 			cwd
 		} );
-
-		return found.length > 0;
 	} );
+	const globResults = await Promise.all( candidatesPromises );
+
+	return globResults.reduce( ( filteredCandidates, found, i ) => {
+		if ( found.length === 0 ) {
+			return filteredCandidates;
+		}
+
+		return [ ...filteredCandidates, candidates[ i ] ];
+	}, [] );
 }
 
 function isOk( results ) {

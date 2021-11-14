@@ -4,7 +4,7 @@ import { exec } from 'child_process';
 import isCI from 'is-ci';
 import npmRunPath from 'npm-run-path';
 
-function codecov( projectPath ) {
+async function codecov( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {
 		throw new TypeError( 'Provided path must be a non-empty string' );
 	}
@@ -22,14 +22,14 @@ function codecov( projectPath ) {
 		} );
 	}
 
-	return executeCLI( projectPath ).then( ( { exitCode, stdout, stderr } ) => {
-		return Object.assign( {}, resultsTemplate, {
-			ok: exitCode === 0,
-			results: {
-				stdout,
-				stderr
-			}
-		} );
+	const { exitCode, stdout, stderr } = await executeCLI( projectPath );
+
+	return Object.assign( {}, resultsTemplate, {
+		ok: exitCode === 0,
+		results: {
+			stdout,
+			stderr
+		}
 	} );
 }
 

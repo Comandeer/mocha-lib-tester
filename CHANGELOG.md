@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * **BREAKING CHANGE**: update public exports.
 * **BREAKING CHANGE**: update flow of steps.
+* [#82]: **BREAKING CHANGE**: makes API fully asynchronous.
 
 ## [0.5.0] – 2021-06-29
 ### Added
@@ -70,6 +71,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#72]: https://github.com/Comandeer/mocha-lib-tester/issues/72
 [#74]: https://github.com/Comandeer/mocha-lib-tester/issues/74
 [#81]: https://github.com/Comandeer/mocha-lib-tester/issues/81
+[#82]: https://github.com/Comandeer/mocha-lib-tester/issues/82
 
 [0.6.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.4.1...v0.5.0

@@ -1,5 +1,5 @@
 import { join as joinPath } from 'path';
-import assertParameter from './helpers/assertParameter.js';
+import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import linter from '../src/linter.js';
 
@@ -14,7 +14,7 @@ describe( 'linter', () => {
 	} );
 
 	it( 'expects path as a first parameter', () => {
-		assertParameter( {
+		return assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
@@ -32,15 +32,14 @@ describe( 'linter', () => {
 			},
 
 			code( param ) {
-				linter( param );
+				return linter( param );
 			}
 		} );
 	} );
 
 	it( 'does not throw due to nonexistent files', () => {
-		expect( () => {
-			linter( lintFixture );
-		} ).not.to.throw( Error, 'No files matching \'bin/**/*\' were found.' );
+		return expect( linter( lintFixture ) ).not.to.be.
+			rejectedWith( Error, 'No files matching \'bin/**/*\' were found.' );
 	} );
 
 	it( 'does not output anything', async () => {

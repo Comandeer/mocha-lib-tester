@@ -1,12 +1,9 @@
-import { promisify } from 'util';
 import Mocha from 'mocha';
-import glob from 'glob';
+import globPromise from './globPromise.js';
 import MochaReporter from './reporters/MochaReporter.js';
 import addChaiHook from './hooks/chai.js';
 import addBabelHook from './hooks/babel.js';
 import addIstanbulHook from './hooks/istanbul.js';
-
-const globPromise = promisify( glob );
 
 async function tester( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {

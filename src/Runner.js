@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import EventEmitter from './EventEmitter.js';
 
 const stepsSymbol = Symbol( 'steps' );
 const stepResultsSymbol = Symbol( 'stepResults' );
@@ -41,12 +41,12 @@ class Runner extends EventEmitter {
 		} );
 	}
 
-	run( path = process.cwd() ) {
+	async run( path = process.cwd() ) {
 		if ( !isNonEmptyString( path ) ) {
 			throw new TypeError( 'Provided path must be a non-empty string' );
 		}
 
-		this.emit( 'start' );
+		await this.emit( 'start' );
 
 		const steps = [ ...this.steps ];
 
@@ -54,8 +54,8 @@ class Runner extends EventEmitter {
 	}
 
 	async _processSteps( steps, path ) {
-		const finish = ( result ) => {
-			this.emit( 'end', result );
+		const finish = async ( result ) => {
+			await this.emit( 'end', result );
 
 			return result;
 		};
@@ -66,7 +66,7 @@ class Runner extends EventEmitter {
 			return finish( true );
 		}
 
-		this.emit( 'step:start', step, context );
+		await this.emit( 'step:start', step, context );
 
 		try {
 			const requiresParameter = this._constructRequiresParameter( step );
@@ -79,7 +79,7 @@ class Runner extends EventEmitter {
 
 			this[ stepResultsSymbol ][ step.id ] = result;
 
-			this.emit( 'step:end', step, result, context );
+			await this.emit( 'step:end', step, result, context );
 
 			if ( !result.ok ) {
 				return finish( false );
@@ -89,7 +89,7 @@ class Runner extends EventEmitter {
 				return finish( true );
 			}
 		} catch ( error ) {
-			this.emit( 'error', error );
+			await this.emit( 'error', error );
 
 			return finish( false );
 		}

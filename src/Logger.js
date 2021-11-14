@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 
-import EventEmitter from 'events';
 import chalk from 'chalk';
 import Spinner from '@comandeer/cli-spinner';
 import LoggerColor from './LoggerColor.js';
 import LoggerType from './LoggerType.js';
+import EventEmitter from './EventEmitter.js';
 
 const colorMethods = new Map( [
 	[ LoggerColor.AUTO, ( value ) => {
@@ -61,16 +61,16 @@ class Logger {
 		console[ consoleMethod ]( colorMethod( value ) );
 	}
 
-	onStart() {
+	async onStart() {
 		this.log( 'Executing tests…', { color: LoggerColor.YELLOW } );
 	}
 
-	onStepStart( { name } ) {
+	async onStepStart( { name } ) {
 		this.log( `---${ name }---`, { color: LoggerColor.BLUE } );
 		spinner.show();
 	}
 
-	onStepEnd( { name, report }, results, context ) {
+	async onStepEnd( { name, report }, results, context ) {
 		spinner.hide();
 
 		report( results, this, context );
@@ -85,7 +85,7 @@ class Logger {
 		this.log( `Step ${ chalk.bold( name ) } finished successfully.`, { color: LoggerColor.GREEN } );
 	}
 
-	onEnd( result ) {
+	async onEnd( result ) {
 		spinner.hide();
 
 		if ( !result ) {
@@ -95,7 +95,7 @@ class Logger {
 		this.log( 'All steps finished correctly 🎉', { color: LoggerColor.GREEN } );
 	}
 
-	onError( error ) {
+	async onError( error ) {
 		spinner.hide();
 
 		this.log( '🚨 Error occured:', {

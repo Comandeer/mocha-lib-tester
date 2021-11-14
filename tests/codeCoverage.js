@@ -1,6 +1,6 @@
 import { resolve as resolvePath } from 'path';
 import { removeSync as remove, existsSync as exists } from 'fs-extra';
-import assertParameter from './helpers/assertParameter.js';
+import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import fixture from './fixtures/coverageData.js';
 import codeCoverage from '../src/codeCoverage.js';
@@ -14,7 +14,7 @@ describe( 'codeCoverage', () => {
 	} );
 
 	it( 'expects non-empty string as the first parameter', () => {
-		assertParameter( {
+		return assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
@@ -30,13 +30,13 @@ describe( 'codeCoverage', () => {
 				message: 'Provided path must be a non-empty string'
 			},
 			code( param ) {
-				codeCoverage( param, {} );
+				return codeCoverage( param, {} );
 			}
 		} );
 	} );
 
 	it( 'expects object as the second parameter', () => {
-		assertParameter( {
+		return assertAsyncParameter( {
 			invalids: [
 				undefined,
 				null,
@@ -49,7 +49,7 @@ describe( 'codeCoverage', () => {
 				message: 'Provided code coverage data must be an object'
 			},
 			code( param ) {
-				codeCoverage( '.', param );
+				return codeCoverage( '.', param );
 			}
 		} );
 	} );
