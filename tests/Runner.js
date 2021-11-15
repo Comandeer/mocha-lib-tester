@@ -7,8 +7,6 @@ import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
 import EventEmitter from '../src/EventEmitter.js';
 
-const { spy, stub } = sinon;
-
 describe( 'Runner', () => {
 	let sinonSandbox;
 
@@ -445,8 +443,8 @@ describe( 'Runner', () => {
 				ok: true,
 				results: {}
 			};
-			const stub1 = stub().returns( { ...resultsTemplate } );
-			const stub2 = stub().returns( { ...resultsTemplate } );
+			const stub1 = sinonSandbox.stub().returns( { ...resultsTemplate } );
+			const stub2 = sinonSandbox.stub().returns( { ...resultsTemplate } );
 			const steps = [
 				{
 					id: 'step1',
@@ -478,7 +476,7 @@ describe( 'Runner', () => {
 				ok: true,
 				results: {}
 			};
-			const stub1 = stub().returns( { ...resultsTemplate } );
+			const stub1 = sinonSandbox.stub().returns( { ...resultsTemplate } );
 			const steps = [
 				{
 					id: 'step1',
@@ -501,9 +499,9 @@ describe( 'Runner', () => {
 				ok: true,
 				results: {}
 			};
-			const stub1 = stub().returns( { ...resultsTemplate } );
-			const stub2 = stub().returns( { ...resultsTemplate } );
-			const stub3 = stub().returns( { ...resultsTemplate } );
+			const stub1 = sinonSandbox.stub().returns( { ...resultsTemplate } );
+			const stub2 = sinonSandbox.stub().returns( { ...resultsTemplate } );
+			const stub3 = sinonSandbox.stub().returns( { ...resultsTemplate } );
 			const steps = [
 				{
 					id: 'step1',
@@ -546,9 +544,9 @@ describe( 'Runner', () => {
 			};
 			const stub1Results = { ...resultsTemplate };
 			const stub2Results = { ...resultsTemplate };
-			const stub1 = stub().returns( stub1Results );
-			const stub2 = stub().returns( stub2Results );
-			const stub3 = stub().returns( { ...resultsTemplate } );
+			const stub1 = sinonSandbox.stub().returns( stub1Results );
+			const stub2 = sinonSandbox.stub().returns( stub2Results );
+			const stub3 = sinonSandbox.stub().returns( { ...resultsTemplate } );
 			const steps = [
 				{
 					id: 'step1',
@@ -731,15 +729,15 @@ describe( 'Runner', () => {
 
 		it( 'returns false on first step with ok === false', async () => {
 			const runner = new Runner();
-			const stub1 = stub().returns( {
+			const stub1 = sinonSandbox.stub().returns( {
 				ok: true,
 				results: {}
 			} );
-			const stub2 = stub().returns( {
+			const stub2 = sinonSandbox.stub().returns( {
 				ok: false,
 				results: {}
 			} );
-			const stub3 = stub().returns( {
+			const stub3 = sinonSandbox.stub().returns( {
 				ok: false,
 				results: {}
 			} );
@@ -795,10 +793,10 @@ describe( 'Runner', () => {
 
 			runner.addStep( step );
 
-			const startListener = spy();
-			const stepStartListener = spy();
-			const stepEndListener = spy();
-			const endListener = spy();
+			const startListener = sinonSandbox.spy();
+			const stepStartListener = sinonSandbox.spy();
+			const stepEndListener = sinonSandbox.spy();
+			const endListener = sinonSandbox.spy();
 
 			runner.on( 'start', startListener );
 			runner.on( 'step:start', stepStartListener );
@@ -848,8 +846,8 @@ describe( 'Runner', () => {
 
 				runner.addSteps( steps );
 
-				const startListener = spy();
-				const endListener = spy();
+				const startListener = sinonSandbox.spy();
+				const endListener = sinonSandbox.spy();
 
 				runner.on( 'step:start', startListener );
 				runner.on( 'step:end', endListener );
@@ -887,7 +885,7 @@ describe( 'Runner', () => {
 					report() {}
 				};
 				const runner = new Runner();
-				const endListener = spy();
+				const endListener = sinonSandbox.spy();
 
 				runner.addStep( step );
 
@@ -913,7 +911,7 @@ describe( 'Runner', () => {
 					report() {}
 				};
 				const runner = new Runner();
-				const errorListener = spy();
+				const errorListener = sinonSandbox.spy();
 
 				runner.addStep( step );
 
@@ -937,7 +935,7 @@ describe( 'Runner', () => {
 					report() {}
 				};
 				const runner = new Runner();
-				const errorListener = spy();
+				const errorListener = sinonSandbox.spy();
 
 				runner.addStep( step );
 
@@ -959,13 +957,8 @@ describe( 'Runner', () => {
 
 	describe( 'integration with logger', () => {
 		beforeEach( () => {
-			stub( console, 'log' );
-			stub( console, 'error' );
-		} );
-
-		afterEach( () => {
-			console.log.restore();
-			console.error.restore();
+			sinonSandbox.stub( console, 'log' );
+			sinonSandbox.stub( console, 'error' );
 		} );
 
 		it( 'smooth run', async () => {

@@ -3,12 +3,20 @@ import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import linter from '../src/linter.js';
 
-const { spy } = sinon;
-
 const lintFixture = joinPath( __dirname, 'fixtures', 'lintPackage' );
 const noErrorsFixture = joinPath( __dirname, 'fixtures', 'lintCorrectPackage' );
 
 describe( 'linter', () => {
+	let sinonSandbox;
+
+	beforeEach( () => {
+		sinonSandbox = sinon.createSandbox();
+	} );
+
+	afterEach( () => {
+		sinonSandbox.restore();
+	} );
+
 	it( 'is a function', () => {
 		expect( linter ).to.be.a( 'function' );
 	} );
@@ -43,11 +51,10 @@ describe( 'linter', () => {
 	} );
 
 	it( 'does not output anything', async () => {
-		const consoleSpy = spy( console, 'log' );
+		const consoleSpy = sinonSandbox.spy( console, 'log' );
 
 		await linter( lintFixture );
 
-		consoleSpy.restore();
 		expect( consoleSpy ).not.to.be.called;
 	} );
 

@@ -9,15 +9,15 @@ import DummyLogger from './helpers/DummyLogger.js';
 import sleep from './helpers/sleep.js';
 
 describe( 'RunController', () => {
-	let sandbox;
+	let sinonSandbox;
 	let watcher;
 
 	beforeEach( () => {
-		sandbox = sinon.createSandbox();
+		sinonSandbox = sinon.createSandbox();
 	} );
 
 	afterEach( async () => {
-		sandbox.restore();
+		sinonSandbox.restore();
 
 		if ( !watcher ) {
 			return;
@@ -226,7 +226,7 @@ describe( 'RunController', () => {
 		it( 'displays info about MLT', async () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
-			const spy = sandbox.spy( logger, 'log' );
+			const spy = sinonSandbox.spy( logger, 'log' );
 			const controller = new RunController( runner, logger );
 
 			runner.resolve( true );
@@ -239,7 +239,7 @@ describe( 'RunController', () => {
 		it( 'does not display info about MLT on subsequent invokes', async () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
-			const spy = sandbox.spy( logger, 'log' );
+			const spy = sinonSandbox.spy( logger, 'log' );
 			const controller = new RunController( runner, logger );
 
 			runner.resolve( true );
@@ -254,7 +254,7 @@ describe( 'RunController', () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
 			const controller = new RunController( runner, logger );
-			const spy = sandbox.spy( runner, 'run' );
+			const spy = sinonSandbox.spy( runner, 'run' );
 
 			runner.resolve( true );
 
@@ -291,7 +291,7 @@ describe( 'RunController', () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
 			const controller = new RunController( runner, logger );
-			const spy = sandbox.spy( runner, 'run' );
+			const spy = sinonSandbox.spy( runner, 'run' );
 
 			controller.run();
 			await sleep();
@@ -328,7 +328,7 @@ describe( 'RunController', () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
 			const controller = new RunController( runner, logger );
-			const spy = sandbox.spy( controller, 'scheduleRun' );
+			const spy = sinonSandbox.spy( controller, 'scheduleRun' );
 
 			watcher = controller.watch();
 
@@ -343,7 +343,7 @@ describe( 'RunController', () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
 			const controller = new RunController( runner, logger );
-			const spy = sandbox.spy( controller, 'run' );
+			const spy = sinonSandbox.spy( controller, 'run' );
 
 			controller.scheduleRun();
 
@@ -358,7 +358,7 @@ describe( 'RunController', () => {
 			controller.run();
 			await sleep();
 
-			const spy = sandbox.spy( controller, 'run' );
+			const spy = sinonSandbox.spy( controller, 'run' );
 
 			controller.scheduleRun();
 
@@ -385,7 +385,7 @@ describe( 'RunController', () => {
 			controller.run();
 			await sleep();
 
-			const spy = sandbox.spy( controller, 'run' );
+			const spy = sinonSandbox.spy( controller, 'run' );
 
 			controller.scheduleRun();
 			controller.scheduleRun();
@@ -409,7 +409,7 @@ describe( 'RunController', () => {
 			const runner = new DummyRunner();
 			const logger = new DummyLogger( runner );
 			const controller = new RunController( runner, logger );
-			const spy = sandbox.spy( controller, 'run' );
+			const spy = sinonSandbox.spy( controller, 'run' );
 
 			runner.resolve( true );
 
@@ -424,7 +424,7 @@ describe( 'RunController', () => {
 			const controller = new RunController( runner, logger, {
 				isWatch: false
 			} );
-			const spy = sandbox.spy( controller, 'run' );
+			const spy = sinonSandbox.spy( controller, 'run' );
 
 			runner.resolve( true );
 
@@ -439,8 +439,8 @@ describe( 'RunController', () => {
 			const controller = new RunController( runner, logger, {
 				isWatch: true
 			} );
-			const watchSpy = sandbox.spy( controller, 'watch' );
-			const runSpy = sandbox.spy( controller, 'run' );
+			const watchSpy = sinonSandbox.spy( controller, 'watch' );
+			const runSpy = sinonSandbox.spy( controller, 'run' );
 
 			runner.resolve( true );
 
