@@ -40,8 +40,8 @@ function findTestFiles( cwd ) {
 	return globPromise( 'tests/**/*.js', {
 		cwd,
 		ignore: [
-			'tests/fixtures/**/*.js',
-			'tests/helpers/**/*.js'
+			'tests/__fixtures__/**/*.js',
+			'tests/__helpers__/**/*.js'
 		],
 		realpath: true
 	} );

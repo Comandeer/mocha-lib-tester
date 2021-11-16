@@ -1,10 +1,11 @@
 import { resolve as resolvePath } from 'path';
-import assertAsyncParameter from './helpers/assertAsyncParameter.js';
-import validateResults from './helpers/validateResults.js';
+import assertAsyncParameter from './__helpers__/assertAsyncParameter.js';
+import validateResults from './__helpers__/validateResults.js';
 import linter from '../src/linter.js';
 
-const lintFixture = resolvePath( __dirname, 'fixtures', 'lintPackage' );
-const noErrorsFixture = resolvePath( __dirname, 'fixtures', 'lintCorrectPackage' );
+const fixturesPath = resolvePath( __dirname, '__fixtures__' );
+const lintFixture = resolvePath( fixturesPath, 'lintPackage' );
+const noErrorsFixture = resolvePath( fixturesPath, 'lintCorrectPackage' );
 
 describe( 'linter', () => {
 	let sinonSandbox;

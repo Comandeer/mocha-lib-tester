@@ -1,12 +1,12 @@
 import { FSWatcher } from 'chokidar';
-import assertParameter from './helpers/assertParameter.js';
+import assertParameter from './__helpers__/assertParameter.js';
 import Logger from '../src/Logger.js';
 import RunController from '../src/RunController.js';
 import Runner from '../src/Runner.js';
-import DummyRunner from './helpers/DummyRunner.js';
+import DummyRunner from './__helpers__/DummyRunner.js';
 import { version } from '../package.json';
-import DummyLogger from './helpers/DummyLogger.js';
-import sleep from './helpers/sleep.js';
+import DummyLogger from './__helpers__/DummyLogger.js';
+import sleep from './__helpers__/sleep.js';
 
 describe( 'RunController', () => {
 	let sinonSandbox;

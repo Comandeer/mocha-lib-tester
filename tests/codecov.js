@@ -1,4 +1,4 @@
-import assertAsyncParameter from './helpers/assertAsyncParameter.js';
+import assertAsyncParameter from './__helpers__/assertAsyncParameter.js';
 import codecov from '../src/codecov.js';
 
 const originalEnvVariable = process.env.NO_CODECOV;

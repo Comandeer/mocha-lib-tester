@@ -1,9 +1,10 @@
 import { resolve as resolvePath } from 'path';
-import assertAsyncParameter from './helpers/assertAsyncParameter.js';
-import validateResults from './helpers/validateResults.js';
+import assertAsyncParameter from './__helpers__/assertAsyncParameter.js';
+import validateResults from './__helpers__/validateResults.js';
 import tester from '../src/tester.js';
 
-const emptyFixture = resolvePath( __dirname, 'fixtures', 'emptyPackage' );
+const fixturesPath = resolvePath( __dirname, '__fixtures__' );
+const emptyFixture = resolvePath( fixturesPath, 'emptyPackage' );
 
 // When dogfooding, the original value of global.__mltCoverage__ is connected with
 // the MLT itself. This juggling probably breaks the coverage report…
@@ -70,7 +71,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'supports CJS syntax', () => {
-		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageCJS' );
+		const fixturePath = resolvePath( fixturesPath, 'testsPackageCJS' );
 
 		// Mocha automatically fails the test when Promise rejects, so it's enough to just
 		// return it.
@@ -78,7 +79,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'supports ESM syntax', () => {
-		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
+		const fixturePath = resolvePath( fixturesPath, 'testsPackageESM' );
 
 		// Mocha automatically fails the test when Promise rejects, so it's enough to just
 		// return it.
@@ -86,7 +87,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'correctly exposes chai and other testing libraries', async () => {
-		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsChai' );
+		const fixturePath = resolvePath( fixturesPath, 'testsChai' );
 
 		const { ok } = await tester( fixturePath );
 
@@ -94,7 +95,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'gathers info about code coverage', async () => {
-		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
+		const fixturePath = resolvePath( fixturesPath, 'testsPackageESM' );
 
 		await tester( fixturePath );
 
@@ -102,7 +103,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'run tests in correct files', async () => {
-		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageCJS' );
+		const fixturePath = resolvePath( fixturesPath, 'testsPackageCJS' );
 		const expected = {
 			[ resolvePath( fixturePath, 'tests', 'index.js' ) ]: {
 				'passes': 'passed',
