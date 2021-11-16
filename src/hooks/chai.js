@@ -9,7 +9,7 @@ function addChaiHook( projectPath ) {
 	}
 
 	const testsPath = resolvePath( projectPath, 'tests' );
-	const fixturesPath = resolvePath( testsPath, 'fixtures' );
+	const fixturesPath = resolvePath( testsPath, '__fixtures__' );
 	addHook( ( code ) => {
 		if ( code.startsWith( chaiPreamble ) ) {
 			return code;
