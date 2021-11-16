@@ -28,8 +28,7 @@ const colorMethods = new Map( [
 	} ]
 ] );
 const spinner = new Spinner( {
-	label: 'Working…',
-	stdout: process.stderr
+	label: 'Working…'
 } );
 
 class Logger {
@@ -67,13 +66,13 @@ class Logger {
 
 	async onStepStart( { name } ) {
 		this.log( `---${ name }---`, { color: LoggerColor.BLUE } );
-		spinner.show();
+		await spinner.show();
 	}
 
 	async onStepEnd( { name, report }, results, context ) {
-		spinner.hide();
+		await spinner.hide();
 
-		report( results, this, context );
+		await report( results, this, context );
 
 		if ( !results.ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {
@@ -86,7 +85,7 @@ class Logger {
 	}
 
 	async onEnd( result ) {
-		spinner.hide();
+		await spinner.hide();
 
 		if ( !result ) {
 			return this.log( 'There were some errors alonside the way 😿', { color: LoggerColor.RED } );
@@ -96,7 +95,7 @@ class Logger {
 	}
 
 	async onError( error ) {
-		spinner.hide();
+		await spinner.hide();
 
 		this.log( '🚨 Error occured:', {
 			color: LoggerColor.RED,

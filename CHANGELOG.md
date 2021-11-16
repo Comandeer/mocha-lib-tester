@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * **BREAKING CHANGE**: update public exports.
 * **BREAKING CHANGE**: update flow of steps.
 * [#82]: **BREAKING CHANGE**: makes API fully asynchronous.
+* [#84]: **BREAKING CHANGE**: update dependencies:
+	* `sinon` to 12.x,
+	* `eslint` to 8.x,
+	* `istanbul-lib-instrument` to 5.x.
 
 ## [0.5.0] – 2021-06-29
 ### Added
@@ -72,6 +76,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#74]: https://github.com/Comandeer/mocha-lib-tester/issues/74
 [#81]: https://github.com/Comandeer/mocha-lib-tester/issues/81
 [#82]: https://github.com/Comandeer/mocha-lib-tester/issues/82
+[#84]: https://github.com/Comandeer/mocha-lib-tester/issues/84
 
 [0.6.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.4.1...v0.5.0
