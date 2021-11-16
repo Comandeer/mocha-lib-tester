@@ -13,7 +13,7 @@ async function linter( projectPath ) {
 			extends: '@comandeer/eslint-config'
 		},
 		overrideConfig: {
-			ignorePatterns: [ 'tests/fixtures/**/*.js' ]
+			ignorePatterns: [ 'tests/__fixtures__/**/*.js' ]
 		}
 	} );
 
