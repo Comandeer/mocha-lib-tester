@@ -1,8 +1,8 @@
 import { resolve as resolvePath } from 'path';
 import { removeSync as remove, existsSync as exists } from 'fs-extra';
-import assertAsyncParameter from './helpers/assertAsyncParameter.js';
-import validateResults from './helpers/validateResults.js';
-import fixture from './fixtures/coverageData.js';
+import assertAsyncParameter from './__helpers__/assertAsyncParameter.js';
+import validateResults from './__helpers__/validateResults.js';
+import fixture from './__fixtures__/coverageData.js';
 import codeCoverage from '../src/codeCoverage.js';
 import reporter from '../src/reporters/codeCoverage.js';
 
@@ -81,7 +81,7 @@ describe( 'codeCoverage', () => {
 	} );
 
 	describe( 'reporter', () => {
-		const projectPath = resolvePath( __dirname, 'fixtures', 'emptyPackage' );
+		const projectPath = resolvePath( __dirname, '__fixtures__', 'emptyPackage' );
 		const context = {
 			projectPath
 		};

@@ -1,8 +1,9 @@
 import { resolve as resolvePath } from 'path';
-import touch from './helpers/touch.js';
-import executeCLI from './helpers/executeCLI.js';
-import { cleanupFixtures, prepareCLIFixture } from './helpers/fixtures.js';
-import spawnCLI from './helpers/spawnCLI.js';
+import touch from './__helpers__/touch.js';
+import executeCLI from './__helpers__/executeCLI.js';
+import { cleanupFixtures } from './__helpers__/fixtures.js';
+import { prepareCLIFixture } from './__helpers__/fixtures.js';
+import spawnCLI from './__helpers__/spawnCLI.js';
 
 const stderrErrorRegex = /failed with errors|Error occured:/;
 

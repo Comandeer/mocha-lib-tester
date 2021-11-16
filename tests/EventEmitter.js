@@ -1,4 +1,4 @@
-import sleep from './helpers/sleep.js';
+import sleep from './__helpers__/sleep.js';
 import EventEmitter from '../src/EventEmitter.js';
 
 describe( 'EventEmitter', () => {

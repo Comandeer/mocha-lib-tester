@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import chalk from 'chalk';
-import assertParameter from './helpers/assertParameter.js';
+import assertParameter from './__helpers__/assertParameter.js';
 import LoggerType from '../src/LoggerType.js';
 import LoggerColor from '../src/LoggerColor.js';
 import EventEmitter from '../src/EventEmitter.js';

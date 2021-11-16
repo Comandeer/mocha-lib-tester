@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
 import chalk from 'chalk';
-import assertParameter from './helpers/assertParameter.js';
-import assertAsyncParameter from './helpers/assertAsyncParameter.js';
+import assertParameter from './__helpers__/assertParameter.js';
+import assertAsyncParameter from './__helpers__/assertAsyncParameter.js';
 import Runner from '../src/Runner.js';
 import Logger from '../src/Logger.js';
 import EventEmitter from '../src/EventEmitter.js';
