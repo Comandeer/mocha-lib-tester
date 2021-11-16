@@ -1,9 +1,9 @@
-import { join as joinPath } from 'path';
+import { resolve as resolvePath } from 'path';
 import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
-const emptyFixture = joinPath( __dirname, 'fixtures', 'emptyPackage' );
+const emptyFixture = resolvePath( __dirname, 'fixtures', 'emptyPackage' );
 
 // When dogfooding, the original value of global.__mltCoverage__ is connected with
 // the MLT itself. This juggling probably breaks the coverage report…
@@ -70,7 +70,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'supports CJS syntax', () => {
-		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageCJS' );
+		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageCJS' );
 
 		// Mocha automatically fails the test when Promise rejects, so it's enough to just
 		// return it.
@@ -78,7 +78,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'supports ESM syntax', () => {
-		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageESM' );
+		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
 
 		// Mocha automatically fails the test when Promise rejects, so it's enough to just
 		// return it.
@@ -86,7 +86,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'correctly exposes chai and other testing libraries', async () => {
-		const fixturePath = joinPath( __dirname, 'fixtures', 'testsChai' );
+		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsChai' );
 
 		const { ok } = await tester( fixturePath );
 
@@ -94,7 +94,7 @@ describe( 'tester', () => {
 	} );
 
 	it( 'gathers info about code coverage', async () => {
-		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageESM' );
+		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageESM' );
 
 		await tester( fixturePath );
 
@@ -102,13 +102,13 @@ describe( 'tester', () => {
 	} );
 
 	it( 'run tests in correct files', async () => {
-		const fixturePath = joinPath( __dirname, 'fixtures', 'testsPackageCJS' );
+		const fixturePath = resolvePath( __dirname, 'fixtures', 'testsPackageCJS' );
 		const expected = {
-			[ joinPath( fixturePath, 'tests', 'index.js' ) ]: {
+			[ resolvePath( fixturePath, 'tests', 'index.js' ) ]: {
 				'passes': 'passed',
 				'fails': 'failed'
 			},
-			[ joinPath( fixturePath, 'tests', 'something', 'subtest.js' ) ]: {
+			[ resolvePath( fixturePath, 'tests', 'something', 'subtest.js' ) ]: {
 				'passes': 'passed',
 				'fails': 'failed'
 			}
