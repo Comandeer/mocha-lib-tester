@@ -1,7 +1,7 @@
 import { resolve as resolvePath } from 'path';
 import { copy, remove } from 'fs-extra';
 
-const FIXTURES_PATH = resolvePath( __dirname, '..', 'fixtures' );
+const FIXTURES_PATH = resolvePath( __dirname, '..', '__fixtures__' );
 const TEMP_PATH = resolvePath( process.cwd(), '.fixtures-temp' );
 
 async function prepareCLIFixture( name ) {

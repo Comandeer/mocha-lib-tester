@@ -1,6 +1,6 @@
 const coverageData = {
-	'/home/comandeer/repos/tools/mocha-lib-tester/tests/fixtures/testsPackageESM/src/index.js': {
-		path: '/home/comandeer/repos/tools/mocha-lib-tester/tests/fixtures/testsPackageESM/src/index.js',
+	'/home/comandeer/repos/tools/mocha-lib-tester/tests/__fixtures__/testsPackageESM/src/index.js': {
+		path: '/home/comandeer/repos/tools/mocha-lib-tester/tests/__fixtures__/testsPackageESM/src/index.js',
 		statementMap: {
 			0: {
 				start: {

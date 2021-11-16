@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
-import helperExpect from './helpers/subdir/helper.js';
-import fixtureExpect from './fixtures/subdir/fixture.js';
+import helperExpect from './__helpers__/subdir/helper.js';
+import fixtureExpect from './__fixtures__/subdir/fixture.js';
 import srcExpect from '../src/index.js';
 
 describe( 'chai', () => {
