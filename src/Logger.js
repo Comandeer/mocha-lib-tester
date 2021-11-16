@@ -72,7 +72,7 @@ class Logger {
 	async onStepEnd( { name, report }, results, context ) {
 		await spinner.hide();
 
-		report( results, this, context );
+		await report( results, this, context );
 
 		if ( !results.ok ) {
 			return this.log( `Step ${ chalk.bold( name ) } failed with errors. Skipping subsequent steps.`, {
