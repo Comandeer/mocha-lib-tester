@@ -1,10 +1,10 @@
-import { join as joinPath } from 'path';
+import { resolve as resolvePath } from 'path';
 import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import linter from '../src/linter.js';
 
-const lintFixture = joinPath( __dirname, 'fixtures', 'lintPackage' );
-const noErrorsFixture = joinPath( __dirname, 'fixtures', 'lintCorrectPackage' );
+const lintFixture = resolvePath( __dirname, 'fixtures', 'lintPackage' );
+const noErrorsFixture = resolvePath( __dirname, 'fixtures', 'lintCorrectPackage' );
 
 describe( 'linter', () => {
 	let sinonSandbox;
@@ -72,10 +72,10 @@ describe( 'linter', () => {
 		const { results, ok } = await linter( lintFixture );
 
 		const expected = {
-			[ joinPath( lintFixture, 'src', 'empty.js' ) ]: 0,
-			[ joinPath( lintFixture, 'src', 'index.js' ) ]: 1,
-			[ joinPath( lintFixture, 'tests', 'index.js' ) ]: 1,
-			[ joinPath( lintFixture, 'tests', 'something', 'subtest.js' ) ]: 0
+			[ resolvePath( lintFixture, 'src', 'empty.js' ) ]: 0,
+			[ resolvePath( lintFixture, 'src', 'index.js' ) ]: 1,
+			[ resolvePath( lintFixture, 'tests', 'index.js' ) ]: 1,
+			[ resolvePath( lintFixture, 'tests', 'something', 'subtest.js' ) ]: 0
 		};
 
 		expect( ok ).to.equal( false );
