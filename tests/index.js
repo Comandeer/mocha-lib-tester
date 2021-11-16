@@ -1,7 +1,7 @@
 import * as pkg from '../src/index.js';
 
 describe( 'index', () => {
-	it( 'exports a function', () => {
+	it( 'exports all steps + mlt', () => {
 		const expectedExports = [
 			'mlt',
 			'linter',
@@ -11,6 +11,6 @@ describe( 'index', () => {
 		];
 		const actualExports = Object.keys( pkg );
 
-		expect( actualExports ).to.deep.equal( expectedExports );
+		expect( actualExports ).to.have.members( expectedExports );
 	} );
 } );
