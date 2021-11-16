@@ -3,8 +3,6 @@ import assertAsyncParameter from './helpers/assertAsyncParameter.js';
 import validateResults from './helpers/validateResults.js';
 import tester from '../src/tester.js';
 
-const { spy } = sinon;
-
 const emptyFixture = joinPath( __dirname, 'fixtures', 'emptyPackage' );
 
 // When dogfooding, the original value of global.__mltCoverage__ is connected with
@@ -12,11 +10,17 @@ const emptyFixture = joinPath( __dirname, 'fixtures', 'emptyPackage' );
 const mainCoverage = global.__mltCoverage__;
 
 describe( 'tester', () => {
+	let sinonSandbox;
+
 	beforeEach( () => {
+		sinonSandbox = sinon.createSandbox();
+
 		delete global.__mltCoverage__;
 	} );
 
 	after( () => {
+		sinonSandbox.restore();
+
 		global.__mltCoverage__ = mainCoverage;
 	} );
 
@@ -58,11 +62,9 @@ describe( 'tester', () => {
 	} );
 
 	it( 'does not output anything', async () => {
-		const consoleSpy = spy( process.stdout, 'write' );
+		const consoleSpy = sinonSandbox.spy( process.stdout, 'write' );
 
 		await tester( emptyFixture );
-
-		consoleSpy.restore();
 
 		expect( consoleSpy ).not.to.be.called;
 	} );

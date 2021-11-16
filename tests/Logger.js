@@ -7,17 +7,18 @@ import LoggerColor from '../src/LoggerColor.js';
 import EventEmitter from '../src/EventEmitter.js';
 import Logger from '../src/Logger.js';
 
-const { spy, stub } = sinon;
-
 describe( 'Logger', () => {
+	let sinonSandbox;
+
 	beforeEach( () => {
-		stub( console, 'log' );
-		stub( console, 'error' );
+		sinonSandbox = sinon.createSandbox();
+
+		sinonSandbox.stub( console, 'log' );
+		sinonSandbox.stub( console, 'error' );
 	} );
 
 	afterEach( () => {
-		console.log.restore();
-		console.error.restore();
+		sinonSandbox.restore();
 	} );
 
 	it( 'is a class', () => {
@@ -275,7 +276,7 @@ describe( 'Logger', () => {
 
 			it( 'invokes reporter with correct arguments', async () => {
 				const [ logger, eventEmitter ] = createLogger();
-				const reporter = spy();
+				const reporter = sinonSandbox.spy();
 				const step = {
 					name: 'hublabubla',
 					report: reporter
