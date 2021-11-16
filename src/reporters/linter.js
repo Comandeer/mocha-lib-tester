@@ -1,10 +1,14 @@
 /* eslint-disable no-console */
 /* istanbul ignore file */
 
-import formatter from 'eslint/lib/cli-engine/formatters/stylish.js';
+import { ESLint } from 'eslint';
 
-function linterReporter( { results }, logger ) {
-	logger.log( formatter( results ) );
+async function linterReporter( { results }, logger ) {
+	const eslint = new ESLint();
+	const formatter = await eslint.loadFormatter( 'stylish' );
+	const formattedResults = formatter.format( results );
+
+	logger.log( formattedResults );
 }
 
 export default linterReporter;
