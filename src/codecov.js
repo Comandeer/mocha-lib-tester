@@ -3,12 +3,13 @@
 import { get } from 'https';
 import { exec } from 'child_process';
 import { createWriteStream } from 'fs';
-import { chmod } from 'fs/promises';
+import { promises } from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 import { resolve as resolvePath } from 'path';
 import isCI from 'is-ci';
 
+const chmod = promises.chmod;
 const streamPipeline = promisify( pipeline );
 
 async function codecov( projectPath ) {
