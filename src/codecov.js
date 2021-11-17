@@ -3,6 +3,7 @@
 import { get } from 'https';
 import { exec } from 'child_process';
 import { createWriteStream } from 'fs';
+import { chmod } from 'fs/promises';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 import { resolve as resolvePath } from 'path';
@@ -29,6 +30,9 @@ async function codecov( projectPath ) {
 	}
 
 	const codecovPath = await fetchUploader( process.platform, projectPath );
+
+	await chmod( codecovPath, '755' );
+
 	const { exitCode, stdout, stderr } = await executeCLI( codecovPath, projectPath );
 
 	return Object.assign( {}, resultsTemplate, {
