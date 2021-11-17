@@ -7,7 +7,6 @@ import { pipeline } from 'stream';
 import { promisify } from 'util';
 import { resolve as resolvePath } from 'path';
 import isCI from 'is-ci';
-import npmRunPath from 'npm-run-path';
 
 const streamPipeline = promisify( pipeline );
 
@@ -95,8 +94,7 @@ function getPromise( url ) {
 function executeCLI( cliPath, projectPath ) {
 	return new Promise( ( resolve ) => {
 		const codecovProcess = exec( cliPath, {
-			cwd: projectPath,
-			env: npmRunPath.env()
+			cwd: projectPath
 		}, ( error, stdout, stderr ) => {
 			resolve( {
 				exitCode: codecovProcess.exitCode,
