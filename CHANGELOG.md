@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-## [0.6.0]
+## [0.6.0] – 2021-11-18
 ### Added
 * [#81]: **BREAKING CHANGE**: run steps in worker threads.
 
