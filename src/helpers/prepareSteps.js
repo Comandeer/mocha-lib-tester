@@ -1,4 +1,4 @@
-import steps from './steps.js';
+import steps from '../steps.js';
 
 function prepareSteps( {
 	requestedSteps,

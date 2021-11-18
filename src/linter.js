@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import globPromise from './globPromise.js';
+import globPromise from './helpers/globPromise.js';
 
 async function linter( projectPath ) {
 	if ( typeof projectPath !== 'string' || projectPath.length === 0 ) {

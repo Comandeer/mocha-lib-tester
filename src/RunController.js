@@ -1,7 +1,7 @@
 import chokidar from 'chokidar';
 import Logger from './Logger.js';
 import Runner from './Runner.js';
-import prepareSteps from './prepareSteps.js';
+import prepareSteps from './helpers/prepareSteps.js';
 import { version } from '../package.json';
 
 const configSymbol = Symbol( 'config' );

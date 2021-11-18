@@ -1,5 +1,5 @@
 import Mocha from 'mocha';
-import globPromise from './globPromise.js';
+import globPromise from './helpers/globPromise.js';
 import MochaReporter from './reporters/MochaReporter.js';
 import addChaiHook from './hooks/chai.js';
 import addBabelHook from './hooks/babel.js';
