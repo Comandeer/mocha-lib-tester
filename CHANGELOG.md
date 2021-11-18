@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 	* `sinon` to 12.x,
 	* `eslint` to 8.x,
 	* `istanbul-lib-instrument` to 5.x.
+* [#91]: **BREAKING CHANGE**: switch to new Codecov uploader.
 
 ## [0.5.0] – 2021-06-29
 ### Added
@@ -77,6 +78,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#81]: https://github.com/Comandeer/mocha-lib-tester/issues/81
 [#82]: https://github.com/Comandeer/mocha-lib-tester/issues/82
 [#84]: https://github.com/Comandeer/mocha-lib-tester/issues/84
+[#91]: https://github.com/Comandeer/mocha-lib-tester/issues/91
 
 [0.6.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.4.1...v0.5.0

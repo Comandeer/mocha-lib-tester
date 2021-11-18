@@ -48,6 +48,9 @@ const steps = [
 		id: 'codecov',
 		name: 'CodeCov',
 		watchable: false,
+		requires: [
+			'coverage'
+		],
 		run( projectPath ) {
 			return spawnWorker( './workers/codecov.js', projectPath );
 		},
