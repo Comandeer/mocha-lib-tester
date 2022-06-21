@@ -1,9 +1,5 @@
 const { expose } = require( 'threads/worker' );
-
-const isDistDirRegex = /[/\\]dist[/\\]workers$/;
-const isBuild = isDistDirRegex.test( __dirname );
-const codecovPath = isBuild ? '../mocha-lib-tester.js' : '../index.js';
-const { codecov } = require( codecovPath );
+const { codecov } = require( '../index.js' );
 
 expose( ( projectPath ) => {
 	return codecov( projectPath );
