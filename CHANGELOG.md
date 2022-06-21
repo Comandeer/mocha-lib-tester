@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * [#95]: support for Node 18.
 
+### Changed
+* [#99]: **BREAKING CHANGE**: updated dependencies, including major versions:
+	* `glob`: 7.2.0 → 8.0.3,
+	* `mocha`: 9.1.3 → 10.0.0,
+	* `sinon`: 12.0.1 → 14.0.0,
+	* `@comandeer/eslint-config`: 0.4.0 → 0.8.0.
+
 ### Removed
 * [#95]: **BREAKING CHANGE**: support for Node &lt; 16.12.0.
 
