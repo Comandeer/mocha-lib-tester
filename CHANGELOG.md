@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * [#95]: support for Node 18.
 
 ### Changed
+* [#97]: **BREAKING CHANGE**: export workers from `./workers/*` subpaths.
 * [#99]: **BREAKING CHANGE**: updated dependencies, including major versions:
 	* `glob`: 7.2.0 → 8.0.3,
 	* `mocha`: 9.1.3 → 10.0.0,
@@ -94,6 +95,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#84]: https://github.com/Comandeer/mocha-lib-tester/issues/84
 [#91]: https://github.com/Comandeer/mocha-lib-tester/issues/91
 [#95]: https://github.com/Comandeer/mocha-lib-tester/issues/95
+[#97]: https://github.com/Comandeer/mocha-lib-tester/issues/97
 [#99]: https://github.com/Comandeer/mocha-lib-tester/issues/99
 
 [0.7.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.6.0...v0.7.0
