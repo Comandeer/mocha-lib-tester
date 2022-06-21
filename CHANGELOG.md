@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ---
 
 ## [0.7.0]
+### Added
+* [#95]: support for Node 18.
+
 ### Removed
 * [#95]: **BREAKING CHANGE**: support for Node &lt; 16.12.0.
 
