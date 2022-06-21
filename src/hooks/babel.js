@@ -10,7 +10,7 @@ function addBabelHook() {
 				preset,
 				{
 					targets: {
-						node: '12.0.0'
+						node: '16.12.0'
 					}
 				}
 			]
