@@ -94,6 +94,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#84]: https://github.com/Comandeer/mocha-lib-tester/issues/84
 [#91]: https://github.com/Comandeer/mocha-lib-tester/issues/91
 [#95]: https://github.com/Comandeer/mocha-lib-tester/issues/95
+[#99]: https://github.com/Comandeer/mocha-lib-tester/issues/99
 
 [0.7.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.5.0...v0.6.0
