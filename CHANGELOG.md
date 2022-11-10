@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
 
-## [0.7.0]
+## [0.7.0] – 2022-11-11
 ### Added
 * [#95]: support for Node 18.
 
@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 	* `mocha`: 9.1.3 → 10.0.0,
 	* `sinon`: 12.0.1 → 14.0.0,
 	* `@comandeer/eslint-config`: 0.4.0 → 0.8.0.
+
+### Fixed
+* [#102]: dynamic imports were not preserved, making importing ESM files impossible.
 
 ### Removed
 * [#95]: **BREAKING CHANGE**: support for Node &lt; 16.12.0.
@@ -97,6 +100,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [#95]: https://github.com/Comandeer/mocha-lib-tester/issues/95
 [#97]: https://github.com/Comandeer/mocha-lib-tester/issues/97
 [#99]: https://github.com/Comandeer/mocha-lib-tester/issues/99
+[#102]: https://github.com/Comandeer/mocha-lib-tester/issues/102
 
 [0.7.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Comandeer/mocha-lib-tester/compare/v0.5.0...v0.6.0
