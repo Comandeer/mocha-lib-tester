@@ -4,6 +4,11 @@ import preset from '@babel/preset-env';
 function addBabelHook() {
 	babelRegister( {
 		cache: false,
+		caller: {
+			name: 'mlt',
+			supportsStaticESM: false,
+			supportsDynamicImport: true
+		},
 		babelrc: false,
 		presets: [
 			[
