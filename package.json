@@ -1,25 +1,25 @@
 {
   "name": "@comandeer/mocha-lib-tester",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "All testing utilities in one, small package",
   "main": "dist/mocha-lib-tester.js",
   "exports": {
-	".": {
-		"require": "./dist/mocha-lib-tester.js",
-		"import": "./dist/mocha-lib-tester.mjs"
-	},
-	"./workers/codecov": {
-		"require": "./dist/workers/codecov.js",
-		"import": "./dist/workers/codecov.mjs"
-	},
-	"./workers/linter": {
-		"require": "./dist/workers/linter.js",
-		"import": "./dist/workers/linter.mjs"
-	},
-	"./workers/tester": {
-		"require": "./dist/workers/tester.js",
-		"import": "./dist/workers/tester.mjs"
-	}
+    ".": {
+      "require": "./dist/mocha-lib-tester.js",
+      "import": "./dist/mocha-lib-tester.mjs"
+    },
+    "./workers/codecov": {
+      "require": "./dist/workers/codecov.js",
+      "import": "./dist/workers/codecov.mjs"
+    },
+    "./workers/linter": {
+      "require": "./dist/workers/linter.js",
+      "import": "./dist/workers/linter.mjs"
+    },
+    "./workers/tester": {
+      "require": "./dist/workers/tester.js",
+      "import": "./dist/workers/tester.mjs"
+    }
   },
   "types": "./mlt.d.ts",
   "engines": {
