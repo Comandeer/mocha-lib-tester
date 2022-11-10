@@ -99,6 +99,17 @@ describe( 'mlt', () => {
 		expect( exitCode ).to.equal( 1 );
 	} );
 
+	// #102
+	it( 'preserves dynamic imports allowing importing native ESM files', async () => {
+		const project = await prepareCLIFixture( 'dynamicImport' );
+		const { exitCode, stdout } = await executeCLI( project, {
+			additionalArguments: 'test'
+		} );
+
+		expect( stdout ).not.to.match( /ERR_REQUIRE_ESM/, 'dynamic import was correctly preserved' );
+		expect( exitCode ).to.equal( 0 );
+	} );
+
 	// #57
 	describe( '--watch', () => {
 		const DELAYED_CALLBACK_TIMEOUT = 15000;
