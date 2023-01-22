@@ -1,8 +1,14 @@
 # @comandeer/mocha-lib-tester
 
-![Build Status](https://github.com/Comandeer/mocha-lib-tester/workflows/CI/badge.svg) [![Dependency Status](https://david-dm.org/Comandeer/mocha-lib-tester.svg)](https://david-dm.org/Comandeer/mocha-lib-tester) [![devDependencies Status](https://david-dm.org/Comandeer/mocha-lib-tester/dev-status.svg)](https://david-dm.org/Comandeer/mocha-lib-tester?type=dev) [![codecov](https://codecov.io/gh/Comandeer/mocha-lib-tester/branch/main/graph/badge.svg)](https://codecov.io/gh/Comandeer/mocha-lib-tester) [![npm (scoped)](https://img.shields.io/npm/v/@comandeer/mocha-lib-tester.svg)](https://npmjs.com/package/@comandeer/mocha-lib-tester)
+![Build Status](https://github.com/Comandeer/mocha-lib-tester/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/Comandeer/mocha-lib-tester/branch/main/graph/badge.svg)](https://codecov.io/gh/Comandeer/mocha-lib-tester) [![npm (scoped)](https://img.shields.io/npm/v/@comandeer/mocha-lib-tester.svg)](https://npmjs.com/package/@comandeer/mocha-lib-tester)
 
 Super opinionated test library using [Mocha](https://github.com/mochajs/mocha), [Babel](https://github.com/babel/babel), [Chai](https://github.com/chaijs/chai), [Sinon](https://github.com/sinonjs/sinon), [sinon-chai](https://github.com/domenic/sinon-chai), [proxyquire](https://github.com/thlorenz/proxyquire) and [IstanbulJS](https://github.com/istanbuljs/istanbuljs).
+
+## ☠️ Project is deprecated! ☠️
+
+Version 0.7.0, released on 2022-11-11, is the last version of the project, as the experiment showed that the whole approach to building this test library was quite flawed. It became apparent especially when I tried to make it work with native ESM.
+
+Personally I'm recommending [`ava`](https://github.com/avajs/ava) and if I were going to write a test library again, I would definitely take inspiration from it.
 
 ## How does it work?
 
